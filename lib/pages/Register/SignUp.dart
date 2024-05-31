@@ -1,0 +1,243 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../Login/Login.dart';
+
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  final TextEditingController _digit1 = TextEditingController();
+  final TextEditingController _digit2 = TextEditingController();
+  final TextEditingController _digit3 = TextEditingController();
+  final FocusNode f1 = FocusNode();
+  final FocusNode f2 = FocusNode();
+  final FocusNode f3 = FocusNode();
+
+  final _formKey = GlobalKey<FormState>();
+
+  String _username = "";
+  String _password = "";
+
+  bool _passHide = false;
+  bool _confirmHide = false;
+  @override
+  void dispose() {
+    super.dispose();
+    _digit1.dispose();
+    _digit2.dispose();
+    _digit3.dispose();
+    f1.dispose();
+    f2.dispose();
+    f3.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            'images/iconBack.svg',
+            width: 35,
+            height: 35,
+          ),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Login()));
+          },
+        ),
+      ),
+      body: ListView(
+        children: [
+          Column(
+            children: [
+              const Text(
+                'Бүртгүүлэх',
+                style: TextStyle(
+                    color: Color(0xff404040),
+                    fontFamily: 'Inter-Bold',
+                    fontSize: 20),
+              ),
+              Container(
+                margin: const EdgeInsets.all(10),
+                child: const Text(
+                  'Та өөрийн нэр болон нууц үгийг оруулна уу.',
+                  style: TextStyle(
+                      color: Color(0xff404040),
+                      fontSize: 13,
+                      fontFamily: 'Inter'),
+                ),
+              ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 313,
+                      height: 50,
+                      child: TextFormField(
+                        controller: _digit1,
+                        focusNode: f1,
+                        onChanged: (text) {},
+                        decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    width: 1, color: Colors.black),
+                                borderRadius: BorderRadius.circular(10)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                    width: 1,
+                                    color: const Color(0xff404040)
+                                        .withOpacity(0.5))),
+                            labelText: 'Нэр',
+                            labelStyle:
+                                const TextStyle(fontFamily: 'Inter-Light'),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            counterText: '',
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SvgPicture.asset('images/person.svg'),
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                    color: Color(0xffE2E2E2)))),
+                        maxLength: 20,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: 313,
+                      height: 50,
+                      child: TextFormField(
+                        focusNode: f2,
+                        controller: _digit2,
+                        onChanged: (value) {
+                          setState(() {
+                            _password = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    width: 1, color: Colors.black),
+                                borderRadius: BorderRadius.circular(10)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                    width: 1,
+                                    color: const Color(0xff404040)
+                                        .withOpacity(0.5))),
+                            labelText: 'Нууц үг',
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            labelStyle:
+                                const TextStyle(fontFamily: 'Inter-Light'),
+                            counterText: '',
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child:
+                                  SvgPicture.asset('images/lockPassword.svg'),
+                            ),
+                            suffixIcon: Opacity(
+                              opacity: 0.5,
+                              child: IconButton(
+                                  icon: SvgPicture.asset(_passHide
+                                      ? 'images/eye.svg'
+                                      : 'images/eye_off.svg'),
+                                  onPressed: () {
+                                    setState(() {
+                                      _passHide = !_passHide;
+                                    });
+                                  }),
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                    color: Color(0xffE2E2E2)))),
+                        maxLength: 20,
+                        obscureText: _passHide ? false : true,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: 313,
+                      height: 50,
+                      child: TextFormField(
+                        focusNode: f3,
+                        controller: _digit3,
+                        decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    width: 1, color: Colors.black),
+                                borderRadius: BorderRadius.circular(10)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                    width: 1,
+                                    color: const Color(0xff404040)
+                                        .withOpacity(0.5))),
+                            labelText: 'Нууц үг давтах',
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            labelStyle:
+                                const TextStyle(fontFamily: 'Inter-Light'),
+                            counterText: '',
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child:
+                                  SvgPicture.asset('images/lockPassword.svg'),
+                            ),
+                            suffixIcon: Opacity(
+                              opacity: 0.5,
+                              child: IconButton(
+                                  icon: SvgPicture.asset(_confirmHide
+                                      ? 'images/eye.svg'
+                                      : 'images/eye_off.svg'),
+                                  onPressed: () {
+                                    setState(() {
+                                      _confirmHide = !_confirmHide;
+                                    });
+                                  }),
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                    color: Color(0xffE2E2E2)))),
+                        maxLength: 20,
+                        obscureText: _confirmHide ? false : true,
+                      ),
+                    ),
+                    const SizedBox(height: 45),
+                    SizedBox(
+                      width: 313,
+                      height: 40,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xff404040),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8))),
+                        child: const Text(
+                          'Бүртгүүлэх',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Inter',
+                              fontSize: 17),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
