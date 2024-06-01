@@ -129,6 +129,7 @@ flutter:
     - images/streamline_desktop-delete.svg
     - images/LogoSplash.svg
     - images/Rectangle5275.svg
+    - images/carcareicon.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

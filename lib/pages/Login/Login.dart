@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../Register/SignUp.dart';
 import '../../usable/MSG/SendMSG.dart';
-import '../Home/Home.dart';
+import '../Home/MainMenu.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -190,7 +190,7 @@ class _LoginState extends State<Login> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const Home()));
+                                      builder: (context) => const MainMenu()));
                             },
                             child: const Text(
                               'Нэвтрэх',
