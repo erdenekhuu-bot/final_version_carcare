@@ -1,9 +1,16 @@
+import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../Login/Login.dart';
+import 'package:another_flushbar/flushbar.dart';
+import 'package:final_pro/pages/Login/Login.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+
+  final int? id;
+  final String? phone;
+
+  const SignUp({super.key, this.id, this.phone});
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -21,6 +28,7 @@ class _SignUpState extends State<SignUp> {
 
   String _username = "";
   String _password = "";
+  String _confirmPassword="";
 
   bool _passHide = false;
   bool _confirmHide = false;
@@ -34,7 +42,7 @@ class _SignUpState extends State<SignUp> {
     f2.dispose();
     f3.dispose();
   }
-
+  final RegExp passwordRegExp = RegExp(r'^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +91,9 @@ class _SignUpState extends State<SignUp> {
                       child: TextFormField(
                         controller: _digit1,
                         focusNode: f1,
-                        onChanged: (text) {},
+                        onChanged: (text) {
+                          _username=_digit1.text;
+                        },
                         decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
@@ -120,7 +130,7 @@ class _SignUpState extends State<SignUp> {
                         controller: _digit2,
                         onChanged: (value) {
                           setState(() {
-                            _password = value;
+                            _password=_digit2.text;
                           });
                         },
                         decoration: InputDecoration(
@@ -169,6 +179,11 @@ class _SignUpState extends State<SignUp> {
                       width: 313,
                       height: 50,
                       child: TextFormField(
+                        onChanged: (text){
+                          setState(() {
+                            _confirmPassword=_digit3.text;
+                          });
+                        },
                         focusNode: f3,
                         controller: _digit3,
                         decoration: InputDecoration(
@@ -217,7 +232,36 @@ class _SignUpState extends State<SignUp> {
                       width: 313,
                       height: 40,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          if(passwordRegExp.hasMatch(_confirmPassword)){
+                              String result = await RESTAPI.createUser(widget.id!, _username, _confirmPassword, widget.phone!);
+                              if(result == 'success'){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const Login()));
+                              }
+                          } else {
+                            Flushbar(
+                              backgroundColor: const Color(0xFFFF6E6E),
+                              flushbarStyle: FlushbarStyle.GROUNDED,
+                              flushbarPosition: FlushbarPosition.TOP,
+                              titleText: const Center(
+                                child: Icon(
+                                  Icons.error_outline,
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
+                              ),
+                              messageText: const Padding(
+                                padding: EdgeInsets.only(bottom: 20.0),
+                                child: Text(
+                                  "Баталгаажуулах код буруу байна",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              duration: const Duration(seconds: 2),
+                            ).show(context);
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xff404040),
                             shape: RoundedRectangleBorder(

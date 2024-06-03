@@ -34,6 +34,25 @@ class RESTAPI {
     }
   }
 
+  static Future<String> createUser(int id, String username, String password, String phone) async {
+    try {
+      final Map<String, dynamic> register={
+        'confirmationId': id,
+        'username': username,
+        'password': password,
+        'areaCode': '976',
+        'phone': phone
+      };
+      final request = await http.post(Uri.parse('http://192.168.1.118:3000/v1/auth/register'),
+          headers: {'Content-Type': 'application/json'}, 
+          body: json.encode(register)
+      );
+      return request.statusCode == 200 ? json.decode(request.body)['status'] : '';
+    } catch(error){
+      return error.toString();
+    }
+  }
+
   static Future<String> updateUser() async {
     try {
       return '';
