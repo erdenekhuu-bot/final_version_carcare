@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../pages/Register/SignUp.dart';
+import 'package:final_pro/pages/Register/SignUp.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 class ValidateMsg extends StatefulWidget {
   const ValidateMsg({super.key});

@@ -3,9 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:country_flags/country_flags.dart';
 import 'ValidateMSG.dart';
+import 'package:final_pro/REST/RESTAPI.dart';
+import 'dart:convert';
+import 'package:another_flushbar/flushbar.dart';
 
 class SendMSG extends StatefulWidget {
-  const SendMSG({super.key});
+
+  final String? title;
+  final String? description;
+  const SendMSG({super.key, this.description, this.title});
 
   @override
   State<SendMSG> createState() => _SendMSGState();
@@ -16,7 +22,7 @@ class _SendMSGState extends State<SendMSG> {
   final FocusNode _focusNode = FocusNode();
   bool _limit = false;
   String _phoneNumber = '';
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   dispose() {
@@ -48,11 +54,11 @@ class _SendMSGState extends State<SendMSG> {
           children: [
             Column(
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Бүртгүүлэх',
+                      '${widget.title}',
                       style: TextStyle(
                           color: Color(0xff404040),
                           fontFamily: 'Inter-Bold',
@@ -63,8 +69,8 @@ class _SendMSGState extends State<SendMSG> {
                 Container(
                   width: 315,
                   margin: const EdgeInsets.all(12),
-                  child: const Text(
-                    'Таны бүртгүүлэх дугаар дээр баталгаажуулах код илгээх болно',
+                  child: Text(
+                    '${widget.description}',
                     style: TextStyle(
                         color: Color(0xff404040),
                         fontSize: 13,
@@ -85,7 +91,7 @@ class _SendMSGState extends State<SendMSG> {
                           } else {
                             _limit = true;
                           }
-                          _phoneNumber = phone;
+                          _phoneNumber = _controller.text;
                         });
                       },
                       controller: _controller,
@@ -133,11 +139,38 @@ class _SendMSGState extends State<SendMSG> {
                   width: 313,
                   height: 40,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ValidateMsg()));
+                    onPressed: () async {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => const ValidateMsg()));
+                     final Map<String, dynamic> msg = await RESTAPI.sendOTP(_phoneNumber);
+                     if(msg != null){
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const ValidateMsg()));
+                     } else {
+                       Flushbar(
+                         backgroundColor: const Color(0xFFFF6E6E),
+                         flushbarStyle: FlushbarStyle.GROUNDED,
+                         flushbarPosition: FlushbarPosition.TOP,
+                         titleText: const Center(
+                           child: Icon(
+                             Icons.error_outline,
+                             color: Colors.white,
+                             size: 28,
+                           ),
+                         ),
+                         messageText: const Padding(
+                           padding: EdgeInsets.only(bottom: 20.0),
+                           child: Text(
+                             "Баталгаажуулах код буруу байна",
+                             textAlign: TextAlign.center,
+                             style: TextStyle(color: Colors.white),
+                           ),
+                         ),
+                         duration: const Duration(seconds: 2),
+                       ).show(context);
+                     }
                     },
                     child: const Text(
                       'Үргэлжлүүлэх',

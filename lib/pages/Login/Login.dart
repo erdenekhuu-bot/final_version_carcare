@@ -214,7 +214,7 @@ class _LoginState extends State<Login> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const SendMSG()));
+                                      builder: (context) => const SendMSG(title: 'Бүртгүүлэх', description: 'Таны бүртгүүлэх дугаар дээр баталгаажуулах код илгээх болно')));
                             },
                             child: const Text('Бүртгүүлэх',
                                 style: TextStyle(
