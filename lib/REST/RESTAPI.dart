@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class RESTAPI {
-  static Future<Map<String, dynamic>> sendOTP(String phone) async {
+  static Future<int> sendOTP(String phone) async {
     try {
       final Map<String, dynamic> response={};
       final Map<String, String> content = {'areaCode': '976', 'phone': phone};
@@ -11,18 +11,11 @@ class RESTAPI {
           Uri.parse('http://192.168.1.118:3000/v1/auth/send/phone'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(content));
-      // return request.statusCode == 200
-      //     ? json.decode(request.body)['data']['confirmationId']
-      //     : 0;
-      if(request.statusCode == 200){
-          response.addAll({
-            'confirmationId': json.decode(request.body)['data']['confirmationId'],
-            'status': json.decode(request.body)['data']['status']
-          });
-      }
-      return response;
+      return request.statusCode == 200
+          ? json.decode(request.body)['data']['confirmationId']
+          : 0;
     } catch (error) {
-      return {};
+      return 0;
     }
   }
 
@@ -30,11 +23,11 @@ class RESTAPI {
     try {
       final Map<String, dynamic> content = {'code': otp, 'confirmationId': id};
       final request = await http.post(
-          Uri.parse('https://api.carcare.mn/v1/auth/send/phone'),
+          Uri.parse('http://192.168.1.118:3000/v1/auth/validate/phone'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(content));
       return request.statusCode == 200
-          ? json.decode(request.body)['data']['confirmationId']
+          ? json.decode(request.body)['status']
           : '';
     } catch (error) {
       return error.toString();

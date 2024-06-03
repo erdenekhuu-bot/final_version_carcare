@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:final_pro/pages/Register/SignUp.dart';
 import 'package:another_flushbar/flushbar.dart';
-
+import 'package:final_pro/REST/RESTAPI.dart';
 class ValidateMsg extends StatefulWidget {
-  const ValidateMsg({super.key});
+  int? confirmationId;
+  final String? phoneNumber;
+  ValidateMsg({super.key, this.confirmationId, this.phoneNumber});
 
   @override
   State<ValidateMsg> createState() => _ValidateMsgState();
@@ -13,7 +15,6 @@ class ValidateMsg extends StatefulWidget {
 class _ValidateMsgState extends State<ValidateMsg> {
   final _k = GlobalKey<FormState>();
   String result = '';
-
   final TextEditingController _digit1 = TextEditingController();
   final TextEditingController _digit2 = TextEditingController();
   final TextEditingController _digit3 = TextEditingController();
@@ -88,9 +89,9 @@ class _ValidateMsgState extends State<ValidateMsg> {
                 ),
                 Container(
                   margin: const EdgeInsets.all(10),
-                  child: const Text(
-                    '86999042 дугаарт 6 оронтой код илгээлээ',
-                    style: TextStyle(
+                  child: Text(
+                    '${widget.phoneNumber!} дугаарт 6 оронтой код илгээлээ',
+                    style: const TextStyle(
                         color: Color(0xff404040),
                         fontSize: 13,
                         fontFamily: 'Inter'),
@@ -334,11 +335,37 @@ class _ValidateMsgState extends State<ValidateMsg> {
                   width: 313,
                   height: 40,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignUp()));
+                    onPressed: () async {
+                      String result = props(_digit1) + props(_digit2) + props(_digit3) + props(_digit4) + props(_digit5) + props(_digit6);
+                      String response = await RESTAPI.verifyOTP(result, widget.confirmationId!);
+                      if(response == 'success'){
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignUp()));
+                      } else {
+                        Flushbar(
+                          backgroundColor: const Color(0xFFFF6E6E),
+                          flushbarStyle: FlushbarStyle.GROUNDED,
+                          flushbarPosition: FlushbarPosition.TOP,
+                          titleText: const Center(
+                            child: Icon(
+                              Icons.error_outline,
+                              color: Colors.white,
+                              size: 28,
+                            ),
+                          ),
+                          messageText: const Padding(
+                            padding: EdgeInsets.only(bottom: 20.0),
+                            child: Text(
+                              "Баталгаажуулах код буруу байна",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          duration: const Duration(seconds: 2),
+                        ).show(context);
+                      }
                     },
                     child: const Text(
                       'Үргэлжлүүлэх',
@@ -360,7 +387,33 @@ class _ValidateMsgState extends State<ValidateMsg> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                    final int _id = await RESTAPI.sendOTP(widget.phoneNumber!);
+                    if(_id > 0) {
+                      widget.confirmationId=_id;
+                      Flushbar(
+                        backgroundColor: const Color(0xFF41D4A8),
+                        flushbarStyle: FlushbarStyle.GROUNDED,
+                        flushbarPosition: FlushbarPosition.TOP,
+                        titleText: const Center(
+                          child: Icon(
+                            Icons.fmd_good,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ),
+                        messageText: const Padding(
+                          padding: EdgeInsets.only(bottom: 20.0),
+                          child: Text(
+                            "Баталгаажуулах код ахин илгээлээ",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        duration: const Duration(seconds: 2),
+                      ).show(context);
+                    }
+                  },
                   child: const Text(
                     'Дахин илгээх',
                     style: TextStyle(

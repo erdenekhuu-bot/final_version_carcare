@@ -5,8 +5,7 @@ import 'package:country_flags/country_flags.dart';
 import 'ValidateMSG.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'dart:convert';
-import 'package:another_flushbar/flushbar.dart';
-
+import 'package:final_pro/usable/Store/Store.dart';
 class SendMSG extends StatefulWidget {
 
   final String? title;
@@ -140,37 +139,11 @@ class _SendMSGState extends State<SendMSG> {
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () async {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => const ValidateMsg()));
-                     final Map<String, dynamic> msg = await RESTAPI.sendOTP(_phoneNumber);
-                     if(msg != null){
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const ValidateMsg()));
-                     } else {
-                       Flushbar(
-                         backgroundColor: const Color(0xFFFF6E6E),
-                         flushbarStyle: FlushbarStyle.GROUNDED,
-                         flushbarPosition: FlushbarPosition.TOP,
-                         titleText: const Center(
-                           child: Icon(
-                             Icons.error_outline,
-                             color: Colors.white,
-                             size: 28,
-                           ),
-                         ),
-                         messageText: const Padding(
-                           padding: EdgeInsets.only(bottom: 20.0),
-                           child: Text(
-                             "Баталгаажуулах код буруу байна",
-                             textAlign: TextAlign.center,
-                             style: TextStyle(color: Colors.white),
-                           ),
-                         ),
-                         duration: const Duration(seconds: 2),
-                       ).show(context);
-                     }
+                      final int _id = await RESTAPI.sendOTP(_phoneNumber);
+                       if(_id > 0) {
+                         Navigator.push(context, MaterialPageRoute(builder: (
+                             context) => ValidateMsg(confirmationId: _id, phoneNumber: _phoneNumber)));
+                       }
                     },
                     child: const Text(
                       'Үргэлжлүүлэх',
