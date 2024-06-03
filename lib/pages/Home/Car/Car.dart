@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import '../../../usable/Components/CustomChart.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Car extends StatefulWidget {
   const Car({super.key});
@@ -155,22 +156,74 @@ class _CarState extends State<Car> {
                             fontWeight: FontWeight.bold)),
                   ],
                 ),
-                const SizedBox(height: 20), 
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [ 
+                  children: [
                     Container(
-                      width: 230, 
-                      height: 230, 
-                      child: Stack(
-                        children: [ 
-                          
+                      width: 230,
+                      height: 230,
+                      child: const Stack(
+                        children: [
+                          CustomChart(),
+                          Center(
+                            child: Text(
+                              'Зардлын график',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          )
                         ],
                       ),
                     )
                   ],
                 ),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 265),
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    scrollDirection: Axis.vertical,
+                    // child: Column(
+                    //   children: data.length > 0
+                    //       ? [
+                    //           for (var item in data)
+                    //             Prices(
+                    //               title: item['servicePlace'],
+                    //               price: item['amount'].toDouble(),
+                    //               type: item['service']['name'],
+                    //             )
+                    //         ]
+                    //       : [
+                    //           Center(
+                    //             child: Column(
+                    //               children: [
+                    //                 SvgPicture.asset(
+                    //                     'images/streamline_desktop-delete.svg'),
+                    //                 SizedBox(height: 10),
+                    //                 Text(
+                    //                   'Үр дүн олдсонгүй',
+                    //                   style: TextStyle(fontSize: 16),
+                    //                 )
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         ],
+                    // ),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          SvgPicture.asset(
+                              'images/streamline_desktop-delete.svg'),
+                          const SizedBox(height: 10),
+                          const Text(
+                            'Үр дүн олдсонгүй',
+                            style: TextStyle(fontSize: 16),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                )
               ],
             )
           ],

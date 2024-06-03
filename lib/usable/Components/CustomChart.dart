@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 
 class CustomChart extends StatefulWidget {
-  final List<dynamic> data;
-  const CustomChart({super.key, required this.data});
+  final List<dynamic>? data;
+  const CustomChart({super.key, this.data});
 
   @override
   State<CustomChart> createState() => _CustomChartState();
