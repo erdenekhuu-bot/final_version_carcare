@@ -97,14 +97,32 @@ class RESTAPI {
   }
 
 
-  static Future<String> createExpense() async {
+  static Future<int> createExpense(String place, int amount, int id, String date) async {
     try {
-      return '';
+      final Map<String, dynamic> content = {
+              'servicePlace': place,
+              'amount': amount,
+              'serviceId': id,
+              'serviceDate': date
+      };
+      final request = await http.post(Uri.parse('http://192.168.1.118:3000/v1/user/expense'), 
+      headers: {'Authorization': 'Bearer ${Store.accessToken}','Content-Type': 'application/json'},
+      body: json.encode(content));
+      return request.statusCode == 200 ? 1 : 0;
     } catch (error) {
-      return error.toString();
+      return 0;
     }
   }
 
+  static Future<List<dynamic>> getExpense() async {
+    try {
+      final request = await http.get(Uri.parse('http://192.168.1.118:3000/v1/user/expense'),
+      headers: {'Authorization': 'Bearer ${Store.accessToken}'});
+        return request.statusCode == 200 ? json.decode(request.body)['data'] : '';
+    } catch(error){
+        return [];
+    }
+  }
   static Future<String> updateUser() async {
     try {
       return '';

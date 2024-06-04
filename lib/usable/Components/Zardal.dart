@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
+import 'package:table_calendar/table_calendar.dart';
 class Zardal extends StatefulWidget {
   const Zardal({super.key});
 
@@ -23,6 +24,9 @@ class _ZardalState extends State<Zardal> {
   int setServiceId = 0;
   String? selectedValue;
   List<dynamic> data = [];
+  String setServicePlace = '';
+
+  int setAmount=0;
   final _formKey = GlobalKey<FormState>();
 
   void findId(List<dynamic> data, String service) {
@@ -34,6 +38,8 @@ class _ZardalState extends State<Zardal> {
       }
     }
   }
+
+
 
   @override
   void initState(){
@@ -98,31 +104,37 @@ class _ZardalState extends State<Zardal> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 50,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: DropdownButton(
-                      dropdownColor: const Color(0xffffffff),
-                      focusColor: Colors.black12,
-                      focusNode: focus,
-                      value: selectedValue,
-                      isExpanded: true,
-                      style: const TextStyle(color: Colors.black),
                       borderRadius: BorderRadius.circular(10),
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedValue = newValue;
-                        });
-                        findId(data, selectedValue.toString());
-                      },
-                      items: data.map((e) {
-                        return DropdownMenuItem<String>(
-                          value: e['name'],
-                          child: Text(e['name']),
-                        );
-                      }).toList(),
+                        border: Border.all(color: Colors.black)
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        underline: null,
+                        dropdownColor: const Color(0xffffffff),
+                        focusColor: Colors.black12,
+                        focusNode: focus,
+                        value: selectedValue,
+                        isExpanded: true,
+                        style: const TextStyle(color: Colors.black),
+                        borderRadius: BorderRadius.circular(10),
+                        onChanged: (newValue) {
+                          setState(() {
+                            selectedValue = newValue;
+                          });
+                          findId(data, selectedValue.toString());
+                        },
+                        items: data.map((e) {
+                          return DropdownMenuItem<String>(
+                            value: e['name'],
+                            child: Text(e['name']),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
+
                   const SizedBox(height: 10),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
@@ -140,12 +152,13 @@ class _ZardalState extends State<Zardal> {
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 50,
                     child: TextFormField(
+                      textAlignVertical: TextAlignVertical.top,
                       controller: _cnt1,
                       focusNode: _fn1,
                       onChanged: (place) {
-                        // setState(() {
-                        //   setServicePlace = _cnt1.text;
-                        // });
+                        setState(() {
+                          setServicePlace = _cnt1.text;
+                        });
                       },
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
@@ -174,14 +187,17 @@ class _ZardalState extends State<Zardal> {
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 50,
                     child: TextFormField(
+                      textAlignVertical: TextAlignVertical.top,
                       controller: _cnt2,
                       onChanged: (amount) {
-                        // setState(() {
-                        //   setAmount = int.parse(_cnt2.text);
-                        // });
+                        setState(() {
+                          setAmount = int.parse(_cnt2.text);
+                        });
                       },
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: const TextStyle(fontFamily: 'Inter-Light'),
                         border: const OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
                             borderSide: const BorderSide(width: 1, color: Colors.black),
@@ -190,6 +206,48 @@ class _ZardalState extends State<Zardal> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: TableCalendar(
+                      headerStyle: const HeaderStyle(
+                          formatButtonVisible: false, titleCentered: true),
+                      firstDay: DateTime.utc(2010, 3, 14),
+                      lastDay: DateTime.utc(2030, 3, 14),
+                      focusedDay: DateTime.now(),
+                      selectedDayPredicate: (day) {
+                        return isSameDay(_selectedDay, day);
+                      },
+                      onDaySelected: (selectedDay, focusedDay) {
+                        setState(() {
+                          _selectedDay = selectedDay;
+                        });
+                      },
+                    ),
+                  ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: 323,
+                height: 50,
+                child: ElevatedButton(
+                    onPressed: () async {
+                      int result = await RESTAPI.createExpense(setServicePlace, setAmount, setServiceId, formatAPI(_selectedDay.toString()));
+                      if(result > 0){
+                          Navigator.pop(context);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xff404040),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                    child: const Text(
+                      'Хадгалах',
+                      style: TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                 ),
+              ),
+                  const SizedBox(height: 20),
                 ],
               ),
             )

@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:final_pro/usable/Components/CustomChart.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:final_pro/usable/Components/Zardal.dart';
-
+import 'package:final_pro/REST/RESTAPI.dart';
+import 'package:final_pro/usable/Components/Prices.dart';
 class Car extends StatefulWidget {
   const Car({super.key});
 
@@ -18,9 +19,22 @@ class _CarState extends State<Car> {
   bool _click = true;
   double totalAmount = 0.0;
   bool switchArrow = false;
-
   int month = DateTime.now().month;
   int year = DateTime.now().year;
+
+  List<dynamic> data = [];
+  @override
+  void initState(){
+    super.initState();
+    getExpense();
+  }
+
+  void getExpense() async {
+    List<dynamic> result= await RESTAPI.getExpense();
+    setState(() {
+        data=result;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,44 +199,31 @@ class _CarState extends State<Car> {
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     scrollDirection: Axis.vertical,
-                    // child: Column(
-                    //   children: data.length > 0
-                    //       ? [
-                    //           for (var item in data)
-                    //             Prices(
-                    //               title: item['servicePlace'],
-                    //               price: item['amount'].toDouble(),
-                    //               type: item['service']['name'],
-                    //             )
-                    //         ]
-                    //       : [
-                    //           Center(
-                    //             child: Column(
-                    //               children: [
-                    //                 SvgPicture.asset(
-                    //                     'images/streamline_desktop-delete.svg'),
-                    //                 SizedBox(height: 10),
-                    //                 Text(
-                    //                   'Үр дүн олдсонгүй',
-                    //                   style: TextStyle(fontSize: 16),
-                    //                 )
-                    //               ],
-                    //             ),
-                    //           ),
-                    //         ],
-                    // ),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          SvgPicture.asset(
-                              'images/streamline_desktop-delete.svg'),
-                          const SizedBox(height: 10),
-                          const Text(
-                            'Үр дүн олдсонгүй',
-                            style: TextStyle(fontSize: 16),
-                          )
-                        ],
-                      ),
+                    child: Column(
+                      children: data.length > 0
+                          ? [
+                              for (var item in data)
+                                Prices(
+                                  title: item['servicePlace'],
+                                  price: item['amount'].toDouble(),
+                                  type: item['service']['name'],
+                                )
+                            ]
+                          : [
+                              Center(
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                        'images/streamline_desktop-delete.svg'),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      'Үр дүн олдсонгүй',
+                                      style: TextStyle(fontSize: 16),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
                     ),
                   ),
                 )
