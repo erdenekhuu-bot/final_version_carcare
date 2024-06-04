@@ -11,6 +11,8 @@ import 'package:final_pro/usable/Components/OfferPlace.dart';
 import 'package:final_pro/usable/Components/Place.dart';
 import 'package:final_pro/usable/Store/Store.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -26,7 +28,7 @@ class _HomeState extends State<Home> {
   int activeIndex = 0;
   final controller = CarouselController();
   final urlImages = ['images/Rectangle5275.png', 'images/Rectangle5275.png'];
-  List<dynamic> shops=[];
+  List<dynamic> shops = [];
   Widget buildIndicator() => AnimatedSmoothIndicator(
         onDotClicked: animateToSlide,
         effect: const ExpandingDotsEffect(
@@ -37,7 +39,7 @@ class _HomeState extends State<Home> {
   void animateToSlide(int index) => controller.animateToPage(index);
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     getShops();
   }
@@ -45,11 +47,14 @@ class _HomeState extends State<Home> {
   void getShops() async {
     List<dynamic> result = await RESTAPI.getPlaces();
     setState(() {
-      shops=result;
+      shops = result;
     });
   }
+
+  List<LatLng> customAddress = [];
   @override
   Widget build(BuildContext context) {
+    // Store.location=customAddress;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 242, 242),
       body: SafeArea(

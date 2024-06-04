@@ -7,6 +7,8 @@ import 'Map/Map.dart';
 import 'Car/Car.dart';
 import 'User/User.dart';
 import '../../usable/Components/StyleBottomNavBar.dart';
+import 'package:final_pro/REST/RESTAPI.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
@@ -15,9 +17,32 @@ class MainMenu extends StatefulWidget {
   State<MainMenu> createState() => _MainMenuState();
 }
 
+List<dynamic> shops = [];
+
 class _MainMenuState extends State<MainMenu> {
   @override
+  void initState() {
+    super.initState();
+    getShops();
+  }
+
+  void getShops() async {
+    List<dynamic> result = await RESTAPI.getPlaces();
+    setState(() {
+      shops = result;
+    });
+  }
+
+  List<LatLng> customAddress = [];
+
+  @override
   Widget build(BuildContext context) {
+    for (var item in shops) {
+      if (item['location'] != null) {
+        customAddress.add(LatLng(
+            item['location']['latitude'], item['location']['longitude']));
+      }
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -31,7 +56,7 @@ class _MainMenuState extends State<MainMenu> {
                   icon: SvgPicture.asset('images/home.svg',
                       color: Colors.black))),
           PersistentTabConfig(
-              screen: Maps(),
+              screen: Maps(places: customAddress),
               item: ItemConfig(
                   inactiveIcon: SvgPicture.asset('images/maps.svg'),
                   icon: SvgPicture.asset('images/maps.svg',
