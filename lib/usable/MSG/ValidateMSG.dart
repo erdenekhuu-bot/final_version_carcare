@@ -4,9 +4,9 @@ import 'package:final_pro/pages/Register/SignUp.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 class ValidateMsg extends StatefulWidget {
-  int? confirmationId;
-  final String? phoneNumber;
-  ValidateMsg({super.key, this.confirmationId, this.phoneNumber});
+  int confirmationId;
+  String phoneNumber;
+  ValidateMsg({super.key, required this.confirmationId, required this.phoneNumber});
 
   @override
   State<ValidateMsg> createState() => _ValidateMsgState();
@@ -337,12 +337,12 @@ class _ValidateMsgState extends State<ValidateMsg> {
                   child: ElevatedButton(
                     onPressed: () async {
                       String result = props(_digit1) + props(_digit2) + props(_digit3) + props(_digit4) + props(_digit5) + props(_digit6);
-                      String response = await RESTAPI.verifyOTP(result, widget.confirmationId!);
+                      String response = await RESTAPI.verifyOTP(result, widget.confirmationId);
                       if(response == 'success'){
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const SignUp()));
+                                builder: (context) => SignUp(phone: widget.phoneNumber, id: widget.confirmationId)));
                       } else {
                         Flushbar(
                           backgroundColor: const Color(0xFFFF6E6E),
@@ -388,7 +388,7 @@ class _ValidateMsgState extends State<ValidateMsg> {
               children: [
                 GestureDetector(
                   onTap: () async {
-                    final int _id = await RESTAPI.sendOTP(widget.phoneNumber!);
+                    final int _id = await RESTAPI.sendOTP(widget.phoneNumber);
                     if(_id > 0) {
                       widget.confirmationId=_id;
                       Flushbar(

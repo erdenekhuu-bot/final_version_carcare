@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../usable/Components/SWZasvar.dart';
+import 'package:final_pro/usable/Components/SWZasvar.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import '../../../usable/Components/BackgroundImage.dart';
-import '../../../usable/Components/Swapping.dart';
-import '../../../usable/Components/Card.dart';
-import '../../../usable/Components/OfferPlace.dart';
-import '../../../usable/Components/Place.dart';
+import 'package:final_pro/usable/Components/BackgroundImage.dart';
+import 'package:final_pro/usable/Components/Swapping.dart';
+import 'package:final_pro/usable/Components/Card.dart';
+import 'package:final_pro/usable/Components/OfferPlace.dart';
+import 'package:final_pro/usable/Components/Place.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
