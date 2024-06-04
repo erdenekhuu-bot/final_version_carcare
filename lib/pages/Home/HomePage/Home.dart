@@ -10,6 +10,7 @@ import 'package:final_pro/usable/Components/Card.dart';
 import 'package:final_pro/usable/Components/OfferPlace.dart';
 import 'package:final_pro/usable/Components/Place.dart';
 import 'package:final_pro/usable/Store/Store.dart';
+import 'package:final_pro/REST/RESTAPI.dart';
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -22,11 +23,10 @@ class _HomeState extends State<Home> {
     const Tab(text: 'Дуудлагын засвар'),
     const Tab(text: 'Машин ачилт'),
   ];
-
   int activeIndex = 0;
   final controller = CarouselController();
   final urlImages = ['images/Rectangle5275.png', 'images/Rectangle5275.png'];
-
+  List<dynamic> shops=[];
   Widget buildIndicator() => AnimatedSmoothIndicator(
         onDotClicked: animateToSlide,
         effect: const ExpandingDotsEffect(
@@ -35,9 +35,21 @@ class _HomeState extends State<Home> {
         count: urlImages.length,
       );
   void animateToSlide(int index) => controller.animateToPage(index);
+
+  @override
+  void initState(){
+    super.initState();
+    getShops();
+  }
+
+  void getShops() async {
+    List<dynamic> result = await RESTAPI.getPlaces();
+    setState(() {
+      shops=result;
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    print(Store.accessToken);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -316,12 +328,12 @@ class _HomeState extends State<Home> {
                       scrollDirection: Axis.vertical,
                       child: Column(
                         children: [
-                          // for (var item in _shops)
-                          //   OfferPlace(
-                          //     title: item['name'],
-                          //     phone: item['phone'],
-                          //     img: item['thumbnail'],
-                          //   ),
+                          for (var item in shops)
+                            OfferPlace(
+                              title: item['name'],
+                              phone: item['phone'],
+                              img: item['thumbnail'],
+                            ),
                         ],
                       ),
                     ),

@@ -74,6 +74,17 @@ class RESTAPI {
     }
   }
 
+  static Future<List<dynamic>> getPlaces() async {
+    try {
+        final request= await http.get(Uri.parse('https://api.carcare.mn/v1/shop'),
+            headers: {'Authorization': 'Bearer ${Store.remote_accessToken}'}
+        );
+        return request.statusCode == 200 ? json.decode(request.body)['data'] : [];
+    } catch(error) {
+        return [];
+    }
+  }
+
   static Future<String> updateUser() async {
     try {
       return '';
