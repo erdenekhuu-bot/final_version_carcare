@@ -38,6 +38,9 @@ dependencies:
   cupertino_icons: ^1.0.6
   google_maps_flutter: ^2.2.8
   another_flushbar: ^1.12.30
+  clustering_google_maps: ^0.1.2-nullsafety.3
+  flutter_cache_manager: ^3.3.2
+  fluster: ^1.2.0
 
 dev_dependencies:
   flutter_test:

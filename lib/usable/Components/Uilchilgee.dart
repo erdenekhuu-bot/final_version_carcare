@@ -85,12 +85,12 @@ class _UilchilgeeState extends State<Uilchilgee> {
         //     Navigator.pop(context);
         //   },
         // ),
-        // title: const Padding(
-        //   padding: EdgeInsets.only(left: 25),
-        //   child: Text('Үйлчилгээний нөхцөл',
-        //       style: TextStyle(
-        //           color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
-        // ),
+        title: const Padding(
+          padding: EdgeInsets.only(left: 25),
+          child: Text('Үйлчилгээний нөхцөл',
+              style: TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -107,17 +107,15 @@ class _UilchilgeeState extends State<Uilchilgee> {
                 for (String policy in policy1)
                   Text(
                     policy,
-                    style: const TextStyle(
-                      fontSize: 13,
-                    ),
+                    style: const TextStyle(fontSize: 13, fontFamily: 'Inter'),
                   ),
                 const SizedBox(height: 13),
-                const Text('Ⅰ. Нийтлэг үндэслэл'),
+                const Text('Ⅰ. Нийтлэг үндэслэл', style: TextStyle(fontFamily: 'Inter'),),
                 for (String policy in policy2)
                   Text(
                     '$policy\n',
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 13, fontFamily: 'Inter'
                     ),
                   ),
                 const SizedBox(height: 13),
@@ -126,14 +124,14 @@ class _UilchilgeeState extends State<Uilchilgee> {
                   Text(
                     policy,
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 13, fontFamily: 'Inter'
                     ),
                   ),
                 for (String policy in policy4)
                   Text(
                     '\n$policy\n',
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 13, fontFamily: 'Inter'
                     ),
                   ),
                 const Text('II. Ашиглах журам' '\n'),
@@ -141,7 +139,7 @@ class _UilchilgeeState extends State<Uilchilgee> {
                   Text(
                     '$policy\n',
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 13, fontFamily: 'Inter'
                     ),
                   ),
                 const Text('\nIII. Компанийн хариуцлагын хязгаарлалт\n'),
@@ -149,7 +147,7 @@ class _UilchilgeeState extends State<Uilchilgee> {
                   Text(
                     '$policy\n',
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 13, fontFamily: 'Inter'
                     ),
                   ),
                 const Text('\nIV. Үйлчилгээний нөхцөлийн хамрах хугацаа\n'),
@@ -157,7 +155,7 @@ class _UilchilgeeState extends State<Uilchilgee> {
                   Text(
                     '$policy\n',
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 13, fontFamily: 'Inter'
                     ),
                   ),
                 const Text('\nV. Үйлчилгээний нөхцөлийн нэмэлт өөрчлөлт\n'),
@@ -165,7 +163,7 @@ class _UilchilgeeState extends State<Uilchilgee> {
                   Text(
                     '$policy\n',
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 13, fontFamily: 'Inter'
                     ),
                   ),
                 const SizedBox(

@@ -144,10 +144,6 @@ class _UserState extends State<User> {
                 borderRadius: BorderRadius.circular(10), color: Colors.white),
             child: GestureDetector(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => const uilcilgee()),
-                // );
                 pushScreen(
                   context,
                   screen: const Uilchilgee(),

@@ -22,7 +22,7 @@ class Prices extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
-              height: 50, width: 50, child: imageWidget ?? SizedBox.shrink()),
+              height: 50, width: 50, child: imageWidget ?? const SizedBox.shrink()),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
