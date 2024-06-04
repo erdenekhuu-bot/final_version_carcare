@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
-import '../../../usable/Components/CustomChart.dart';
+import 'package:final_pro/usable/Components/CustomChart.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Car extends StatefulWidget {
@@ -24,6 +24,7 @@ class _CarState extends State<Car> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 243, 242, 242),
       body: SafeArea(
         child: ListView(
           children: [

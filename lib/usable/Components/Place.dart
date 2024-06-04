@@ -1,8 +1,7 @@
-import '../Components/OfferPlace.dart';
+import 'package:final_pro/usable/Components/OfferPlace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:final_pro/REST/RESTAPI.dart';
 
 class Place extends StatefulWidget {
   const Place({super.key});
@@ -18,12 +17,6 @@ class _PlaceState extends State<Place> {
       'Бүгд',
       style: TextStyle(fontSize: 12, color: Colors.black),
     )),
-    Tab(
-      child: Text(
-        'Оношилгоо',
-        style: TextStyle(fontSize: 12, color: Colors.black),
-      ),
-    ),
     Tab(
       child: Text(
         'Аргерат',
@@ -52,12 +45,22 @@ class _PlaceState extends State<Place> {
 
   List<dynamic> _shops = [];
 
-  late TabController _tabController;
-
   @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    getShops();
+  }
+
+  void getShops() async {
+    List<dynamic> result = await RESTAPI.getPlaces();
+    setState(() {
+       _shops=result;
+    });
   }
 
   @override
@@ -392,69 +395,6 @@ class _PlaceState extends State<Place> {
                           child: Column(
                             children: _shops.map((shop) {
                               if (shop['type'] == 'TIRE') {
-                                return OfferPlace(
-                                  title: shop['name'],
-                                  phone: shop['phone'],
-                                  img: shop['thumbnail'],
-                                );
-                              }
-                              return SizedBox.shrink();
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 40, left: 40),
-                        child: SizedBox(
-                          height: 40,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              filled: true,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(
-                                    20.0), // Set border radius here
-                                borderSide: BorderSide
-                                    .none, // Optional, remove the default border
-                              ),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.never,
-                              hintText: 'Хайх...',
-                              hintStyle: TextStyle(
-                                  color:
-                                      const Color(0xFF404040).withOpacity(0.5),
-                                  fontSize: 15,
-                                  height: 0),
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: SvgPicture.asset(
-                                  'images/search.svg',
-                                  width: 20,
-                                  height: 20,
-                                  color: Colors.black.withOpacity(0.5),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          scrollDirection: Axis.vertical,
-                          child: Column(
-                            children: _shops.map((shop) {
-                              if (shop['type'] == 'CLEANING') {
                                 return OfferPlace(
                                   title: shop['name'],
                                   phone: shop['phone'],

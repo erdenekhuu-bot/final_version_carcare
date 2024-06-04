@@ -21,7 +21,7 @@ class _UserState extends State<User> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 243, 242, 242),
         // leading: IconButton(
         //   icon: SvgPicture.asset('images/iconBack.svg', width: 35, height: 35),
         //   onPressed: () {
@@ -29,7 +29,7 @@ class _UserState extends State<User> {
         //   },
         // ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 243, 242, 242),
       body: Column(
         children: [
           Container(
