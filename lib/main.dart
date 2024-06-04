@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'pages/Login/Login.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:final_pro/pages/Home/Map/Map.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,8 +39,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 1), () {
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => const Login()));
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const Login()));
+          context, MaterialPageRoute(builder: (context) => Maps()));
     });
     return Scaffold(
       backgroundColor: const Color(0xff404040),
