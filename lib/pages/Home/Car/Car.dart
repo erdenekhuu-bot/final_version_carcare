@@ -180,9 +180,9 @@ class _CarState extends State<Car> {
                     Container(
                       width: 230,
                       height: 230,
-                      child: const Stack(
+                      child: Stack(
                         children: [
-                          CustomChart(),
+                          CustomChart(data: data),
                           Center(
                             child: Text(
                               'Зардлын график',
