@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:final_pro/usable/Components/CustomChart.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:final_pro/usable/Components/Zardal.dart';
 
 class Car extends StatefulWidget {
   const Car({super.key});
@@ -229,6 +230,15 @@ class _CarState extends State<Car> {
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => const Zardal()));
+        },
+        backgroundColor: const Color(0xff404040),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

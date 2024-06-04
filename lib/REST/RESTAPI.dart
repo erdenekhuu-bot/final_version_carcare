@@ -85,19 +85,31 @@ class RESTAPI {
     }
   }
 
-  static Future<String> updateUser() async {
+  static Future<List<dynamic>> getServices() async {
     try {
-      return '';
-    } catch (error) {
-      return '';
+       final request = await http.get(Uri.parse('https://api.carcare.mn/v1/utils/service'),
+            headers: {'Authorization': 'Bearer ${Store.remote_accessToken}'}
+       );
+        return request.statusCode == 200 ? json.decode(request.body)['data'] : [];
+    } catch(error){
+        return [];
     }
   }
+
 
   static Future<String> createExpense() async {
     try {
       return '';
     } catch (error) {
       return error.toString();
+    }
+  }
+
+  static Future<String> updateUser() async {
+    try {
+      return '';
+    } catch (error) {
+      return '';
     }
   }
 }
