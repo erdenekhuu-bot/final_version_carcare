@@ -9,7 +9,7 @@ import 'package:final_pro/usable/Components/Swapping.dart';
 import 'package:final_pro/usable/Components/Card.dart';
 import 'package:final_pro/usable/Components/OfferPlace.dart';
 import 'package:final_pro/usable/Components/Place.dart';
-
+import 'package:final_pro/usable/Store/Store.dart';
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -37,6 +37,7 @@ class _HomeState extends State<Home> {
   void animateToSlide(int index) => controller.animateToPage(index);
   @override
   Widget build(BuildContext context) {
+    print(Store.accessToken);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(

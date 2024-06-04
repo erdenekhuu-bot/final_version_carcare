@@ -1,37 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../Register/SignUp.dart';
-import '../../usable/MSG/SendMSG.dart';
-import '../Home/MainMenu.dart';
-
+import 'package:final_pro/pages/Register/SignUp.dart';
+import 'package:final_pro/usable/MSG/SendMSG.dart';
+import 'package:final_pro/pages/Home/MainMenu.dart';
+import 'package:final_pro/REST/RESTAPI.dart';
 class Login extends StatefulWidget {
   const Login({super.key});
-
   @override
   State<Login> createState() => _LoginState();
 }
-
 class _LoginState extends State<Login> {
   bool _check = false;
   bool _limit = false;
   String _phone = '';
   String _password = '';
-
   final TextEditingController _cnt1 = TextEditingController();
   final TextEditingController _cnt2 = TextEditingController();
-
   @override
   void dispose() {
     super.dispose();
     _cnt1.dispose();
     _cnt2.dispose();
     _focusNode.dispose();
+    _focusPass.dispose();
   }
-
   final _fkey = GlobalKey<FormState>();
   final FocusNode _focusNode = FocusNode();
   final FocusNode _focusPass = FocusNode();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -186,11 +181,16 @@ class _LoginState extends State<Login> {
                           width: 313,
                           height: 40,
                           child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const MainMenu()));
+                            onPressed: () async {
+                              String result = await RESTAPI.login(_phone, _password);
+                              if(result == 'success'){
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const MainMenu()));
+                              } else {
+                                 print('Something has wrong');
+                              }
                             },
                             child: const Text(
                               'Нэвтрэх',
