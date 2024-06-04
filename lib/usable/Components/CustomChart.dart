@@ -35,8 +35,7 @@ class _CustomChartState extends State<CustomChart> {
                     random.nextInt(256), random.nextInt(256)),
                 badgeWidget: Text('${item['service']['name']}'),
                 badgePositionPercentageOffset: 1.5)
-        ]
-            : [
+        ] : [
           PieChartSectionData(
               value: 100,
               title: '',
