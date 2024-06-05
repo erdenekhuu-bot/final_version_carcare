@@ -359,11 +359,6 @@ class _MySelfState extends State<MySelf> {
                               borderRadius: BorderRadius.circular(10))),
                       onPressed: widget.forward == 1
                           ? () async {
-                        // String _result = await REST.updateUser(
-                        //     StoreToken.confirmationId,
-                        //     setUsername,
-                        //     setPassword,
-                        //     privatePhone);
                         String _result = await RESTAPI.updateUser(Store.confirmationId, setUsername, privatePhone, setPassword);
                         if (_result == 'success') {
                           print(_result);
