@@ -121,8 +121,7 @@ class _MapsState extends State<Maps> {
               myLocationEnabled: true,
               zoomControlsEnabled: false,
               initialCameraPosition: CameraPosition(
-                // target: LatLng(47.9221, 106.9155),
-                target: LatLng(47.9221, 106.9155),
+                target: const LatLng(47.9221, 106.9155),
                 zoom: _currentZoom,
               ),
               markers: _markers,
@@ -132,7 +131,7 @@ class _MapsState extends State<Maps> {
           ),
           Opacity(
             opacity: _isMapLoading ? 1 : 0,
-            child: Center(child: CircularProgressIndicator()),
+            child: const Center(child: CircularProgressIndicator()),
           ),
           if (_areMarkersLoading)
             Padding(
@@ -142,8 +141,8 @@ class _MapsState extends State<Maps> {
                 child: Card(
                   elevation: 2,
                   color: Colors.grey.withOpacity(0.9),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4),
+                  child: const Padding(
+                    padding: EdgeInsets.all(4),
                     child: Text(
                       'Түр хүлээнэ үү',
                       style: TextStyle(color: Colors.white),
@@ -178,7 +177,8 @@ class _MapsState extends State<Maps> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text('Бүгд', style: TextStyle(color: Colors.white)),
+                        const Text('Бүгд',
+                            style: TextStyle(color: Colors.white)),
                         _firstClick
                             ? const Icon(
                                 Icons.arrow_drop_down_outlined,

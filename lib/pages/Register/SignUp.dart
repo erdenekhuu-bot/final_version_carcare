@@ -4,9 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../Login/Login.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:final_pro/pages/Login/Login.dart';
+import 'package:final_pro/usable/Components/Policy.dart';
 
 class SignUp extends StatefulWidget {
-
   final int id;
   final String phone;
 
@@ -28,7 +28,7 @@ class _SignUpState extends State<SignUp> {
 
   String _username = "";
   String _password = "";
-  String _confirmPassword="";
+  String _confirmPassword = "";
 
   bool _passHide = false;
   bool _confirmHide = false;
@@ -42,7 +42,9 @@ class _SignUpState extends State<SignUp> {
     f2.dispose();
     f3.dispose();
   }
-  final RegExp passwordRegExp = RegExp(r'^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$');
+
+  final RegExp passwordRegExp =
+      RegExp(r'^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,7 +94,7 @@ class _SignUpState extends State<SignUp> {
                         controller: _digit1,
                         focusNode: f1,
                         onChanged: (text) {
-                          _username=_digit1.text;
+                          _username = _digit1.text;
                         },
                         decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -130,7 +132,7 @@ class _SignUpState extends State<SignUp> {
                         controller: _digit2,
                         onChanged: (value) {
                           setState(() {
-                            _password=_digit2.text;
+                            _password = _digit2.text;
                           });
                         },
                         decoration: InputDecoration(
@@ -179,9 +181,9 @@ class _SignUpState extends State<SignUp> {
                       width: 313,
                       height: 50,
                       child: TextFormField(
-                        onChanged: (text){
+                        onChanged: (text) {
                           setState(() {
-                            _confirmPassword=_digit3.text;
+                            _confirmPassword = _digit3.text;
                           });
                         },
                         focusNode: f3,
@@ -233,11 +235,15 @@ class _SignUpState extends State<SignUp> {
                       height: 40,
                       child: ElevatedButton(
                         onPressed: () async {
-                          if(passwordRegExp.hasMatch(_confirmPassword)){
-                              String result = await RESTAPI.createUser(widget.id, _username, _confirmPassword, widget.phone);
-                              if(result == 'success'){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const Login()));
-                              }
+                          if (passwordRegExp.hasMatch(_confirmPassword)) {
+                            String result = await RESTAPI.createUser(widget.id,
+                                _username, _confirmPassword, widget.phone);
+                            if (result == 'success') {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Policy()));
+                            }
                           } else {
                             Flushbar(
                               backgroundColor: const Color(0xFFFF6E6E),
