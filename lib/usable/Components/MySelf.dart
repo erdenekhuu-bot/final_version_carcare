@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:final_pro/REST/RESTAPI.dart';
+import 'package:another_flushbar/flushbar.dart';
+import 'package:final_pro/usable/Store/Store.dart';
+import 'package:final_pro/pages/Login/Login.dart';
+import 'package:final_pro/usable/MSG/ChangePhoneSendMSG.dart';
 
 class MySelf extends StatefulWidget {
   final String? token;
@@ -35,6 +40,12 @@ class _MySelfState extends State<MySelf> {
     setState(() {
       _obscureTextNewPass = !_obscureTextNewPass;
     });
+  }
+
+  List<dynamic> content = [];
+
+  void getId() async {
+    List<dynamic> result = await RESTAPI.getUser();
   }
 
   @override
@@ -195,13 +206,7 @@ class _MySelfState extends State<MySelf> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) =>
-                                      //         const changeNumber(),
-                                      //   ),
-                                      // );
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ChangePhoneSendMSG(title: 'Дугаар өөрчлөх', description: 'Таны өөрчлөх дугаар дээр баталгаажуулах код илгээх болно.',)));
                                     },
                                     icon: Container(
                                       width: 25,
@@ -342,6 +347,61 @@ class _MySelfState extends State<MySelf> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 25),
+                Container(
+                    padding: null,
+                    width: 313,
+                    height: 40,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xffA0A0A0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      onPressed: widget.forward == 1
+                          ? () async {
+                        // String _result = await REST.updateUser(
+                        //     StoreToken.confirmationId,
+                        //     setUsername,
+                        //     setPassword,
+                        //     privatePhone);
+                        String _result = await RESTAPI.updateUser(Store.confirmationId, setUsername, privatePhone, setPassword);
+                        if (_result == 'success') {
+                          print(_result);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Login()));
+                          Flushbar(
+                            backgroundColor:  Color(0xFF50C878),
+                            flushbarStyle: FlushbarStyle.GROUNDED,
+                            flushbarPosition: FlushbarPosition.TOP,
+                            titleText:  Center(
+
+                              child: Icon(Icons.check_circle_outline_rounded,color: Colors.white,size: 28,),
+
+                            ),
+
+                            messageText:  Padding(
+                              padding:  EdgeInsets.only(bottom: 20.0),
+                              child: Text("Утасны дугаар амжилттай хадгалагдлаа",textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
+                            ),
+                            duration:  Duration(seconds: 2),
+                          )..show(context);
+
+                        } else {
+                          print('something has error');
+                        }
+
+                      }
+                          : null,
+                      child: const Text(
+                        'Хадгалах',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                            color: Colors.white),
+                      ),
+                    )),
               ],
             ),
           )

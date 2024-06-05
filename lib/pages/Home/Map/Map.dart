@@ -93,7 +93,7 @@ class _MapsState extends State<Maps> {
       _currentZoom,
       _clusterColor,
       _clusterTextColor,
-      80,
+      120,
     );
 
     _markers
