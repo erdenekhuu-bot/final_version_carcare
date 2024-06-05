@@ -25,7 +25,7 @@ class _MapsState extends State<Maps> {
   bool _areMarkersLoading = true;
   final String _markerImageUrl =
       'https://img.icons8.com/office/80/000000/marker.png';
-  final Color _clusterColor = Colors.blue;
+  final Color _clusterColor = Colors.black;
   final Color _clusterTextColor = Colors.white;
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
@@ -42,7 +42,6 @@ class _MapsState extends State<Maps> {
 
     for (LatLng markerLocation in widget.places) {
       final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(_markerImageUrl);
-
       markers.add(
         MapMarker(
           id: widget.places.indexOf(markerLocation).toString(),

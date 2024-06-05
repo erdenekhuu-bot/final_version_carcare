@@ -13,6 +13,34 @@ class Prices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    switch (type) {
+      case 'Моторын Тос':
+        imageWidget = SvgPicture.asset('images/Car_icon7.svg');
+        break;
+      case 'Агааржуулалт':
+        imageWidget = SvgPicture.asset('images/Car_icon13.svg');
+      case 'Оношилгоо':
+        imageWidget = SvgPicture.asset('images/Car_icon6.svg');
+      case 'Аккумлятор':
+        imageWidget = SvgPicture.asset('images/Car_icon9.svg');
+      case 'Амартизатор':
+        imageWidget = SvgPicture.asset('images/Car_icon8.svg');
+      case 'Компьютер оншилгоо':
+        imageWidget = SvgPicture.asset('images/Car_icon14.svg');
+      case 'Мотор':
+        imageWidget = SvgPicture.asset('images/Car_icon11.svg');
+      case 'Дугуй':
+        imageWidget = SvgPicture.asset('images/Car_icon3.svg');
+      case 'Тэнхлэг ':
+        imageWidget = SvgPicture.asset('images/Car_icon10.svg');
+      case 'Наклад':
+        imageWidget = SvgPicture.asset('images/Car_icon16.svg');
+        break;
+      default:
+        imageWidget = const SizedBox.shrink();
+    }
+
     return Container(
       width: double.infinity,
       height: 100,

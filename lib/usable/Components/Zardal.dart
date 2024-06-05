@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:final_pro/pages/Home/Car/Car.dart';
 class Zardal extends StatefulWidget {
   const Zardal({super.key});
 
@@ -233,7 +234,9 @@ class _ZardalState extends State<Zardal> {
                     onPressed: () async {
                       int result = await RESTAPI.createExpense(setServicePlace, setAmount, setServiceId, formatAPI(_selectedDay.toString()));
                       if(result > 0){
-                          Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const Car()));
+                      } else {
+                        print('Something not right');
                       }
                     },
                     style: ElevatedButton.styleFrom(
