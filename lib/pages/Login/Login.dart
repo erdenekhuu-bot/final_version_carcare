@@ -181,20 +181,18 @@ class _LoginState extends State<Login> {
                           width: 313,
                           height: 40,
                           child: ElevatedButton(
-                            // onPressed: () async {
-                            //   String result = await RESTAPI.login(_phone, _password);
-                            //   if(result == 'success'){
-                            //     Navigator.push(
-                            //         context,
-                            //         MaterialPageRoute(
-                            //             builder: (context) => const MainMenu()));
-                            //   } else {
-                            //      print('Something has wrong');
-                            //   }
-                            // },
-                            onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>const MainMenu()));
+                            onPressed: () async {
+                              String result = await RESTAPI.login(_phone, _password);
+                              if(result == 'success'){
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const MainMenu()));
+                              } else {
+                                 print('Something has wrong');
+                              }
                             },
+                            
                             child: const Text(
                               'Нэвтрэх',
                               style: TextStyle(

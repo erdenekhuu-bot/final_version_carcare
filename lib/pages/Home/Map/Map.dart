@@ -136,11 +136,12 @@ class _MapsState extends State<Maps> {
           Opacity(
             opacity: _isMapLoading ? 0 : 1,
             child: GoogleMap(
+
               mapToolbarEnabled: true,
               zoomGesturesEnabled: true,
               myLocationButtonEnabled: true,
               myLocationEnabled: true,
-              zoomControlsEnabled: true,
+              zoomControlsEnabled: false,
               initialCameraPosition: CameraPosition(
                 // target: LatLng(47.9221, 106.9155),
                 target: LatLng(47.9221, 106.9155),
@@ -166,7 +167,7 @@ class _MapsState extends State<Maps> {
                   child: Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text(
-                      'Loading',
+                      'Түр хүлээнэ үү',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
