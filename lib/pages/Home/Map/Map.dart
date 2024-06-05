@@ -1,26 +1,3 @@
-// import 'dart:async';
-//
-// import 'package:flutter/material.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:clustering_google_maps/clustering_google_maps.dart';
-// import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-// import 'package:fluster/fluster.dart';
-// class Maps extends StatefulWidget {
-//   const Maps({super.key});
-//
-//   @override
-//   State<Maps> createState() => _MapsState();
-// }
-//
-// class _MapsState extends State<Maps> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return const GoogleMap(
-//         initialCameraPosition:
-//             CameraPosition(target: LatLng(47.9221, 106.9155), zoom: 8));
-//   }
-// }
-
 import 'dart:async';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:fluster/fluster.dart';
@@ -128,6 +105,8 @@ class _MapsState extends State<Maps> {
     });
   }
 
+  bool _firstClick = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,7 +115,6 @@ class _MapsState extends State<Maps> {
           Opacity(
             opacity: _isMapLoading ? 0 : 1,
             child: GoogleMap(
-
               mapToolbarEnabled: true,
               zoomGesturesEnabled: true,
               myLocationButtonEnabled: true,
@@ -174,6 +152,49 @@ class _MapsState extends State<Maps> {
                 ),
               ),
             ),
+          Positioned(
+            top: 40,
+            left: 20,
+            child: Container(
+              width: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? 152
+                  : 252,
+              height: 53,
+              decoration: BoxDecoration(
+                color: _firstClick
+                    ? const Color(0xff404040).withOpacity(0.8)
+                    : const Color.fromARGB(255, 112, 112, 112).withOpacity(0.8),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _firstClick = !_firstClick;
+                  });
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text('Бүгд', style: TextStyle(color: Colors.white)),
+                        _firstClick
+                            ? const Icon(
+                                Icons.arrow_drop_down_outlined,
+                                color: Colors.white,
+                              )
+                            : const Icon(
+                                Icons.arrow_drop_up_outlined,
+                                color: Colors.white,
+                              ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

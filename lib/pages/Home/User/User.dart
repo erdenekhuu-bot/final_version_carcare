@@ -16,22 +16,13 @@ class User extends StatefulWidget {
 }
 
 class _UserState extends State<User> {
+  String _username = '';
+  String _phone = '';
 
-  String _username='';
-  String _phone='';
+  List<dynamic> content = [];
 
-  List<dynamic> content=[];
+  bool _firstClick = false;
 
-  @override
-  void initState(){
-    super.initState();
-    getId();
-  }
-
-  void getId() async {
-    List<dynamic> result = await RESTAPI.getUser();
-    print(result);
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

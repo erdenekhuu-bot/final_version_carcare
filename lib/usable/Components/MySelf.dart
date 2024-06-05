@@ -18,6 +18,10 @@ class _MySelfState extends State<MySelf> {
   TextEditingController _tnt2 = TextEditingController();
   TextEditingController _tnt3 = TextEditingController();
 
+  FocusNode _f1 = FocusNode();
+  FocusNode _f2 = FocusNode();
+  FocusNode _f3 = FocusNode();
+
   String username = '';
   String phone = '';
   String password = '';
@@ -98,11 +102,12 @@ class _MySelfState extends State<MySelf> {
                         });
                       },
                       controller: _tnt1,
+                      focusNode: _f1,
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
                         floatingLabelBehavior: FloatingLabelBehavior.never,
-                        labelText: 'username',
+                        labelText: '$username',
                         labelStyle: const TextStyle(
                             fontFamily: 'Inter-Light',
                             color: Color(0xFF404040),
@@ -235,6 +240,7 @@ class _MySelfState extends State<MySelf> {
                               });
                             },
                             controller: _tnt3,
+                            focusNode: _f3,
                             decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -297,6 +303,7 @@ class _MySelfState extends State<MySelf> {
                       });
                     },
                     controller: _tnt2,
+                    focusNode: _f2,
                     maxLength: 20,
                     obscureText: true,
                     decoration: InputDecoration(
