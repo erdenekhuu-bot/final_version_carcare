@@ -41,13 +41,6 @@ class _MySelfState extends State<MySelf> {
       _obscureTextNewPass = !_obscureTextNewPass;
     });
   }
-
-  List<dynamic> content = [];
-
-  void getId() async {
-    List<dynamic> result = await RESTAPI.getUser();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -354,7 +347,7 @@ class _MySelfState extends State<MySelf> {
                     height: 40,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xffA0A0A0),
+                          backgroundColor: const Color(0xffA0A0A0),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10))),
                       onPressed: widget.forward == 1

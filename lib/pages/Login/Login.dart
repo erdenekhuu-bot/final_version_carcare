@@ -4,6 +4,7 @@ import 'package:final_pro/pages/Register/SignUp.dart';
 import 'package:final_pro/usable/MSG/SendMSG.dart';
 import 'package:final_pro/pages/Home/MainMenu.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
+import 'package:final_pro/usable/MSG/ForgotPasswordSendMSG.dart';
 class Login extends StatefulWidget {
   const Login({super.key});
   @override
@@ -164,7 +165,9 @@ class _LoginState extends State<Login> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPasswordSendMSG(title: 'Нууц үг сэргээх', description: 'Таны бүртгэлтэй дугаар дээр баталгаажуулах код илгээх болно.')));
+                            },
                             child: const Text(
                               'Нууц үг сэргээх',
                               style:

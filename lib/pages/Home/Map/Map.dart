@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:final_pro/usable/MapComponents/map_helper.dart';
 import 'package:final_pro/usable/MapComponents/map_marker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:final_pro/usable/MapComponents/MapMenu.dart';
 class Maps extends StatefulWidget {
   final List<LatLng> places;
   Maps({super.key, required this.places});
@@ -27,21 +27,6 @@ class _MapsState extends State<Maps> {
       'https://img.icons8.com/office/80/000000/marker.png';
   final Color _clusterColor = Colors.blue;
   final Color _clusterTextColor = Colors.white;
-  // final List<LatLng> _markerLocations = [
-  //   LatLng(41.147125, -8.611249),
-  //   LatLng(41.145599, -8.610691),
-  //   LatLng(41.145645, -8.614761),
-  //   LatLng(41.146775, -8.614913),
-  //   LatLng(41.146982, -8.615682),
-  //   LatLng(41.140558, -8.611530),
-  //   LatLng(41.138393, -8.608642),
-  //   LatLng(41.137860, -8.609211),
-  //   LatLng(41.138344, -8.611236),
-  //   LatLng(41.139813, -8.609381),
-  // ];
-
-  // final List<LatLng> _markerLocations = Store.location;
-
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
 
@@ -56,8 +41,7 @@ class _MapsState extends State<Maps> {
     final List<MapMarker> markers = [];
 
     for (LatLng markerLocation in widget.places) {
-      final BitmapDescriptor markerImage =
-          await MapHelper.getMarkerImageFromUrl(_markerImageUrl);
+      final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(_markerImageUrl);
 
       markers.add(
         MapMarker(
@@ -93,7 +77,7 @@ class _MapsState extends State<Maps> {
       _currentZoom,
       _clusterColor,
       _clusterTextColor,
-      120,
+      80,
     );
 
     _markers
@@ -106,7 +90,7 @@ class _MapsState extends State<Maps> {
   }
 
   bool _firstClick = false;
-
+  bool _secondClick = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -195,6 +179,82 @@ class _MapsState extends State<Maps> {
               ),
             ),
           ),
+          _firstClick
+              ? Positioned(
+                  top: 110,
+                  left: 20,
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: null,
+                        child: const MapFirstMenu(name: 'Агрегат засвар'),
+                      ),
+                      GestureDetector(
+                        onTap: null,
+                        child: const MapFirstMenu(name: 'Кузов засвар'),
+                      ),
+                      GestureDetector(
+                        onTap: null,
+                        child: const MapFirstMenu(name: 'Угаалга'),
+                      ),
+                      GestureDetector(
+                        onTap: null,
+                        child: const MapFirstMenu(name: 'Машин худалдаа'),
+                      ),
+                      GestureDetector(
+                        onTap: null,
+                        child: const MapFirstMenu(name: 'Сэлбэг худалдаа'),
+                      ),
+                      GestureDetector(
+                        onTap: null,
+                        child: const MapFirstMenu(name: 'Дугуй'),
+                      ),
+                      GestureDetector(
+                        onTap: null,
+                        child: const MapFirstMenu(name: 'Машин будаг'),
+                      ),
+                      GestureDetector(
+                        onTap: null,
+                        child: const MapFirstMenu(name: 'Мотоцикл'),
+                      )
+                    ],
+                  ))
+              : const Text(''),
+
+          _secondClick
+              ? Positioned(
+                  top: 110,
+                  right: 20,
+                  child: Column(children: [
+                      GestureDetector(
+                        onTap: null,
+                        child: const MapSecondMenu(name: 'Тос солих'),
+                      ),
+                      GestureDetector(
+                        onTap: (){},
+                        child: const MapSecondMenu(name: 'Оношилгоо'),),
+                      GestureDetector(
+                        onTap: null,
+                        child: const MapSecondMenu(name: 'Тос тосолгоо'),),
+                      GestureDetector(onTap: null,
+                        child: const MapSecondMenu(name: 'Амартизатор'),),
+                      GestureDetector(onTap: null,
+                        child: const MapSecondMenu(name: 'Аккумлятор'),),
+                      GestureDetector(onTap: null,
+                        child: const MapSecondMenu(name: 'Тэнхлэг тохиргоо'),),
+                      GestureDetector(onTap: null,
+                        child: const MapSecondMenu(name: 'Мотор засвар'),),
+                      GestureDetector(onTap: null,
+                        child: const MapSecondMenu(name: 'Явах эд анги'),),
+                      GestureDetector(onTap: null,
+                        child: const MapSecondMenu(name: 'Компьютер оношилгоо'),),
+                      GestureDetector(onTap: null,
+                        child: const MapSecondMenu(name: 'Эйр кондейшн'),),
+                      GestureDetector(onTap: null,
+                        child: const MapSecondMenu(name: 'Наклад тормос'),)
+                  ]),
+                )
+              : const Text(''),
         ],
       ),
     );

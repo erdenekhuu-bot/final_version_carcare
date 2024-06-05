@@ -22,9 +22,9 @@ class _UserState extends State<User> {
   List<dynamic> content = [];
 
   bool _firstClick = false;
-
   @override
   Widget build(BuildContext context) {
+    print(content);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
