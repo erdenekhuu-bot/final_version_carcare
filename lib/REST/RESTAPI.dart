@@ -154,5 +154,19 @@ class RESTAPI {
     }
   }
 
-
+  static Future<String> forgotPassword (int id, String password) async {
+    try {
+      final Map<String, dynamic> content = {
+        "password": password,
+        "confirmationId": id
+      };
+      final request = await http.post(Uri.parse('http://192.168.1.118:3000/v1/auth/forgot'),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(content)
+      );
+      return request.statusCode == 200 ? json.decode(request.body)['status'] : '';
+    }catch(error){
+      return error.toString();
+    }
+  }
 }

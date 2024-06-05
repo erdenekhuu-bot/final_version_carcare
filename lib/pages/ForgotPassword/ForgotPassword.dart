@@ -1,8 +1,11 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
-
+import 'package:final_pro/REST/RESTAPI.dart';
+import 'package:final_pro/pages/Login/Login.dart';
 class ForgotPassword extends StatefulWidget {
-  const ForgotPassword({super.key});
+
+  final int confirmationId;
+  ForgotPassword({super.key, required this.confirmationId});
 
   @override
   State<ForgotPassword> createState() => _ForgotPasswordState();
@@ -176,16 +179,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               width: 313,
               height: 40,
               child: ElevatedButton(
-                // onPressed: () async {
-                //   String result = await _forgotPass(_confirmPassword);
-                //   if (result == 'success') {
-                //     Navigator.push(context,
-                //         MaterialPageRoute(builder: (context) => const SignIn()));
-                //   } else {
-                //     print(result);
-                //   }
-                // },
-                onPressed: (){},
+                onPressed: () async {
+                    String result = await RESTAPI.forgotPassword(widget.confirmationId, _confirmPassword);
+                    if(result == 'success'){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const Login()));
+                    } else {
+                      print(result);
+                    }
+                },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff404040),
                     shape: RoundedRectangleBorder(
