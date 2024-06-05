@@ -6,6 +6,7 @@ import 'package:final_pro/usable/Components/MySelf.dart';
 import 'package:final_pro/usable/Components/Uilchilgee.dart';
 import 'package:final_pro/usable/Components/CustomDialog.dart';
 import 'package:final_pro/usable/Components/DialogBoxQuit.dart';
+import 'package:final_pro/REST/RESTAPI.dart';
 
 class User extends StatefulWidget {
   const User({super.key});
@@ -15,6 +16,22 @@ class User extends StatefulWidget {
 }
 
 class _UserState extends State<User> {
+
+  String _username='';
+  String _phone='';
+
+  List<dynamic> content=[];
+
+  @override
+  void initState(){
+    super.initState();
+    getId();
+  }
+
+  void getId() async {
+    List<dynamic> result = await RESTAPI.getUser();
+    print(result);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,14 +83,14 @@ class _UserState extends State<User> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '',
+                              '$_username',
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              '',
+                              '$_phone',
                             ),
                           ],
                         ),
