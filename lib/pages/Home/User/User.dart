@@ -7,7 +7,9 @@ import 'package:final_pro/usable/Components/Uilchilgee.dart';
 import 'package:final_pro/usable/Components/CustomDialog.dart';
 import 'package:final_pro/usable/Components/DialogBoxQuit.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
-
+import 'package:final_pro/usable/Store/Store.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 class User extends StatefulWidget {
   const User({super.key});
 
@@ -18,13 +20,35 @@ class User extends StatefulWidget {
 class _UserState extends State<User> {
   String _username = '';
   String _phone = '';
-
-  List<dynamic> content = [];
-
-  bool _firstClick = false;
+  @override
+  void initState(){
+    super.initState();
+    getUser(Store.storePhone, Store.storePassword);
+  }
+  Future<void> getUser(String phone, String password) async {
+    try {
+      final Map<String, String> content = {
+        "areaCode": "976",
+        "phone": phone,
+        "password": password
+      };
+      final request = await http.get(Uri.parse('http://192.168.1.118:3000/v1/auth/identity'),
+          headers: {
+            'Authorization': 'Bearer ${Store.accessToken}',
+          }
+      );
+      if(request.statusCode == 200){
+          setState(() {
+             _username=json.decode(request.body)['data']['username'];
+             _phone=json.decode(request.body)['data']['phone'];
+          });
+      }
+    } catch(error){
+      return;
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    print(content);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(

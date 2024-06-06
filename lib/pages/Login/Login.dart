@@ -5,6 +5,7 @@ import 'package:final_pro/usable/MSG/SendMSG.dart';
 import 'package:final_pro/pages/Home/MainMenu.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:final_pro/usable/MSG/ForgotPasswordSendMSG.dart';
+import 'package:final_pro/usable/Store/Store.dart';
 class Login extends StatefulWidget {
   const Login({super.key});
   @override
@@ -186,6 +187,8 @@ class _LoginState extends State<Login> {
                           child: ElevatedButton(
                             onPressed: () async {
                               String result = await RESTAPI.login(_phone, _password);
+                              Store.storePhone=_phone;
+                              Store.storePassword=_password;
                               if(result == 'success'){
                                 Navigator.push(
                                     context,

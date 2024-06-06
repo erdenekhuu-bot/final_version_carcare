@@ -169,4 +169,22 @@ class RESTAPI {
       return error.toString();
     }
   }
+
+  static Future<String> getUser(String phone, String password) async {
+    try {
+      final Map<String, String> content = {
+        "areaCode": "976",
+        "phone": phone,
+        "password": password
+      };
+      final request = await http.get(Uri.parse('http://192.168.1.118:3000/v1/auth/identity'),
+        headers: {
+          'Authorization': 'Bearer ${Store.accessToken}',
+        }
+      );
+        return request.statusCode == 200 ? json.decode(request.body)['data']['username'] : '';
+    } catch(error){
+        return error.toString();
+    }
+  }
 }
