@@ -6,7 +6,7 @@ import 'HomePage/Home.dart';
 import 'Map/Map.dart';
 import 'Car/Car.dart';
 import 'User/User.dart';
-import '../../usable/Components/StyleBottomNavBar.dart';
+import 'package:final_pro/usable/Components/StyleBottomNavBar.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:final_pro/usable/Store/Store.dart';
