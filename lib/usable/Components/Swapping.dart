@@ -1,10 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'Card.dart';
+import 'package:final_pro/usable/Components/InsteadCategory.dart';
 
-class Swapping extends StatelessWidget {
-  const Swapping({super.key});
+class Swapping extends StatefulWidget {
+  Swapping({super.key});
 
+  @override
+  State<Swapping> createState() => _SwappingState();
+}
+
+class _SwappingState extends State<Swapping> {
+
+  TextEditingController _cnt = TextEditingController();
+  List<dynamic> _filteredShops = [];
+
+  void _filterShops(String query) {
+    query = query.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        _filteredShops = List.from(InsteadCategory.data);
+      }
+      else {
+        _filteredShops = InsteadCategory.data.first.values.where((shop) {
+          return shop['title'].toLowerCase().contains(query);
+        }).toList();
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
@@ -56,6 +79,8 @@ class Swapping extends StatelessWidget {
                           child: SizedBox(
                             height: 40,
                             child: TextField(
+                              controller: _cnt,
+                              onChanged: _filterShops,
                               decoration: InputDecoration(
                                 fillColor: Colors.white,
                                 filled: true,
@@ -64,7 +89,7 @@ class Swapping extends StatelessWidget {
                                   borderSide: BorderSide.none,
                                 ),
                                 floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
+                                FloatingLabelBehavior.never,
                                 hintText: 'Хайх...',
                                 hintStyle: TextStyle(
                                     color: const Color(0xFF404040)
@@ -100,48 +125,9 @@ class Swapping extends StatelessWidget {
                             alignment: WrapAlignment.spaceBetween,
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
-                              Cart2(
-                                  img: SvgPicture.asset('images/Car_icon6.svg'),
-                                  txt: 'Оношилгоо'),
-                              Cart2(
-                                  img: SvgPicture.asset('images/Car_icon7.svg'),
-                                  txt: 'Тос тосолгоо'),
-                              Cart2(
-                                  img: SvgPicture.asset('images/Car_icon8.svg'),
-                                  txt: 'Амартизатор'),
-                              Cart2(
-                                  img: SvgPicture.asset('images/Car_icon9.svg'),
-                                  txt: 'Аккумлятор'),
-                              Cart2(
-                                  img:
-                                      SvgPicture.asset('images/Car_icon10.svg'),
-                                  txt: 'Тэнхлэг тохиргоо'),
-                              Cart2(
-                                  img:
-                                      SvgPicture.asset('images/Car_icon11.svg'),
-                                  txt: 'Мотор засвар'),
-                              Cart2(
-                                  img:
-                                      SvgPicture.asset('images/Car_icon12.svg'),
-                                  txt: 'Явах эд анги'),
-                              Cart2(
-                                  img:
-                                      SvgPicture.asset('images/Car_icon13.svg'),
-                                  txt: 'Эйр кондишн'),
-                              Cart2(
-                                  img:
-                                      SvgPicture.asset('images/Car_icon14.svg'),
-                                  txt: 'Ком. оношилгоо'),
-                              Cart2(
-                                  img: SvgPicture.asset('images/Car_icon3.svg'),
-                                  txt: 'Дугуй'),
-                              Cart2(
-                                  img: SvgPicture.asset('images/Car_icon2.svg'),
-                                  txt: 'Кузов'),
-                              Cart2(
-                                  img: SvgPicture.asset(
-                                      'images/Наклад_тормос.svg'),
-                                  txt: 'Наклад тормос'),
+                                  for(var item in InsteadCategory.data.first.values)
+                                      if(item['type'] == 'all')
+                                        Cart2(img: item['img'], txt: item['title'])
                             ],
                           ),
                         ),
@@ -171,24 +157,9 @@ class Swapping extends StatelessWidget {
                             alignment: WrapAlignment.start,
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
-                              Cart2(
-                                  img: SvgPicture.asset('images/Car_icon4.svg'),
-                                  txt: 'Угаалга'),
-                              Cart2(
-                                  img:
-                                      SvgPicture.asset('images/Car_icon15.svg'),
-                                  txt: 'Сэлбэг худалдаа'),
-                              Cart2(
-                                  img: SvgPicture.asset('images/Car_icon5.svg'),
-                                  txt: 'Мотоцикл'),
-                              Cart2(
-                                  img:
-                                      SvgPicture.asset('images/Car_icon17.svg'),
-                                  txt: 'Машин худалдаа'),
-                              Cart2(
-                                img: SvgPicture.asset('images/Car_icon18.svg'),
-                                txt: 'Машин будаг',
-                              ),
+                              for(var item in InsteadCategory.data.first.values)
+                                  if(item['type'] == 'service')
+                                       Cart2(img: item['img'], txt: item['title'])
                             ],
                           ),
                         ),
@@ -219,14 +190,9 @@ class Swapping extends StatelessWidget {
                             alignment: WrapAlignment.start,
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
-                              Cart2(
-                                  img:
-                                      SvgPicture.asset('images/Car_icon19.svg'),
-                                  txt: 'Дуудлагын засвар'),
-                              Cart2(
-                                  img:
-                                      SvgPicture.asset('images/Car_icon20.svg'),
-                                  txt: 'Машин ачлага')
+                              for(var item in InsteadCategory.data.first.values)
+                                if(item['type'] == 'call')
+                                  Cart2(img: item['img'], txt: item['title'])
                             ],
                           ),
                         ),

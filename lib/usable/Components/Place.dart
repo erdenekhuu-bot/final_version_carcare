@@ -86,7 +86,7 @@ class _PlaceState extends State<Place> {
     }
 
     @override
-    Widget build(BuildContext context) {
+    Widget build(BuildContext context){
       return DefaultTabController(
           length: tabs.length,
           child: Builder(builder: (BuildContext context) {
