@@ -76,13 +76,15 @@ class _PlaceState extends State<Place> {
       setState(() {
         if (query.isEmpty) {
           _filteredShops = List.from(_shops);
-        } else {
+        }
+        else {
           _filteredShops = _shops.where((shop) {
             return shop['name'].toLowerCase().contains(query);
           }).toList();
         }
       });
     }
+
     @override
     Widget build(BuildContext context) {
       return DefaultTabController(
