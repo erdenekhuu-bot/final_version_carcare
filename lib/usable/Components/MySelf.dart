@@ -10,7 +10,10 @@ import 'package:final_pro/usable/MSG/ChangePhoneSendMSG.dart';
 class MySelf extends StatefulWidget {
   final String? token;
   final int? forward;
-  const MySelf({super.key, this.token, this.forward});
+  final String? phone;
+  final String? username;
+  final String? password;
+  MySelf({super.key, this.token, this.forward, this.password, this.username, this.phone});
 
   @override
   State<MySelf> createState() => _MySelfState();
@@ -40,6 +43,10 @@ class _MySelfState extends State<MySelf> {
     setState(() {
       _obscureTextNewPass = !_obscureTextNewPass;
     });
+  }
+
+  String generateDot() {
+    return '*' * Store.storePassword.length;
   }
   @override
   Widget build(BuildContext context) {
@@ -111,7 +118,7 @@ class _MySelfState extends State<MySelf> {
                         fillColor: Colors.white,
                         filled: true,
                         floatingLabelBehavior: FloatingLabelBehavior.never,
-                        labelText: '$username',
+                        labelText: '${widget.username}',
                         labelStyle: const TextStyle(
                             fontFamily: 'Inter-Light',
                             color: Color(0xFF404040),
@@ -190,7 +197,7 @@ class _MySelfState extends State<MySelf> {
                                         width: 20,
                                       ),
                                       Text(
-                                        '$phone',
+                                        '${widget.phone}',
                                         style: TextStyle(
                                           color: Colors.black.withOpacity(0.5),
                                         ),
@@ -244,7 +251,7 @@ class _MySelfState extends State<MySelf> {
                               filled: true,
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.never,
-                              labelText: '$phone',
+                              labelText: '${widget.phone}',
                               counterText: '',
                               labelStyle: const TextStyle(
                                   color: Color(0xFF404040),
@@ -309,9 +316,9 @@ class _MySelfState extends State<MySelf> {
                       fillColor: Colors.white,
                       counterText: '',
                       floatingLabelBehavior: FloatingLabelBehavior.never,
-                      // hintText: _obscureTextNewPass
-                      //     ? '${StoreToken.showPasswordForProfile}'
-                      //     : generateDot(),
+                      hintText: _obscureTextNewPass
+                          ? '${Store.storePassword}'
+                          : generateDot(),
                       labelStyle: const TextStyle(
                           color: Color(0xFF404040), fontSize: 18, height: 0),
                       prefixIcon: Padding(

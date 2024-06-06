@@ -142,7 +142,7 @@ class _UserState extends State<User> {
               onTap: () {
                 pushScreen(
                   context,
-                  screen: const MySelf(),
+                  screen: MySelf(username: _username, phone: _phone),
                   withNavBar: false,
                 );
               },

@@ -342,7 +342,7 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                       String result = props(_digit1) + props(_digit2) + props(_digit3) + props(_digit4) + props(_digit5) + props(_digit6);
                       String response = await RESTAPI.verifyOTP(result, widget.confirmationId);
                       if(response == 'success'){;
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const MySelf(forward: 1)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>MySelf(forward: 1)));
                       } else {
                         Flushbar(
                           backgroundColor: const Color(0xFFFF6E6E),
