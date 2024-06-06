@@ -13,16 +13,16 @@ class Swapping extends StatefulWidget {
 class _SwappingState extends State<Swapping> {
 
   TextEditingController _cnt = TextEditingController();
-  List<dynamic> _filteredShops = [];
 
+  List<dynamic> _filteredShops = [];
   void _filterShops(String query) {
     query = query.toLowerCase();
     setState(() {
       if (query.isEmpty) {
-        _filteredShops = List.from(InsteadCategory.data);
+        _filteredShops = List.from(InsteadCategory.dataset);
       }
       else {
-        _filteredShops = InsteadCategory.data.first.values.where((shop) {
+        _filteredShops = InsteadCategory.dataset.where((shop) {
           return shop['title'].toLowerCase().contains(query);
         }).toList();
       }
@@ -79,8 +79,8 @@ class _SwappingState extends State<Swapping> {
                           child: SizedBox(
                             height: 40,
                             child: TextField(
-                              controller: _cnt,
                               onChanged: _filterShops,
+                              controller: _cnt,
                               decoration: InputDecoration(
                                 fillColor: Colors.white,
                                 filled: true,
@@ -125,9 +125,9 @@ class _SwappingState extends State<Swapping> {
                             alignment: WrapAlignment.spaceBetween,
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
-                                  for(var item in InsteadCategory.data.first.values)
-                                      if(item['type'] == 'all')
-                                        Cart2(img: item['img'], txt: item['title'])
+                                   for(var item in _filteredShops)
+                                     if(item['type'] == 'all')
+                                       Cart2(img: item['img'], txt: item['title'])
                             ],
                           ),
                         ),
@@ -157,9 +157,9 @@ class _SwappingState extends State<Swapping> {
                             alignment: WrapAlignment.start,
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
-                              for(var item in InsteadCategory.data.first.values)
-                                  if(item['type'] == 'service')
-                                       Cart2(img: item['img'], txt: item['title'])
+                              for(var item in _filteredShops)
+                                 if(item['type'] == 'service')
+                                   Cart2(img: item['img'], txt: item['title'])
                             ],
                           ),
                         ),
@@ -190,7 +190,7 @@ class _SwappingState extends State<Swapping> {
                             alignment: WrapAlignment.start,
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
-                              for(var item in InsteadCategory.data.first.values)
+                              for(var item in _filteredShops)
                                 if(item['type'] == 'call')
                                   Cart2(img: item['img'], txt: item['title'])
                             ],
