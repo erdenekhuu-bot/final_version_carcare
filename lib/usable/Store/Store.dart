@@ -8,4 +8,5 @@ class Store {
   static String storePhone='';
   static String storePassword='';
   static double amount=0;
+  static bool month=true;
 }

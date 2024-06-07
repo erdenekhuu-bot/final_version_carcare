@@ -21,28 +21,46 @@ class _CustomChartState extends State<CustomChart> {
     }
 
    return PieChart(
-     PieChartData(
-       startDegreeOffset: 830,
-       sectionsSpace: 0,
-       centerSpaceRadius: 70,
-       sections: widget.data.isNotEmpty
-           ? [
-         for (var item in widget.data)
-           PieChartSectionData(
-               value: item['amount'].toDouble() / totalAmount,
+       PieChartData(
+         startDegreeOffset: 830,
+         sectionsSpace: 0,
+         centerSpaceRadius: 70,
+         sections: widget.data.isNotEmpty
+             ? [
+           for (var item in widget.data)
+             Store.month == true
+                 ? PieChartSectionData(
+               value: item['amount'].toDouble() + totalAmount / 30 * 100,
                title: '',
-               color: Color.fromARGB(150, random.nextInt(256),
-                   random.nextInt(256), random.nextInt(256)),
-               badgePositionPercentageOffset: 1.5),
-
-       ] : [
-         PieChartSectionData(
+               color: Color.fromARGB(
+                 150,
+                 random.nextInt(256),
+                 random.nextInt(256),
+                 random.nextInt(256),
+               ),
+               badgePositionPercentageOffset: 1.5,
+             )
+                 : PieChartSectionData(
+               value: item['amount'].toDouble() + totalAmount / 365 * 100,
+               title: '',
+               color: Color.fromARGB(
+                 150,
+                 random.nextInt(256),
+                 random.nextInt(256),
+                 random.nextInt(256),
+               ),
+               badgePositionPercentageOffset: 1.5,
+             ),
+         ]
+             : [
+           PieChartSectionData(
              value: 100,
              color: const Color(0xFFD787FF),
              badgeWidget: null,
-             badgePositionPercentageOffset: 1.5),
-       ],
-     ),
+             badgePositionPercentageOffset: 1.5,
+           ),
+         ],
+       )
    );
   }
 }
