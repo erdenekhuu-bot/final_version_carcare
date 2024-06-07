@@ -48,6 +48,7 @@ class _CarState extends State<Car> {
 
   double totalAmount = 0.0;
   Random random = Random();
+  bool shouldContinue = true;
   @override
   Widget build(BuildContext context) {
     totalAmount = 0.0;
@@ -55,6 +56,7 @@ class _CarState extends State<Car> {
       totalAmount += item['amount'];
       Store.amount=totalAmount;
     }
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 242, 242),
       body: SafeArea(
@@ -207,27 +209,23 @@ class _CarState extends State<Car> {
                         centerSpaceRadius: 70,
                         sections: data.isNotEmpty
                             ? [
-                          for (var item in data)
-                            if (_click ? filterMonth(item['serviceDate']) == month : filterYear(item['serviceDate']) == year)
-                              PieChartSectionData(
-                                  value: item['amount'].toDouble() + totalAmount / 30 * 100,
-                                  title: '',
-                                  color: Color.fromARGB(
-                                      150,
-                                      random.nextInt(256),
-                                      random.nextInt(256),
-                                      random.nextInt(256)),
-                                  badgePositionPercentageOffset: 1.5)
-                            else
-                              PieChartSectionData(
-                                value: 100,
-                                title: '',
-                                color: const Color(0xFFD787FF),
-                                badgeWidget: null,
-                                badgePositionPercentageOffset: 1.5,
-                              )
-                        ]
-                            : [
+                               for (var item in data)
+                                 if (_click == false && filterMonth(item['serviceDate']) == month || _click==true && filterYear(item['serviceDate']) == year)
+                                   PieChartSectionData(
+                                       value: _click ? item['amount'].toDouble() + totalAmount / 365 * 100 : item['amount'].toDouble() + totalAmount / 30 * 100,
+                                       title: '',
+                                       color: Color.fromARGB(150, random.nextInt(256), random.nextInt(256), random.nextInt(256)),
+                                       badgePositionPercentageOffset: 1.5)
+                                 else
+                                   PieChartSectionData(
+                                     value: 100,
+                                     title: '',
+                                     color: const Color(0xFFD787FF),
+                                     badgeWidget: null,
+                                     badgePositionPercentageOffset: 1.5,
+                                   )
+                              ]
+                              : [
                           PieChartSectionData(
                             value: 100,
                             color: const Color(0xFFD787FF),
@@ -255,16 +253,17 @@ class _CarState extends State<Car> {
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     scrollDirection: Axis.vertical,
                     child: Column(
-                      children: data.length > 0
+                      children:
+                      data.length > 0
                           ? [
                               for (var item in data)
-                                if(_click ? filterMonth(item['serviceDate']) == month : filterYear(item['serviceDate']) == year)
+                                if (filterMonth(item['serviceDate']) == month )
                                   Prices(
                                     title: item['servicePlace'],
                                     price: item['amount'].toDouble(),
                                     type: item['service']['name'],
                                   )
-                            ]
+                          ]
                           : [
                               Center(
                                 child: Column(
