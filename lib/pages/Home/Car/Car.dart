@@ -37,16 +37,17 @@ class _CarState extends State<Car> {
     });
   }
 
-  double totalAmount = 0.0;
-  Random random = Random();
-
   int filterMonth(String argument){
     return int.parse(argument.substring(5,7));
   }
+
   int filterYear(String argument){
     return int.parse(argument.substring(0,4));
   }
 
+
+  double totalAmount = 0.0;
+  Random random = Random();
   @override
   Widget build(BuildContext context) {
     totalAmount = 0.0;
@@ -154,12 +155,12 @@ class _CarState extends State<Car> {
                           }),
                       _click
                           ? Text('${year} он',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold))
                           : Text('${month} сар',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold)),
@@ -198,60 +199,46 @@ class _CarState extends State<Car> {
                       height: 230,
                       child: Stack(
                         children: [
-                          // CustomChart(data: data),
-                          //Custom chart -----------
-                                  PieChart(
-                                  PieChartData(
-                                  startDegreeOffset: 830,
-                                  sectionsSpace: 0,
-                                  centerSpaceRadius: 70,
-                                  sections: data.isNotEmpty
-                                      ? [
-                                          // for (var item in data)
-                                          //   _click
-                                          //       ?
-                                          //         PieChartSectionData(value: item['amount'].toDouble() + totalAmount / 365 * 100, title: '', color: Color.fromARGB(150, random.nextInt(256), random.nextInt(256), random.nextInt(256),), badgePositionPercentageOffset: 1.5,)
-                                          //       : PieChartSectionData(value: item['amount'].toDouble() + totalAmount / 30 * 100, title: '', color: Color.fromARGB(150, random.nextInt(256), random.nextInt(256), random.nextInt(256),), badgePositionPercentageOffset: 1.5,
-                                          //   ),
-                                          for (var item in data)
-
-                                                  if (filterMonth(item['serviceDate']) == month)
-                                                    PieChartSectionData(
-                                                      value: item['amount'].toDouble() + totalAmount / 30 * 100,
-                                                      title: '',
-                                                      color: Color.fromARGB(
-                                                        150,
-                                                        random.nextInt(256),
-                                                        random.nextInt(256),
-                                                        random.nextInt(256),
-                                                      ),
-                                                      badgePositionPercentageOffset: 1.5,
-                                                    )
-                                                  else
-                                                    PieChartSectionData(
-                                                      value: 100,
-                                                      color: const Color(0xFFD787FF),
-                                                      title: '',
-                                                      badgeWidget: null,
-                                                      badgePositionPercentageOffset: 1.5,
-                                                    ),
-
-                                      ]
-                                      : [
-                                    PieChartSectionData(
-                                      value: 100,
-                                      color: const Color(0xFFD787FF),
-                                      badgeWidget: null,
-                                      badgePositionPercentageOffset: 1.5,
-                                    ),
-                                  ],
-                                )
+                          // _click ? CustomChart(data: data, month: month) : CustomChartYear(data: data, year: year),
+                        PieChart(
+                        PieChartData(
+                        startDegreeOffset: 830,
+                        sectionsSpace: 0,
+                        centerSpaceRadius: 70,
+                        sections: data.isNotEmpty
+                            ? [
+                          for (var item in data)
+                            if (_click ? filterMonth(item['serviceDate']) == month : filterYear(item['serviceDate']) == year)
+                              PieChartSectionData(
+                                  value: item['amount'].toDouble() + totalAmount / 30 * 100,
+                                  title: '',
+                                  color: Color.fromARGB(
+                                      150,
+                                      random.nextInt(256),
+                                      random.nextInt(256),
+                                      random.nextInt(256)),
+                                  badgePositionPercentageOffset: 1.5)
+                            else
+                              PieChartSectionData(
+                                value: 100,
+                                title: '',
+                                color: const Color(0xFFD787FF),
+                                badgeWidget: null,
+                                badgePositionPercentageOffset: 1.5,
+                              )
+                        ]
+                            : [
+                          PieChartSectionData(
+                            value: 100,
+                            color: const Color(0xFFD787FF),
+                            badgeWidget: null,
+                            badgePositionPercentageOffset: 1.5,
                           ),
-
-
-
+                        ],
+                      )
+                ),
                           const Center(
-                            child: const Text(
+                            child: Text(
                               'Зардлын график',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
