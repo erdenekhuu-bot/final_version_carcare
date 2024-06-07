@@ -8,7 +8,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:final_pro/usable/MapComponents/MapMenu.dart';
 class Maps extends StatefulWidget {
   final List<LatLng> places;
-  Maps({super.key, required this.places});
+
+  final List<dynamic> shops;
+  Maps({super.key, required this.places, required this.shops});
 
   @override
   _MapsState createState() => _MapsState();
@@ -39,17 +41,21 @@ class _MapsState extends State<Maps> {
 
   void _initMarkers() async {
     final List<MapMarker> markers = [];
+    for (int i = 0; i < widget.places.length && i < widget.shops.length; i++) {
+      dynamic markerLocation = widget.places[i];
+      dynamic shopData = widget.shops[i];
 
-    for (LatLng markerLocation in widget.places) {
-      final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(_markerImageUrl);
+      final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(shopData['thumbnail'], targetWidth: 150);
+
       markers.add(
         MapMarker(
-          id: widget.places.indexOf(markerLocation).toString(),
+          id: i.toString(),
           position: markerLocation,
           icon: markerImage,
         ),
       );
     }
+
 
     _clusterManager = await MapHelper.initClusterManager(
       markers,

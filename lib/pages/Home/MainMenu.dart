@@ -57,7 +57,7 @@ class _MainMenuState extends State<MainMenu> {
                   icon: SvgPicture.asset('images/home.svg',
                       color: Colors.black))),
           PersistentTabConfig(
-              screen: Maps(places: customAddress),
+              screen: Maps(places: customAddress, shops: shops),
               item: ItemConfig(
                   inactiveIcon: SvgPicture.asset('images/maps.svg'),
                   icon: SvgPicture.asset('images/maps.svg',
