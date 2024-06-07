@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:final_pro/usable/Components/Zardal.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:final_pro/usable/Components/Prices.dart';
+import 'package:final_pro/usable/Store/Store.dart';
 class Car extends StatefulWidget {
   const Car({super.key});
 
@@ -162,14 +163,13 @@ class _CarState extends State<Car> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Нийт зардал 0₮',
-                        style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold)),
+                    Text('Нийт зардал ${Store.amount.toInt()}₮',
+                        style: const TextStyle(
+                            fontFamily: 'Inter-Bold',
+                            fontSize: 20)),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -178,20 +178,22 @@ class _CarState extends State<Car> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
+                      margin: null,
                       width: 230,
                       height: 230,
                       child: Stack(
                         children: [
                           CustomChart(data: data),
-                          Center(
-                            child: Text(
+                          const Center(
+                            child: const Text(
                               'Зардлын график',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           )
                         ],
                       ),
-                    )
+                    ),
+                    const Text('Тос тосолгоо', style: TextStyle(fontFamily: 'Inter', fontSize: 18, fontWeight: FontWeight.bold)),
                   ],
                 ),
                 ConstrainedBox(
@@ -215,8 +217,8 @@ class _CarState extends State<Car> {
                                   children: [
                                     SvgPicture.asset(
                                         'images/streamline_desktop-delete.svg'),
-                                    SizedBox(height: 10),
-                                    Text(
+                                    const SizedBox(height: 10),
+                                    const Text(
                                       'Үр дүн олдсонгүй',
                                       style: TextStyle(fontSize: 16),
                                     )

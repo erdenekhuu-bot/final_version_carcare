@@ -7,4 +7,5 @@ class Store {
   static List<LatLng> location=[];
   static String storePhone='';
   static String storePassword='';
+  static double amount=0;
 }

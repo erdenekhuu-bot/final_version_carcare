@@ -93,8 +93,8 @@ class RESTAPI {
   static Future<List<dynamic>> getServices() async {
     try {
       final request = await http.get(
-          Uri.parse('https://api.carcare.mn/v1/utils/service'),
-          headers: {'Authorization': 'Bearer ${Store.remote_accessToken}'});
+          Uri.parse('http://192.168.1.118:3000/v1/utils/service'),
+          headers: {'Authorization': 'Bearer ${Store.accessToken}'});
       return request.statusCode == 200 ? json.decode(request.body)['data'] : [];
     } catch (error) {
       return [];

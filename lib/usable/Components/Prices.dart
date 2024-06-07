@@ -57,12 +57,14 @@ class Prices extends StatelessWidget {
             children: [
               Text(type!,
                   style: const TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold)),
+                      fontFamily: 'Inter-Bold',
+                      fontSize: 15)),
               Text('$title', style: const TextStyle(fontSize: 13)),
               Text(formattedDate, style: const TextStyle(fontSize: 12)),
             ],
+          ),
+          SizedBox(
+            child: Text('${price!.toInt()}₮', style: const TextStyle(fontFamily: 'Inter-Bold', fontSize: 15)),
           ),
         ],
       ),
