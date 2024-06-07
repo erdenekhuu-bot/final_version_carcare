@@ -258,11 +258,12 @@ class _CarState extends State<Car> {
                       children: data.length > 0
                           ? [
                               for (var item in data)
-                                Prices(
-                                  title: item['servicePlace'],
-                                  price: item['amount'].toDouble(),
-                                  type: item['service']['name'],
-                                )
+                                if(_click ? filterMonth(item['serviceDate']) == month : filterYear(item['serviceDate']) == year)
+                                  Prices(
+                                    title: item['servicePlace'],
+                                    price: item['amount'].toDouble(),
+                                    type: item['service']['name'],
+                                  )
                             ]
                           : [
                               Center(
