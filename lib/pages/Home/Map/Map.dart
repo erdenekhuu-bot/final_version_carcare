@@ -56,7 +56,6 @@ class _MapsState extends State<Maps> {
       );
     }
 
-
     _clusterManager = await MapHelper.initClusterManager(
       markers,
       _minClusterZoom,
@@ -113,7 +112,10 @@ class _MapsState extends State<Maps> {
                 target: const LatLng(47.9221, 106.9155),
                 zoom: _currentZoom,
               ),
-              markers: _markers,
+              markers: Set<Marker>.of(_markers),
+              onTap: (value){
+                print('Marker tapped and -> $value');
+              },
               onMapCreated: (controller) => _onMapCreated(controller),
               onCameraMove: (position) => _updateMarkers(position.zoom),
             ),
