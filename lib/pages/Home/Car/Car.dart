@@ -8,6 +8,7 @@ import 'package:final_pro/usable/Components/Zardal.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:final_pro/usable/Components/Prices.dart';
 import 'package:final_pro/usable/Store/Store.dart';
+import 'dart:math';
 class Car extends StatefulWidget {
   const Car({super.key});
 
@@ -17,8 +18,7 @@ class Car extends StatefulWidget {
 
 class _CarState extends State<Car> {
   int price = 0;
-  bool _click = true;
-  double totalAmount = 0.0;
+  bool _click = false;
   bool switchArrow = false;
   int month = DateTime.now().month;
   int year = DateTime.now().year;
@@ -37,8 +37,24 @@ class _CarState extends State<Car> {
     });
   }
 
+  double totalAmount = 0.0;
+  Random random = Random();
+
+  int filterMonth(String argument){
+    return int.parse(argument.substring(5,7));
+  }
+  int filterYear(String argument){
+    return int.parse(argument.substring(0,4));
+  }
+
   @override
   Widget build(BuildContext context) {
+    totalAmount = 0.0;
+    for (var item in data) {
+      totalAmount += item['amount'];
+      Store.amount=totalAmount;
+    }
+    print(_click);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 242, 242),
       body: SafeArea(
@@ -183,7 +199,50 @@ class _CarState extends State<Car> {
                       height: 230,
                       child: Stack(
                         children: [
-                          CustomChart(data: data),
+                          // CustomChart(data: data),
+                          //Custom chart -----------
+                                  PieChart(
+                                  PieChartData(
+                                  startDegreeOffset: 830,
+                                  sectionsSpace: 0,
+                                  centerSpaceRadius: 70,
+                                  sections: data.isNotEmpty
+                                      ? [
+                                            for (var item in data)
+                                              if (filterMonth(item['serviceDate']) == month)
+                                                PieChartSectionData(
+                                                  value: item['amount'].toDouble() + totalAmount / 365 * 100,
+                                                  title: '',
+                                                  color: Color.fromARGB(
+                                                    150,
+                                                    random.nextInt(256),
+                                                    random.nextInt(256),
+                                                    random.nextInt(256),
+                                                  ),
+                                                  badgePositionPercentageOffset: 1.5,
+                                                )
+                                              else
+                                                PieChartSectionData(
+                                                  value: 100,
+                                                  color: const Color(0xFFD787FF),
+                                                  title: '',
+                                                  badgeWidget: null,
+                                                  badgePositionPercentageOffset: 1.5,
+                                                ),
+                                      ]
+                                      : [
+                                    PieChartSectionData(
+                                      value: 100,
+                                      color: const Color(0xFFD787FF),
+                                      badgeWidget: null,
+                                      badgePositionPercentageOffset: 1.5,
+                                    ),
+                                  ],
+                                )
+                          ),
+
+
+
                           const Center(
                             child: const Text(
                               'Зардлын график',

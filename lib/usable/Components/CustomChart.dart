@@ -19,7 +19,6 @@ class _CustomChartState extends State<CustomChart> {
       totalAmount += item['amount'];
       Store.amount=totalAmount;
     }
-
    return PieChart(
        PieChartData(
          startDegreeOffset: 830,
