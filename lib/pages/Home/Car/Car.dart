@@ -22,30 +22,26 @@ class _CarState extends State<Car> {
   bool switchArrow = false;
   int month = DateTime.now().month;
   int year = DateTime.now().year;
-
   List<dynamic> data = [];
+  List<dynamic> names=[];
   @override
   void initState(){
     super.initState();
     getExpense();
   }
-
   void getExpense() async {
     List<dynamic> result= await RESTAPI.getExpense();
     setState(() {
         data=result;
+        names=result;
     });
   }
-
   int filterMonth(String argument){
     return int.parse(argument.substring(5,7));
   }
-
   int filterYear(String argument){
     return int.parse(argument.substring(0,4));
   }
-
-
   double totalAmount = 0.0;
   Random random = Random();
   bool shouldContinue = true;
@@ -56,7 +52,6 @@ class _CarState extends State<Car> {
       totalAmount += item['amount'];
       Store.amount=totalAmount;
     }
-
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 242, 242),
       body: SafeArea(
@@ -201,40 +196,48 @@ class _CarState extends State<Car> {
                       height: 230,
                       child: Stack(
                         children: [
-                          // _click ? CustomChart(data: data, month: month) : CustomChartYear(data: data, year: year),
                         PieChart(
-                        PieChartData(
-                        startDegreeOffset: 830,
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 70,
-                        sections: data.isNotEmpty
-                            ? [
-                               for (var item in data)
-                                 if (_click == false && filterMonth(item['serviceDate']) == month || _click==true && filterYear(item['serviceDate']) == year)
-                                   PieChartSectionData(
-                                       value: _click ? item['amount'].toDouble() + totalAmount / 365 * 100 : item['amount'].toDouble() + totalAmount / 30 * 100,
-                                       title: '',
-                                       color: Color.fromARGB(150, random.nextInt(256), random.nextInt(256), random.nextInt(256)),
-                                       badgePositionPercentageOffset: 1.5)
-                                 else
-                                   PieChartSectionData(
-                                     value: 100,
-                                     title: '',
-                                     color: const Color(0xFFD787FF),
-                                     badgeWidget: null,
-                                     badgePositionPercentageOffset: 1.5,
-                                   )
-                              ]
-                              : [
-                          PieChartSectionData(
-                            value: 100,
-                            color: const Color(0xFFD787FF),
-                            badgeWidget: null,
-                            badgePositionPercentageOffset: 1.5,
-                          ),
-                        ],
-                      )
-                ),
+                              PieChartData(
+                                pieTouchData: PieTouchData(
+                                  touchCallback: (FlTouchEvent event, pieTouchResponse){
+                                     if(!event.isInterestedForInteractions || pieTouchResponse == null || pieTouchResponse.touchedSection == null){
+                                       print('Piechart tapped');
+                                     }
+                                  }
+                                ),
+                              startDegreeOffset: 830,
+                              sectionsSpace: 0,
+                              centerSpaceRadius: 70,
+                              sections: data.isNotEmpty
+                                  ? [
+                                     for (var item in data)
+                                       if (_click == false && filterMonth(item['serviceDate']) == month || _click==true && filterYear(item['serviceDate']) == year)
+                                         PieChartSectionData(
+                                             value: _click ? item['amount'].toDouble() + totalAmount / 365 * 100 : item['amount'].toDouble() + totalAmount / 30 * 100,
+                                             title: '',
+                                             color: Color.fromARGB(150, random.nextInt(256), random.nextInt(256), random.nextInt(256)),
+                                             badgePositionPercentageOffset: 1.5)
+                                       else
+                                         PieChartSectionData(
+                                           value: 100,
+                                           title: '',
+                                           color: const Color(0xFFD787FF),
+                                           badgeWidget: null,
+                                           badgePositionPercentageOffset: 1.5,
+                                         )
+                                    ]
+                                    : [
+                                        PieChartSectionData(
+                                          value: 100,
+                                          color: const Color(0xFFD787FF),
+                                          badgeWidget: null,
+                                          badgePositionPercentageOffset: 1.5,
+                                        ),
+                                      ],
+                                 )
+                      ),
+
+
                           const Center(
                             child: Text(
                               'Зардлын график',
