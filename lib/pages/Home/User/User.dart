@@ -10,6 +10,7 @@ import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:final_pro/usable/Store/Store.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:final_pro/pages/Login/Login.dart';
 class User extends StatefulWidget {
   const User({super.key});
 
@@ -32,7 +33,7 @@ class _UserState extends State<User> {
         "phone": phone,
         "password": password
       };
-      final request = await http.get(Uri.parse('http://192.168.1.118:3000/v1/auth/identity'),
+      final request = await http.get(Uri.parse('https://dev-api.carcare.mn/v1/auth/identity'),
           headers: {
             'Authorization': 'Bearer ${Store.accessToken}',
           }
@@ -282,4 +283,97 @@ class _UserState extends State<User> {
       ),
     );
   }
+}
+
+@override
+void quit(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFFFFFFFF),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          elevation: 0,
+          content: SizedBox(
+            width: 308,
+            height: 222,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Icon(
+                  Icons.error,
+                  size: 75,
+                ),
+                const Text(
+                  'Та гарахдаа итгэлтэй байна уу?',
+                  textAlign: TextAlign.center,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        width: 104,
+                        height: 35,
+                        decoration: ShapeDecoration(
+                          color: const Color(0xFFB7B7B7),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Үгүй',
+                              style:
+                              TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Login()),
+                        );
+                      },
+                      child: Container(
+                        width: 104,
+                        height: 35,
+                        decoration: ShapeDecoration(
+                          color: const Color(0xFF404040),
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                                width: 1, color: Color(0xFF404040)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Тийм',
+                              style:
+                              TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      });
 }

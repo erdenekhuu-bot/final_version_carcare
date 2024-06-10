@@ -198,7 +198,7 @@ class _HomeState extends State<Home> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Place(shop: shops)),
+                                builder: (context) => Place(shop: shops,)),
                           );
                         },
                         child: Container(

@@ -18,6 +18,9 @@ class Prices extends StatelessWidget {
       case 'Моторын Тос':
         imageWidget = SvgPicture.asset('images/Car_icon7.svg');
         break;
+      case 'Агрегат':
+        imageWidget = SvgPicture.asset('images/Car_icon1.svg');
+        break;
       case 'Агааржуулалт':
         imageWidget = SvgPicture.asset('images/Car_icon13.svg');
       case 'Оношилгоо':
@@ -49,24 +52,18 @@ class Prices extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Row(
+              Container(
+                  child: imageWidget ?? const SizedBox.shrink()),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                     width: 50,
-                      height: 50,
-                      child: imageWidget),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(type!,
-                          style: const TextStyle(
-                              fontFamily: 'Inter-Bold',
-                              fontSize: 15)),
-                      Text('$title', style: const TextStyle(fontSize: 13)),
-                      Text(formattedDate, style: const TextStyle(fontSize: 12)),
-                    ],
-                  ),
+                  Text(type!,
+                      style: const TextStyle(
+                          fontFamily: 'Inter-Bold',
+                          fontSize: 15)),
+                  Text('$title', style: const TextStyle(fontSize: 13)),
+                  Text(formattedDate, style: const TextStyle(fontSize: 12)),
                 ],
               ),
               Container(

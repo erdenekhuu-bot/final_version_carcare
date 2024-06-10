@@ -23,12 +23,8 @@ class _LoginState extends State<Login> {
     super.dispose();
     _cnt1.dispose();
     _cnt2.dispose();
-    _focusNode.dispose();
-    _focusPass.dispose();
   }
   final _fkey = GlobalKey<FormState>();
-  final FocusNode _focusNode = FocusNode();
-  final FocusNode _focusPass = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,105 +55,171 @@ class _LoginState extends State<Login> {
                 key: _fkey,
                 child: Column(
                   children: [
-                    Container(
-                      width: 313,
-                      height: 50,
-                      margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-                      child: TextFormField(
-                        focusNode: _focusNode,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Required';
-                          }
-                        },
-                        maxLength: 8,
-                        keyboardType: TextInputType.number,
-                        controller: _cnt1,
-                        onChanged: (value) {
-                          setState(() {
-                            _phone = _cnt1.text;
-                            if (value.length < 8) {
-                              _limit = !_limit;
-                            }
-                          });
-                        },
-                        decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    width: 1, color: Colors.black),
-                                borderRadius: BorderRadius.circular(10)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                    width: 1,
-                                    color: const Color(0xff404040)
-                                        .withOpacity(0.5))),
-                            labelText: 'Утасны дугаар',
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            labelStyle:
-                                const TextStyle(fontFamily: 'Inter-Light'),
-                            prefixIcon: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: SvgPicture.asset('images/person.svg')),
-                            counterText: '',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            )),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      width: 313,
-                      height: 50,
-                      margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-                      child: TextFormField(
-                        maxLength: 20,
-                        obscureText: _check ? false : true,
-                        validator: (value) {},
-                        controller: _cnt2,
-                        onChanged: (value) {
-                          setState(() {
-                            _password = _cnt2.text;
-                          });
-                        },
-                        decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    width: 1, color: Colors.black),
-                                borderRadius: BorderRadius.circular(10)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                    width: 1,
-                                    color: const Color(0xff404040)
-                                        .withOpacity(0.5))),
-                            labelText: 'Нууц үг',
-                            labelStyle:
-                                const TextStyle(fontFamily: 'Inter-Light'),
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            counterText: '',
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child:
-                                  SvgPicture.asset('images/lockPassword.svg'),
-                            ),
-                            suffixIcon: Opacity(
-                              opacity: 0.5,
-                              child: IconButton(
-                                icon: SvgPicture.asset(_check
-                                    ? 'images/eye.svg'
-                                    : 'images/eye_off.svg'),
-                                onPressed: () {
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: 313,
+                          height: 70, // Fixed height to prevent layout changes
+                          margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                          child: Stack(
+                            children: <Widget>[
+                              TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Утасны дугаар оруулах шаардлагатай';
+                                  }
+                                  return null;
+                                },
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                maxLength: 8,
+                                keyboardType: TextInputType.number,
+                                controller: _cnt1,
+                                onChanged: (value) {
                                   setState(() {
-                                    _check = !_check;
+                                    _phone = _cnt1.text;
+                                    if (value.length < 8) {
+                                      _limit = !_limit;
+                                    }
                                   });
                                 },
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      width: 1,
+                                      color: Colors.black,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      width: 1,
+                                      color: const Color(0xff404040).withOpacity(0.5),
+                                    ),
+                                  ),
+                                  labelText: 'Утасны дугаар',
+                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  labelStyle: const TextStyle(fontFamily: 'Inter-Light'),
+                                  prefixIcon: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: SvgPicture.asset('images/person.svg'),
+                                  ),
+                                  counterText: '',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
                               ),
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                      ),
+                              Positioned(
+                                bottom: 0,
+                                left: 0,
+                                child: Container(
+                                  padding: null,
+                                  color: Colors.white,
+                                  child: Text(
+                                    _cnt1.text.isEmpty ? '' : 'Утасны дугаар оруулах шаардлагатай',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
+
+                    const SizedBox(height: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: 313,
+                          height: 70,
+                          margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                          child: Stack(
+                            children: <Widget>[
+                              TextFormField(
+                                maxLength: 20,
+                                obscureText: _check ? false : true,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Нууц үг оруулах шаардлагатай';
+                                  }
+                                  return null;
+                                },
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                controller: _cnt2,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _password = _cnt2.text;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      width: 1,
+                                      color: Colors.black,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      width: 1,
+                                      color: const Color(0xff404040).withOpacity(0.5),
+                                    ),
+                                  ),
+                                  labelText: 'Нууц үг',
+                                  labelStyle: const TextStyle(fontFamily: 'Inter-Light'),
+                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  counterText: '',
+                                  prefixIcon: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: SvgPicture.asset('images/lockPassword.svg'),
+                                  ),
+                                  suffixIcon: Opacity(
+                                    opacity: 0.5,
+                                    child: IconButton(
+                                      icon: SvgPicture.asset(
+                                        _check ? 'images/eye.svg' : 'images/eye_off.svg',
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _check = !_check;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                left: 0,
+                                child: Container(
+                                  padding: null,
+                                  color: Colors.white,
+                                  child: Text(
+                                    _cnt2.text.isEmpty ? '' : 'Нууц үг оруулах шаардлагатай',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
                     const SizedBox(height: 2),
                     Container(
                       padding: null,
@@ -185,19 +247,22 @@ class _LoginState extends State<Login> {
                           width: 313,
                           height: 40,
                           child: ElevatedButton(
-                            onPressed: () async {
-                              String result = await RESTAPI.login(_phone, _password);
-                              Store.storePhone=_phone;
-                              Store.storePassword=_password;
-                              if(result == 'success'){
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const MainMenu()));
-                              } else {
-                                 print('Something has wrong');
-                              }
-                            },
+                            // onPressed: () async {
+                            //   String result = await RESTAPI.login(_phone, _password);
+                            //   Store.storePhone=_phone;
+                            //   Store.storePassword=_password;
+                            //   if(result == 'success'){
+                            //     Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //             builder: (context) => const MainMenu()));
+                            //   } else {
+                            //      print('Something has wrong');
+                            //   }
+                              onPressed: (){
+                                  _fkey.currentState!.validate();
+                              },
+
                             
                             child: const Text(
                               'Нэвтрэх',
