@@ -7,10 +7,10 @@ import 'package:final_pro/pages/Login/Login.dart';
 import 'package:final_pro/usable/Components/Policy.dart';
 
 class SignUp extends StatefulWidget {
-  final int id;
-  final String phone;
+  final int? id;
+  final String? phone;
 
-  SignUp({super.key, required this.id, required this.phone});
+  SignUp({super.key, this.id, this.phone});
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -235,8 +235,8 @@ class _SignUpState extends State<SignUp> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (passwordRegExp.hasMatch(_confirmPassword)) {
-                            String result = await RESTAPI.createUser(widget.id,
-                                _username, _confirmPassword, widget.phone);
+                            String result = await RESTAPI.createUser(widget.id!,
+                                _username, _confirmPassword, widget.phone!);
                             if (result == 'success') {
                               Navigator.push(
                                   context,
