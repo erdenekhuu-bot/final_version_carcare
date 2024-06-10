@@ -79,30 +79,8 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-    - images/Image.png
-    - images/move.png
-    - images/zasvar.png
-    - images/zasvar.svg
-    - images/Наклад_тормос.svg
-    - images/search.svg
-    - images/checkbox_off.svg
-    - images/checkbox_on.svg
-    - images/Logo.svg
-    - images/IMG.svg
-    - images/car_black.png
-    - images/user.svg
-    - images/car_icon.svg
-    - images/maps.svg
-    - images/home.svg
+    - images/Call.svg
     - images/Car_icon1.svg
-    - images/Car_icon2.svg
-    - images/Car_icon3.svg
-    - images/Car_icon4.svg
-    - images/Car_icon5.svg
-    - images/Car_icon6.svg
-    - images/Car_icon7.svg
-    - images/Car_icon8.svg
-    - images/Car_icon9.svg
     - images/Car_icon10.svg
     - images/Car_icon11.svg
     - images/Car_icon12.svg
@@ -113,30 +91,53 @@ flutter:
     - images/Car_icon17.svg
     - images/Car_icon18.svg
     - images/Car_icon19.svg
+    - images/Car_icon2.svg
     - images/Car_icon20.svg
-    - images/headset_icon.svg
-    - images/lockPassword.svg
-    - images/person.svg
-    - images/clarity_edit-solid.svg
-    - images/icon.svg
-    - images/error.svg
-    - images/iconBack.svg
-    - images/UserExit.svg
-    - images/iconMenu.svg
-    - images/UserCall.svg
-    - images/iconSett.svg
-    - images/car.png
-    - images/Rectangle5275.png
+    - images/Car_icon3.svg
+    - images/Car_icon4.svg
+    - images/Car_icon5.svg
+    - images/Car_icon6.svg
+    - images/Car_icon7.svg
+    - images/Car_icon8.svg
+    - images/Car_icon9.svg
+    - images/IMG.svg
+    - images/Image.png
+    - images/Logo.svg
+    - images/LogoSplash.svg
     - images/Rectangle5219.png
-    - images/phone.svg
+    - images/Rectangle5275.png
+    - images/Rectangle5275.svg
+    - images/RectangleEdited.png
+    - images/UserCall.svg
+    - images/UserExit.svg
+    - images/car.png
+    - images/car_black.png
+    - images/car_icon.svg
+    - images/carcareicon.svg
+    - images/checkbox_off.svg
+    - images/checkbox_on.svg
+    - images/clarity_edit-solid.svg
+    - images/edit.svg
+    - images/error.svg
     - images/eye.svg
     - images/eye_off.svg
-    - images/edit.svg
-    - images/Call.svg
+    - images/headset_icon.svg
+    - images/home.svg
+    - images/icon.svg
+    - images/iconBack.svg
+    - images/iconMenu.svg
+    - images/iconSett.svg
+    - images/lockPassword.svg
+    - images/maps.svg
+    - images/move.png
+    - images/person.svg
+    - images/phone.svg
+    - images/search.svg
     - images/streamline_desktop-delete.svg
-    - images/LogoSplash.svg
-    - images/Rectangle5275.svg
-    - images/carcareicon.svg
+    - images/user.svg
+    - images/zasvar.png
+    - images/zasvar.svg
+    - images/Наклад_тормос.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -161,9 +162,6 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   fonts:
-    - family: Inter
-      fonts:
-        - asset: fonts/Inter-Regular.ttf
     - family: Inter-Black
       fonts:
         - asset: fonts/Inter-Black.ttf
@@ -182,6 +180,9 @@ flutter:
     - family: Inter-Medium
       fonts:
         - asset: fonts/Inter-Medium.ttf
+    - family: Inter-Regular
+      fonts:
+        - asset: fonts/Inter-Regular.ttf
     - family: Inter-SemiBold
       fonts:
         - asset: fonts/Inter-SemiBold.ttf
