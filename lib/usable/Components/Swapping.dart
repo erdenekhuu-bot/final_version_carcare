@@ -120,6 +120,7 @@ class _SwappingState extends State<Swapping> {
                         ),
                         Container(
                           width: double.infinity,
+                          height: 420,
                           margin: const EdgeInsets.only(right: 15, left: 15),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -152,6 +153,7 @@ class _SwappingState extends State<Swapping> {
                         ),
                         Container(
                           width: double.infinity,
+                          height: 200,
                           margin: const EdgeInsets.only(right: 15, left: 15),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -183,6 +185,7 @@ class _SwappingState extends State<Swapping> {
                           ],
                         ),
                         Container(
+                          height: 100,
                           width: double.infinity,
                           margin: const EdgeInsets.only(
                               right: 15, left: 15, bottom: 15),
