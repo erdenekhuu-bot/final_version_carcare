@@ -136,7 +136,6 @@ class _MapsState extends State<Maps> {
   bool _secondClick = false;
   @override
   Widget build(BuildContext context) {
-    print(widget.places);
     return Scaffold(
       body: Stack(
         children: <Widget>[

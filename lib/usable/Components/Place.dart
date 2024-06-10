@@ -4,7 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 
 class Place extends StatefulWidget {
-  const Place({super.key});
+
+  List<dynamic> shop=[];
+  Place({super.key, required this.shop});
 
   @override
   State<Place> createState() => _PlaceState();
@@ -47,8 +49,6 @@ class _PlaceState extends State<Place> {
     TextEditingController _cnt3 = TextEditingController();
     TextEditingController _cnt4 = TextEditingController();
     TextEditingController _ctn5 = TextEditingController();
-    List<dynamic> _shops = [];
-
     @override
     void dispose() {
       super.dispose();
@@ -62,23 +62,17 @@ class _PlaceState extends State<Place> {
     @override
     void initState(){
       super.initState();
-      getShops();
-    }
-    void getShops() async {
-      List<dynamic> result = await RESTAPI.getPlaces();
-      setState(() {
-         _shops=result;
-      });
+      _filteredShops = List.from(widget.shop);
     }
     List<dynamic> _filteredShops = [];
     void _filterShops(String query) {
       query = query.toLowerCase();
       setState(() {
         if (query.isEmpty) {
-          _filteredShops = List.from(_shops);
+          _filteredShops = List.from(widget.shop);
         }
         else {
-          _filteredShops = _shops.where((shop) {
+          _filteredShops = widget.shop.where((shop) {
             return shop['name'].toLowerCase().contains(query);
           }).toList();
         }

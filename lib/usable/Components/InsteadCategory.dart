@@ -96,26 +96,6 @@ class InsteadCategory {
         'type': 'call',
         'img': 'images/Car_icon20.svg',
         'title': 'Машин ачлага'
-      },
-      {
-        'type': 'call',
-        'img': 'images/Car_icon20.svg',
-        'title': 'Admin'
-      },
-      {
-        'type': 'service',
-        'img': 'images/Car_icon20.svg',
-        'title': 'Azmind'
-      },
-      {
-        'type': 'service',
-        'img': 'images/Car_icon20.svg',
-        'title': 'Eegii'
-      },
-      {
-        'type': 'all',
-        'img': 'images/Car_icon20.svg',
-        'title': 'panzer'
       }
     ];
 

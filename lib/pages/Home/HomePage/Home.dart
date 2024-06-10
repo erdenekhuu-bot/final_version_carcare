@@ -168,28 +168,12 @@ class _HomeState extends State<Home> {
                             Cart(
                                 img: SvgPicture.asset('images/Car_icon18.svg'),
                                 txt: 'Авто хуулга'),
-                            // Cart(
-                            //     img: SvgPicture.asset('images/Car_icon6.svg'),
-                            //     txt: 'Оношилгоо'),
                             Cart(
                                 img: SvgPicture.asset('images/Car_icon7.svg'),
                                 txt: 'Тос тосолгоо'),
-                            // Cart(
-                            //     img: SvgPicture.asset('images/Car_icon10.svg'),
-                            //     txt: 'Тэнхлэг тохиргоо'),
-                            // Cart(
-                            //     img: SvgPicture.asset('images/Car_icon11.svg'),
-                            //     txt: 'Мотор засвар'),
                             Cart(
                                 img: SvgPicture.asset('images/Car_icon12.svg'),
                                 txt: 'Суудлын бүрээс'),
-                            // Cart(
-                            //     img: SvgPicture.asset('images/Car_icon13.svg'),
-                            //     txt: 'Эйр кондишн'),
-                            // Cart(
-                            //     img: SvgPicture.asset('images/Car_icon14.svg'),
-                            //     txt: 'Ком.оншилгоо'),
-
                           ],
                         ),
                       ),
@@ -214,7 +198,7 @@ class _HomeState extends State<Home> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Place()),
+                                builder: (context) => Place(shop: shops)),
                           );
                         },
                         child: Container(
@@ -236,23 +220,6 @@ class _HomeState extends State<Home> {
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  // child: ConstrainedBox(
-                  //   constraints: const BoxConstraints(maxHeight: 530),
-                  //   child: SingleChildScrollView(
-                  //     padding: const EdgeInsets.symmetric(vertical: 10),
-                  //     scrollDirection: Axis.vertical,
-                  //     child: Column(
-                  //       children: [
-                  //         for (var item in shops)
-                  //           OfferPlace(
-                  //             title: item['name'],
-                  //             phone: item['phone'],
-                  //             img: item['thumbnail'],
-                  //           ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                   child: Column(
                     children: [
                       for (var item in shops)

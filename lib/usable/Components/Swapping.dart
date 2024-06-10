@@ -120,7 +120,7 @@ class _SwappingState extends State<Swapping> {
                         ),
                         Container(
                           width: double.infinity,
-                          height: 420,
+                          height: 300,
                           margin: const EdgeInsets.only(right: 15, left: 15),
                           decoration: BoxDecoration(
                             color: Colors.white,
