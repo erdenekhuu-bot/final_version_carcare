@@ -11,11 +11,9 @@ import 'package:final_pro/usable/Store/Store.dart';
 import 'dart:math';
 class Car extends StatefulWidget {
   const Car({super.key});
-
   @override
   State<Car> createState() => _CarState();
 }
-
 class _CarState extends State<Car> {
   int price = 0;
   bool _click = false;
