@@ -16,6 +16,8 @@ class _LoginState extends State<Login> {
   bool _limit = false;
   String _phone = '';
   String _password = '';
+
+  String errorBanner = 'Утасны дугаар аль эсвэл нууц үг буруу байна';
   final TextEditingController _cnt1 = TextEditingController();
   final TextEditingController _cnt2 = TextEditingController();
   @override
@@ -69,7 +71,7 @@ class _LoginState extends State<Login> {
                                   if (value!.isEmpty) {
                                     return 'Утасны дугаар оруулах шаардлагатай';
                                   }
-                                  return null;
+                                  return null; // Return null when there's no error
                                 },
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
                                 maxLength: 8,
@@ -111,26 +113,12 @@ class _LoginState extends State<Login> {
                                   ),
                                 ),
                               ),
-                              Positioned(
-                                bottom: 0,
-                                left: 0,
-                                child: Container(
-                                  padding: null,
-                                  color: Colors.white,
-                                  child: Text(
-                                    _cnt1.text.isEmpty ? '' : 'Утасны дугаар оруулах шаардлагатай',
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
+
 
                     const SizedBox(height: 8),
                     Column(
@@ -138,7 +126,7 @@ class _LoginState extends State<Login> {
                       children: <Widget>[
                         Container(
                           width: 313,
-                          height: 70,
+                          height: 70, // Fixed height to prevent layout changes
                           margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                           child: Stack(
                             children: <Widget>[
@@ -149,7 +137,7 @@ class _LoginState extends State<Login> {
                                   if (value!.isEmpty) {
                                     return 'Нууц үг оруулах шаардлагатай';
                                   }
-                                  return null;
+                                  return null; // Return null when there's no error
                                 },
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
                                 controller: _cnt2,
@@ -199,26 +187,12 @@ class _LoginState extends State<Login> {
                                   ),
                                 ),
                               ),
-                              Positioned(
-                                bottom: 0,
-                                left: 0,
-                                child: Container(
-                                  padding: null,
-                                  color: Colors.white,
-                                  child: Text(
-                                    _cnt2.text.isEmpty ? '' : 'Нууц үг оруулах шаардлагатай',
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
+
 
                     const SizedBox(height: 2),
                     Container(
@@ -247,23 +221,21 @@ class _LoginState extends State<Login> {
                           width: 313,
                           height: 40,
                           child: ElevatedButton(
-                            // onPressed: () async {
-                            //   String result = await RESTAPI.login(_phone, _password);
-                            //   Store.storePhone=_phone;
-                            //   Store.storePassword=_password;
-                            //   if(result == 'success'){
-                            //     Navigator.push(
-                            //         context,
-                            //         MaterialPageRoute(
-                            //             builder: (context) => const MainMenu()));
-                            //   } else {
-                            //      print('Something has wrong');
-                            //   }
-                              onPressed: (){
-                                  _fkey.currentState!.validate();
-                              },
-
-                            
+                            onPressed: () async {
+                              if(_fkey.currentState!.validate()){
+                                String result = await RESTAPI.login(_phone, _password);
+                                Store.storePhone=_phone;
+                                Store.storePassword=_password;
+                                if(result == 'success'){
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const MainMenu()));
+                                } else {
+                                  print('Something has wrong');
+                                }
+                              }
+                            },
                             child: const Text(
                               'Нэвтрэх',
                               style: TextStyle(
