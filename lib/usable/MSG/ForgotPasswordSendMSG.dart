@@ -139,12 +139,12 @@ class _ForgotPasswordSendMSGState extends State<ForgotPasswordSendMSG> {
                   width: 313,
                   height: 40,
                   child: ElevatedButton(
-                    onPressed: () async {
+                    onPressed: _limit ? () async {
                       final int _id = await RESTAPI.sendOTP(_phoneNumber);
                       if(_id > 0) {
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPasswordValidateMSG(confirmationId: _id, phoneNumber: _phoneNumber)));
                       }
-                    },
+                    } : null,
                     child: const Text(
                       'Үргэлжлүүлэх',
                       style: TextStyle(

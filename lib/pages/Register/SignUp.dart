@@ -43,8 +43,7 @@ class _SignUpState extends State<SignUp> {
     f3.dispose();
   }
 
-  final RegExp passwordRegExp =
-      RegExp(r'^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$');
+  final RegExp passwordRegExp = RegExp(r'^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
