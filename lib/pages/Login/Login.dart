@@ -6,6 +6,7 @@ import 'package:final_pro/pages/Home/MainMenu.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:final_pro/usable/MSG/ForgotPasswordSendMSG.dart';
 import 'package:final_pro/usable/Store/Store.dart';
+import 'package:another_flushbar/flushbar.dart';
 class Login extends StatefulWidget {
   const Login({super.key});
   @override
@@ -16,8 +17,6 @@ class _LoginState extends State<Login> {
   bool _limit = false;
   String _phone = '';
   String _password = '';
-
-  String errorBanner = 'Утасны дугаар аль эсвэл нууц үг буруу байна';
   final TextEditingController _cnt1 = TextEditingController();
   final TextEditingController _cnt2 = TextEditingController();
   @override
@@ -62,7 +61,7 @@ class _LoginState extends State<Login> {
                       children: <Widget>[
                         Container(
                           width: 313,
-                          height: 70, // Fixed height to prevent layout changes
+                          height: 70,
                           margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                           child: Stack(
                             children: <Widget>[
@@ -71,7 +70,7 @@ class _LoginState extends State<Login> {
                                   if (value!.isEmpty) {
                                     return 'Утасны дугаар оруулах шаардлагатай';
                                   }
-                                  return null; // Return null when there's no error
+                                  return null;
                                 },
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
                                 maxLength: 8,
@@ -137,7 +136,7 @@ class _LoginState extends State<Login> {
                                   if (value!.isEmpty) {
                                     return 'Нууц үг оруулах шаардлагатай';
                                   }
-                                  return null; // Return null when there's no error
+                                  return null;
                                 },
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
                                 controller: _cnt2,
@@ -232,7 +231,27 @@ class _LoginState extends State<Login> {
                                       MaterialPageRoute(
                                           builder: (context) => const MainMenu()));
                                 } else {
-                                  print('Something has wrong');
+                                  Flushbar(
+                                    backgroundColor: const Color(0xFFFF6E6E),
+                                    flushbarStyle: FlushbarStyle.GROUNDED,
+                                    flushbarPosition: FlushbarPosition.TOP,
+                                    titleText: const Center(
+                                      child: Icon(
+                                        Icons.error_outline,
+                                        color: Colors.white,
+                                        size: 28,
+                                      ),
+                                    ),
+                                    messageText: const Padding(
+                                      padding: EdgeInsets.only(bottom: 20.0),
+                                      child: Text(
+                                        "Утасны дугаар аль эсвэл нууц үг буруу байна",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                    duration: const Duration(seconds: 2),
+                                  ).show(context);
                                 }
                               }
                             },
