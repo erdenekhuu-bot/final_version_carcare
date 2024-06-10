@@ -28,6 +28,12 @@ class _SwappingState extends State<Swapping> {
       }
     });
   }
+
+  @override
+  void initState(){
+    super.initState();
+    _filteredShops = List.from(InsteadCategory.dataset);
+  }
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
