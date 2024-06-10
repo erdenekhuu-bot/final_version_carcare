@@ -2,10 +2,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:final_pro/pages/Login/Login.dart';
+import 'package:another_flushbar/flushbar.dart';
 class ForgotPassword extends StatefulWidget {
 
-  final int confirmationId;
-  ForgotPassword({super.key, required this.confirmationId});
+  final int? confirmationId;
+  ForgotPassword({super.key, this.confirmationId});
 
   @override
   State<ForgotPassword> createState() => _ForgotPasswordState();
@@ -33,6 +34,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   String _confirmPassword = '';
   bool _check = false;
   bool _setCheck = false;
+
+  final RegExp passwordRegExp = RegExp(r'^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,6 +85,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   width: 313,
                   height: 50,
                   child: TextFormField(
+                    validator: (text){
+                        if(passwordRegExp.hasMatch(text!)){
+                            return null;
+                        } else {
+                          return 'Хүчтэй нууц үг ашиглана уу';
+                        }
+                    },
                     obscureText: _check ? false : true,
                     maxLength: 20,
                     onChanged: (value) {
@@ -130,6 +140,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   width: 313,
                   height: 50,
                   child: TextFormField(
+                    validator: (text){
+                      if(passwordRegExp.hasMatch(text!)){
+                        return null;
+                      } else {
+                        return 'Хүчтэй нууц үг ашиглана уу';
+                      }
+                    },
                     obscureText: _setCheck ? false : true,
                     maxLength: 20,
                     onChanged: (value) {
@@ -180,12 +197,39 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               height: 40,
               child: ElevatedButton(
                 onPressed: () async {
-                    String result = await RESTAPI.forgotPassword(widget.confirmationId, _confirmPassword);
-                    if(result == 'success'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const Login()));
-                    } else {
-                      print(result);
+                    if(_formKey.currentState!.validate()){
+                      if(_cnt1.text == _cnt2.text){
+                        String result = await RESTAPI.forgotPassword(widget.confirmationId!, _confirmPassword);
+                        if(result == 'success'){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const Login()));
+                        } else {
+                          print(result);
+                        }
+                      } else {
+                        Flushbar(
+                          backgroundColor: const Color(0xFFFF6E6E),
+                          flushbarStyle: FlushbarStyle.GROUNDED,
+                          flushbarPosition: FlushbarPosition.TOP,
+                          titleText: const Center(
+                            child: Icon(
+                              Icons.error_outline,
+                              color: Colors.white,
+                              size: 28,
+                            ),
+                          ),
+                          messageText: const Padding(
+                            padding: EdgeInsets.only(bottom: 20.0),
+                            child: Text(
+                              "Давтсан оруулсан нууц үг буруу байна",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          duration: const Duration(seconds: 2),
+                        ).show(context);
+                      }
                     }
+
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff404040),

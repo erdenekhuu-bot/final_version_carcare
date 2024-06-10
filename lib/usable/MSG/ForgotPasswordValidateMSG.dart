@@ -29,7 +29,6 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
   final FocusNode f4 = FocusNode();
   final FocusNode f5 = FocusNode();
   final FocusNode f6 = FocusNode();
-
   @override
   void dispose() {
     super.dispose();
@@ -56,6 +55,7 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -377,6 +377,7 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
                   ),
+
                 ),
               ],
             ),
