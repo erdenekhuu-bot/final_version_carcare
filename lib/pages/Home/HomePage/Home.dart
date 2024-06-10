@@ -326,22 +326,32 @@ class _HomeState extends State<Home> {
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxHeight: 530),
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: [
-                          for (var item in shops)
-                            OfferPlace(
-                              title: item['name'],
-                              phone: item['phone'],
-                              img: item['thumbnail'],
-                            ),
-                        ],
-                      ),
-                    ),
+                  // child: ConstrainedBox(
+                  //   constraints: const BoxConstraints(maxHeight: 530),
+                  //   child: SingleChildScrollView(
+                  //     padding: const EdgeInsets.symmetric(vertical: 10),
+                  //     scrollDirection: Axis.vertical,
+                  //     child: Column(
+                  //       children: [
+                  //         for (var item in shops)
+                  //           OfferPlace(
+                  //             title: item['name'],
+                  //             phone: item['phone'],
+                  //             img: item['thumbnail'],
+                  //           ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  child: Column(
+                    children: [
+                      for (var item in shops)
+                        OfferPlace(
+                          title: item['name'],
+                          phone: item['phone'],
+                          img: item['thumbnail'],
+                        ),
+                    ],
                   ),
                 ),
               ],

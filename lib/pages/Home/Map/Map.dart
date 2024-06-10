@@ -38,18 +38,16 @@ class _MapsState extends State<Maps> {
 
     _initMarkers();
   }
-
   void _initMarkers() async {
     final List<MapMarker> markers = [];
-    for (int i = 0; i < widget.places.length && i < widget.shops.length; i++) {
-      dynamic markerLocation = widget.places[i];
-      dynamic shopData = widget.shops[i];
 
-      final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(shopData['thumbnail'], targetWidth: 150);
+    for (LatLng markerLocation in _markerLocations) {
+      final BitmapDescriptor markerImage =
+      await MapHelper.getMarkerImageFromUrl(_markerImageUrl);
 
       markers.add(
         MapMarker(
-          id: i.toString(),
+          id: _markerLocations.indexOf(markerLocation).toString(),
           position: markerLocation,
           icon: markerImage,
         ),
@@ -64,6 +62,47 @@ class _MapsState extends State<Maps> {
 
     await _updateMarkers();
   }
+
+  // void _initMarkers() async {
+  //   final List<MapMarker> markers = [];
+  //   for (int i = 0; i < widget.places.length && i < widget.shops.length; i++) {
+  //     dynamic markerLocation = widget.places[i];
+  //     dynamic shopData = widget.shops[i];
+  //
+  //     final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(shopData['thumbnail'], targetWidth: 150);
+  //
+  //     markers.add(
+  //       MapMarker(
+  //         id: i.toString(),
+  //         position: markerLocation,
+  //         icon: markerImage,
+  //       ),
+  //     );
+  //   }
+  //
+  //   _clusterManager = await MapHelper.initClusterManager(
+  //     markers,
+  //     _minClusterZoom,
+  //     _maxClusterZoom,
+  //   );
+  //
+  //   await _updateMarkers();
+  // }
+
+  // final List<LatLng> _markerLocations = [
+  //   LatLng(41.147125, -8.611249),
+  //   LatLng(41.145599, -8.610691),
+  //   LatLng(41.145645, -8.614761),
+  //   LatLng(41.146775, -8.614913),
+  //   LatLng(41.146982, -8.615682),
+  //   LatLng(41.140558, -8.611530),
+  //   LatLng(41.138393, -8.608642),
+  //   LatLng(41.137860, -8.609211),
+  //   LatLng(41.138344, -8.611236),
+  //   LatLng(41.139813, -8.609381),
+  // ];
+
+  final List<LatLng> _markerLocations = [LatLng(47.9126145, 106.9827537), LatLng(47.921403, 106.859528), LatLng(47.929389, 106.905417), LatLng(47.918116, 106.892796), LatLng(47.925499, 106.893552), LatLng(47.897963, 106.892204), LatLng(47.909489, 106.808361), LatLng(47.914399, 106.992369), LatLng(47.923557, 106.954429), LatLng(47.922589, 106.863659), LatLng(90.0, 123.123123), LatLng(47.9126145, 106.9827537), LatLng(47.921403, 106.859528), LatLng(47.929389, 106.905417), LatLng(47.918116, 106.892796), LatLng(47.925499, 106.893552), LatLng(47.897963, 106.892204), LatLng(47.909489, 106.808361), LatLng(47.914399, 106.992369), LatLng(47.923557, 106.954429), LatLng(47.922589, 106.863659), LatLng(90.0, 123.123123)];
 
   Future<void> _updateMarkers([double? updatedZoom]) async {
     if (_clusterManager == null || updatedZoom == _currentZoom) return;
@@ -97,6 +136,7 @@ class _MapsState extends State<Maps> {
   bool _secondClick = false;
   @override
   Widget build(BuildContext context) {
+    print(widget.places);
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -110,12 +150,10 @@ class _MapsState extends State<Maps> {
               zoomControlsEnabled: false,
               initialCameraPosition: CameraPosition(
                 target: const LatLng(47.9221, 106.9155),
+                // target: const LatLng(41.143029, -8.611274),
                 zoom: _currentZoom,
               ),
               markers: Set<Marker>.of(_markers),
-              onTap: (value){
-                print('Marker tapped and -> $value');
-              },
               onMapCreated: (controller) => _onMapCreated(controller),
               onCameraMove: (position) => _updateMarkers(position.zoom),
             ),

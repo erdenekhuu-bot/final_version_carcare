@@ -231,6 +231,7 @@ class _CarState extends State<Car> {
                                           value: 100,
                                           color: const Color(0xFFD787FF),
                                           badgeWidget: null,
+                                          title: '',
                                           badgePositionPercentageOffset: 1.5,
                                         ),
                                       ],
@@ -247,7 +248,6 @@ class _CarState extends State<Car> {
                         ],
                       ),
                     ),
-                    const Text('Тос тосолгоо', style: TextStyle(fontFamily: 'Inter', fontSize: 18, fontWeight: FontWeight.bold)),
                   ],
                 ),
                 ConstrainedBox(
