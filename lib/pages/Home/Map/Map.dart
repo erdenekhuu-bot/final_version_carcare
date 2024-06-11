@@ -6,12 +6,11 @@ import 'package:final_pro/usable/MapComponents/map_helper.dart';
 import 'package:final_pro/usable/MapComponents/map_marker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:final_pro/usable/MapComponents/MapMenu.dart';
+import 'package:final_pro/usable/MapComponents/MapPlaceWindow.dart';
 class Maps extends StatefulWidget {
   final List<LatLng> places;
-
   final List<dynamic> shops;
   Maps({super.key, required this.places, required this.shops});
-
   @override
   _MapsState createState() => _MapsState();
 }
@@ -44,14 +43,24 @@ class _MapsState extends State<Maps> {
     for (int i = 0; i < widget.places.length && i < widget.shops.length; i++) {
       dynamic markerLocation = widget.places[i];
       dynamic shopData = widget.shops[i];
-
       final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(shopData['thumbnail'], targetWidth: 150);
-
       markers.add(
         MapMarker(
           id: i.toString(),
           position: markerLocation,
           icon: markerImage,
+          onTap: (){
+              // showModalBottomSheet(
+              //   context: context,
+              //   useSafeArea: true,
+              //   isScrollControlled: true,
+              //   backgroundColor: Colors.transparent,
+              //   builder: (context) {
+              //     return MapPlaceWindow(phone: shopData['phone'], description: shopData['description'], img: shopData['additional'],name: shopData['name']);
+              //   }
+              // );
+            print(shopData['description']);
+          }
         ),
       );
     }
@@ -64,20 +73,6 @@ class _MapsState extends State<Maps> {
 
     await _updateMarkers();
   }
-
-  // final List<LatLng> _markerLocations = [
-  //   LatLng(41.147125, -8.611249),
-  //   LatLng(41.145599, -8.610691),
-  //   LatLng(41.145645, -8.614761),
-  //   LatLng(41.146775, -8.614913),
-  //   LatLng(41.146982, -8.615682),
-  //   LatLng(41.140558, -8.611530),
-  //   LatLng(41.138393, -8.608642),
-  //   LatLng(41.137860, -8.609211),
-  //   LatLng(41.138344, -8.611236),
-  //   LatLng(41.139813, -8.609381),
-  // ];
-
   Future<void> _updateMarkers([double? updatedZoom]) async {
     if (_clusterManager == null || updatedZoom == _currentZoom) return;
 
@@ -110,7 +105,6 @@ class _MapsState extends State<Maps> {
   bool _secondClick = false;
   @override
   Widget build(BuildContext context) {
-    print(widget.places);
     return Scaffold(
       body: Stack(
         children: <Widget>[

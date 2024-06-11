@@ -5,11 +5,13 @@ class MapMarker extends Clusterable {
   final String id;
   final LatLng position;
   BitmapDescriptor? icon;
+  final Function()? onTap;
 
   MapMarker({
     required this.id,
     required this.position,
     this.icon,
+    this.onTap,
     isCluster = false,
     clusterId,
     pointsSize,
@@ -31,5 +33,6 @@ class MapMarker extends Clusterable {
       position.longitude,
     ),
     icon: icon!,
+    onTap: onTap
   );
 }
