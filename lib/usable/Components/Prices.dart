@@ -15,11 +15,11 @@ class Prices extends StatelessWidget {
   Widget build(BuildContext context) {
 
     switch (type) {
-      case 'Моторын Тос':
+      case 'Тос тосолгоо':
         imageWidget = SvgPicture.asset('images/Car_icon7.svg');
         break;
-      case 'Агрегат':
-        imageWidget = SvgPicture.asset('images/Car_icon1.svg');
+      case 'Кузов':
+        imageWidget = SvgPicture.asset('images/Car_icon2.svg');
         break;
       case 'Агааржуулалт':
         imageWidget = SvgPicture.asset('images/Car_icon13.svg');

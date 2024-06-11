@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 1), () {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SignUp()));
+          context, MaterialPageRoute(builder: (context) => Login()));
     });
     return Scaffold(
       backgroundColor: const Color(0xff404040),

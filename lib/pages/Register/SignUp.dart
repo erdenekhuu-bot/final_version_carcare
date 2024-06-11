@@ -86,9 +86,45 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   children: [
                     const SizedBox(height: 10),
+                    // SizedBox(
+                    //   width: 313,
+                    //   height: 50,
+                    //   child: TextFormField(
+                    //     controller: _digit1,
+                    //     focusNode: f1,
+                    //     onChanged: (text) {
+                    //       _username = _digit1.text;
+                    //     },
+                    //     decoration: InputDecoration(
+                    //         focusedBorder: OutlineInputBorder(
+                    //             borderSide: const BorderSide(
+                    //                 width: 1, color: Colors.black),
+                    //             borderRadius: BorderRadius.circular(10)),
+                    //         enabledBorder: OutlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(10),
+                    //             borderSide: BorderSide(
+                    //                 width: 1,
+                    //                 color: const Color(0xff404040)
+                    //                     .withOpacity(0.5))),
+                    //         labelText: 'Нэр',
+                    //         labelStyle:
+                    //             const TextStyle(fontFamily: 'Inter-Light'),
+                    //         floatingLabelBehavior: FloatingLabelBehavior.never,
+                    //         counterText: '',
+                    //         prefixIcon: Padding(
+                    //           padding: const EdgeInsets.all(8.0),
+                    //           child: SvgPicture.asset('images/person.svg'),
+                    //         ),
+                    //         border: OutlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(10),
+                    //             borderSide: const BorderSide(
+                    //                 color: Color(0xffE2E2E2)))),
+                    //     maxLength: 20,
+                    //   ),
+                    // ),
                     SizedBox(
                       width: 313,
-                      height: 50,
+                      height: 80, // Adjust the height to accommodate both the input field and the potential error message
                       child: TextFormField(
                         controller: _digit1,
                         focusNode: f1,
@@ -96,90 +132,106 @@ class _SignUpState extends State<SignUp> {
                           _username = _digit1.text;
                         },
                         decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    width: 1, color: Colors.black),
-                                borderRadius: BorderRadius.circular(10)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                    width: 1,
-                                    color: const Color(0xff404040)
-                                        .withOpacity(0.5))),
-                            labelText: 'Нэр',
-                            labelStyle:
-                                const TextStyle(fontFamily: 'Inter-Light'),
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            counterText: '',
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SvgPicture.asset('images/person.svg'),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 1, color: Colors.black),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              width: 1,
+                              color: const Color(0xff404040).withOpacity(0.5),
                             ),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: Color(0xffE2E2E2)))),
+                          ),
+                          labelText: 'Нэр',
+                          labelStyle: const TextStyle(fontFamily: 'Inter-Light'),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          counterText: '',
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SvgPicture.asset('images/person.svg'),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Color(0xffE2E2E2)),
+                          ),
+                        ),
                         maxLength: 20,
                       ),
                     ),
+
                     const SizedBox(height: 20),
                     SizedBox(
                       width: 313,
-                      height: 50,
+                      height: 80, // Adjust the height to accommodate both the input field and the error message
                       child: TextFormField(
                         focusNode: f2,
                         controller: _digit2,
+                        validator: (text) {
+                          if (passwordRegExp.hasMatch(text!)) {
+                            return null;
+                          } else {
+                            return 'Хүчтэй нууц үг ашиглана уу';
+                          }
+                        },
                         onChanged: (value) {
                           setState(() {
                             _password = _digit2.text;
                           });
                         },
                         decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    width: 1, color: Colors.black),
-                                borderRadius: BorderRadius.circular(10)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                    width: 1,
-                                    color: const Color(0xff404040)
-                                        .withOpacity(0.5))),
-                            labelText: 'Нууц үг',
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            labelStyle:
-                                const TextStyle(fontFamily: 'Inter-Light'),
-                            counterText: '',
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child:
-                                  SvgPicture.asset('images/lockPassword.svg'),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 1, color: Colors.black),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              width: 1,
+                              color: const Color(0xff404040).withOpacity(0.5),
                             ),
-                            suffixIcon: Opacity(
-                              opacity: 0.5,
-                              child: IconButton(
-                                  icon: SvgPicture.asset(_passHide
-                                      ? 'images/eye.svg'
-                                      : 'images/eye_off.svg'),
-                                  onPressed: () {
-                                    setState(() {
-                                      _passHide = !_passHide;
-                                    });
-                                  }),
+                          ),
+                          labelText: 'Нууц үг',
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          labelStyle: const TextStyle(fontFamily: 'Inter-Light'),
+                          counterText: '',
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: SvgPicture.asset('images/lockPassword.svg'),
+                          ),
+                          suffixIcon: Opacity(
+                            opacity: 0.5,
+                            child: IconButton(
+                              icon: SvgPicture.asset(_passHide ? 'images/eye.svg' : 'images/eye_off.svg'),
+                              onPressed: () {
+                                setState(() {
+                                  _passHide = !_passHide;
+                                });
+                              },
                             ),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: Color(0xffE2E2E2)))),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Color(0xffE2E2E2)),
+                          ),
+                        ),
                         maxLength: 20,
                         obscureText: _passHide ? false : true,
                       ),
                     ),
+
                     const SizedBox(height: 20),
                     SizedBox(
                       width: 313,
-                      height: 50,
+                      height: 80, // Set a fixed height that accommodates both the input field and the error message
                       child: TextFormField(
+                        validator: (text) {
+                          if (passwordRegExp.hasMatch(text!)) {
+                            return null;
+                          } else {
+                            return 'Хүчтэй нууц үг ашиглана уу';
+                          }
+                        },
                         onChanged: (text) {
                           setState(() {
                             _confirmPassword = _digit3.text;
@@ -188,84 +240,97 @@ class _SignUpState extends State<SignUp> {
                         focusNode: f3,
                         controller: _digit3,
                         decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    width: 1, color: Colors.black),
-                                borderRadius: BorderRadius.circular(10)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                    width: 1,
-                                    color: const Color(0xff404040)
-                                        .withOpacity(0.5))),
-                            labelText: 'Нууц үг давтах',
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            labelStyle:
-                                const TextStyle(fontFamily: 'Inter-Light'),
-                            counterText: '',
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child:
-                                  SvgPicture.asset('images/lockPassword.svg'),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 1, color: Colors.black),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              width: 1,
+                              color: const Color(0xff404040).withOpacity(0.5),
                             ),
-                            suffixIcon: Opacity(
-                              opacity: 0.5,
-                              child: IconButton(
-                                  icon: SvgPicture.asset(_confirmHide
-                                      ? 'images/eye.svg'
-                                      : 'images/eye_off.svg'),
-                                  onPressed: () {
-                                    setState(() {
-                                      _confirmHide = !_confirmHide;
-                                    });
-                                  }),
+                          ),
+                          labelText: 'Нууц үг давтах',
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          labelStyle: const TextStyle(fontFamily: 'Inter-Light'),
+                          counterText: '',
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: SvgPicture.asset('images/lockPassword.svg'),
+                          ),
+                          suffixIcon: Opacity(
+                            opacity: 0.5,
+                            child: IconButton(
+                              icon: SvgPicture.asset(_confirmHide ? 'images/eye.svg' : 'images/eye_off.svg'),
+                              onPressed: () {
+                                setState(() {
+                                  _confirmHide = !_confirmHide;
+                                });
+                              },
                             ),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: Color(0xffE2E2E2)))),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Color(0xffE2E2E2)),
+                          ),
+                        ),
                         maxLength: 20,
                         obscureText: _confirmHide ? false : true,
                       ),
                     ),
+
                     const SizedBox(height: 45),
                     SizedBox(
                       width: 313,
                       height: 40,
                       child: ElevatedButton(
+                        // onPressed: () async {
+                        //   if (passwordRegExp.hasMatch(_confirmPassword)) {
+                        //     String result = await RESTAPI.createUser(widget.id!,
+                        //         _username, _confirmPassword, widget.phone!);
+                        //     if (result == 'success') {
+                        //       Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //               builder: (context) => const Policy()));
+                        //     }
+                        //   }
                         onPressed: () async {
-                          if (passwordRegExp.hasMatch(_confirmPassword)) {
-                            String result = await RESTAPI.createUser(widget.id!,
-                                _username, _confirmPassword, widget.phone!);
-                            if (result == 'success') {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Policy()));
+                            if(_formKey.currentState!.validate()){
+                              if(_digit2.text == _digit3.text){
+                                    String result = await RESTAPI.createUser(widget.id!,
+                                        _username, _confirmPassword, widget.phone!);
+                                    if (result == 'success') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => const Policy()));
+                                    }
+                              } else {
+                                Flushbar(
+                                  backgroundColor: const Color(0xFFFF6E6E),
+                                  flushbarStyle: FlushbarStyle.GROUNDED,
+                                  flushbarPosition: FlushbarPosition.TOP,
+                                  titleText: const Center(
+                                    child: Icon(
+                                      Icons.error_outline,
+                                      color: Colors.white,
+                                      size: 28,
+                                    ),
+                                  ),
+                                  messageText: const Padding(
+                                    padding: EdgeInsets.only(bottom: 20.0),
+                                    child: Text(
+                                      "Давтсан оруулсан нууц үг буруу байна",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  duration: const Duration(seconds: 2),
+                                ).show(context);
+                              }
                             }
-                          } else {
-                            Flushbar(
-                              backgroundColor: const Color(0xFFFF6E6E),
-                              flushbarStyle: FlushbarStyle.GROUNDED,
-                              flushbarPosition: FlushbarPosition.TOP,
-                              titleText: const Center(
-                                child: Icon(
-                                  Icons.error_outline,
-                                  color: Colors.white,
-                                  size: 28,
-                                ),
-                              ),
-                              messageText: const Padding(
-                                padding: EdgeInsets.only(bottom: 20.0),
-                                child: Text(
-                                  "Баталгаажуулах код буруу байна",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              duration: const Duration(seconds: 2),
-                            ).show(context);
-                          }
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xff404040),

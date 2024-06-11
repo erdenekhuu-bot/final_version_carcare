@@ -83,14 +83,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 const SizedBox(height: 10),
                 SizedBox(
                   width: 313,
-                  height: 50,
+                  height: 80,
                   child: TextFormField(
-                    validator: (text){
-                        if(passwordRegExp.hasMatch(text!)){
-                            return null;
-                        } else {
-                          return 'Хүчтэй нууц үг ашиглана уу';
-                        }
+                    validator: (text) {
+                      if (passwordRegExp.hasMatch(text!)) {
+                        return null;
+                      } else {
+                        return 'Хүчтэй нууц үг ашиглана уу';
+                      }
                     },
                     obscureText: _check ? false : true,
                     maxLength: 20,
@@ -102,46 +102,48 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     controller: _cnt1,
                     focusNode: _f1,
                     decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                width: 1, color: Colors.black),
-                            borderRadius: BorderRadius.circular(10)),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: const Color(0xff404040)
-                                    .withOpacity(0.5))),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        counterText: '',
-                        labelText: 'Нууц үг',
-                        labelStyle: const TextStyle(fontFamily: 'Inter-Light'),
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: SvgPicture.asset('images/lockPassword.svg'),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(width: 1, color: Colors.black),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: const Color(0xff404040).withOpacity(0.5),
                         ),
-                        suffixIcon: Opacity(
-                          opacity: 0.5,
-                          child: IconButton(
-                              icon: SvgPicture.asset(_check
-                                  ? 'images/eye.svg'
-                                  : 'images/eye_off.svg'),
-                              onPressed: () {
-                                setState(() {
-                                  _check = !_check;
-                                });
-                              }),
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      counterText: '',
+                      labelText: 'Нууц үг',
+                      labelStyle: const TextStyle(fontFamily: 'Inter-Light'),
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SvgPicture.asset('images/lockPassword.svg'),
+                      ),
+                      suffixIcon: Opacity(
+                        opacity: 0.5,
+                        child: IconButton(
+                          icon: SvgPicture.asset(_check ? 'images/eye.svg' : 'images/eye_off.svg'),
+                          onPressed: () {
+                            setState(() {
+                              _check = !_check;
+                            });
+                          },
                         ),
-                        border: const OutlineInputBorder()),
+                      ),
+                      border: const OutlineInputBorder(),
+                    ),
                   ),
                 ),
+
                 const SizedBox(height: 20),
                 SizedBox(
                   width: 313,
-                  height: 50,
+                  height: 80,
                   child: TextFormField(
-                    validator: (text){
-                      if(passwordRegExp.hasMatch(text!)){
+                    validator: (text) {
+                      if (passwordRegExp.hasMatch(text!)) {
                         return null;
                       } else {
                         return 'Хүчтэй нууц үг ашиглана уу';
@@ -155,39 +157,41 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     controller: _cnt2,
                     focusNode: _f2,
                     decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                width: 1, color: Colors.black),
-                            borderRadius: BorderRadius.circular(10)),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: const Color(0xff404040)
-                                    .withOpacity(0.5))),
-                        counterText: '',
-                        labelText: 'Нууц үг давтах',
-                        labelStyle: const TextStyle(fontFamily: 'Inter-Light'),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: SvgPicture.asset('images/lockPassword.svg'),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(width: 1, color: Colors.black),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: const Color(0xff404040).withOpacity(0.5),
                         ),
-                        suffixIcon: Opacity(
-                          opacity: 0.5,
-                          child: IconButton(
-                              icon: SvgPicture.asset(_setCheck
-                                  ? 'images/eye.svg'
-                                  : 'images/eye_off.svg'),
-                              onPressed: () {
-                                setState(() {
-                                  _setCheck = !_setCheck;
-                                });
-                              }),
+                      ),
+                      counterText: '',
+                      labelText: 'Нууц үг давтах',
+                      labelStyle: const TextStyle(fontFamily: 'Inter-Light'),
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SvgPicture.asset('images/lockPassword.svg'),
+                      ),
+                      suffixIcon: Opacity(
+                        opacity: 0.5,
+                        child: IconButton(
+                          icon: SvgPicture.asset(_setCheck ? 'images/eye.svg' : 'images/eye_off.svg'),
+                          onPressed: () {
+                            setState(() {
+                              _setCheck = !_setCheck;
+                            });
+                          },
                         ),
-                        border: const OutlineInputBorder()),
+                      ),
+                      border: const OutlineInputBorder(),
+                    ),
                   ),
                 ),
+
                 const SizedBox(height: 30),
               ],
             ),
