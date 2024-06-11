@@ -227,7 +227,7 @@ class _ZardalState extends State<Zardal> {
                       onDaySelected: (selectedDay, focusedDay) {
                         setState(() {
                           _selectedDay = selectedDay;
-                          focusedDay = _selectedDay;
+                          focusedDay = selectedDay;
                         });
                       },
 
