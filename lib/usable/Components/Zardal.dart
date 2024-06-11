@@ -212,19 +212,27 @@ class _ZardalState extends State<Zardal> {
                     width: MediaQuery.of(context).size.width * 0.9,
                     child: TableCalendar(
                       headerStyle: const HeaderStyle(
-                          formatButtonVisible: false, titleCentered: true),
+                          formatButtonVisible: false,
+                          titleCentered: true
+                      ),
                       firstDay: DateTime.utc(2010, 3, 14),
                       lastDay: DateTime.utc(2030, 3, 14),
-                      focusedDay: DateTime.now(),
+                      focusedDay: _selectedDay,
+                      pageAnimationEnabled: false,
+                      pageJumpingEnabled: false,
+                      daysOfWeekVisible: false,
                       selectedDayPredicate: (day) {
                         return isSameDay(_selectedDay, day);
                       },
                       onDaySelected: (selectedDay, focusedDay) {
                         setState(() {
                           _selectedDay = selectedDay;
+                          focusedDay = _selectedDay;
                         });
                       },
+
                     ),
+
                   ),
               const SizedBox(height: 20),
               SizedBox(

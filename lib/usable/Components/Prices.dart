@@ -21,24 +21,26 @@ class Prices extends StatelessWidget {
       case 'Кузов':
         imageWidget = SvgPicture.asset('images/Car_icon2.svg');
         break;
-      case 'Агааржуулалт':
-        imageWidget = SvgPicture.asset('images/Car_icon13.svg');
-      case 'Оношилгоо':
-        imageWidget = SvgPicture.asset('images/Car_icon6.svg');
-      case 'Аккумлятор':
-        imageWidget = SvgPicture.asset('images/Car_icon9.svg');
-      case 'Амартизатор':
-        imageWidget = SvgPicture.asset('images/Car_icon8.svg');
-      case 'Компьютер оншилгоо':
-        imageWidget = SvgPicture.asset('images/Car_icon14.svg');
-      case 'Мотор':
-        imageWidget = SvgPicture.asset('images/Car_icon11.svg');
+      case 'Мотоцикл':
+        imageWidget = SvgPicture.asset('images/Car_icon5.svg');
+        break;
+      case 'Угаалга':
+        imageWidget = SvgPicture.asset('images/Car_icon4.svg');
+        break;
+      case 'Суудлын бүрээс':
+        imageWidget = SvgPicture.asset('images/Car_icon12.svg');
+        break;
+      case 'Машин худалдаа':
+        imageWidget = SvgPicture.asset('images/Car_icon17.svg');
+        break;
+      case 'Сэлбэг худалдаа':
+        imageWidget = SvgPicture.asset('images/Car_icon15.svg');
+        break;
+      case 'Машин будаг':
+        imageWidget = SvgPicture.asset('images/Car_icon18.svg');
+        break;
       case 'Дугуй':
         imageWidget = SvgPicture.asset('images/Car_icon3.svg');
-      case 'Тэнхлэг ':
-        imageWidget = SvgPicture.asset('images/Car_icon10.svg');
-      case 'Наклад':
-        imageWidget = SvgPicture.asset('images/Car_icon16.svg');
         break;
       default:
         imageWidget = const SizedBox.shrink();
