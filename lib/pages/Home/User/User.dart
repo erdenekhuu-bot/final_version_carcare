@@ -254,8 +254,9 @@ class _UserState extends State<User> {
             height: 50,
             child: GestureDetector(
               onTap: () {
-                DialogBoxQuit.quit(context);
+                quit(context);
               },
+
               child: Padding(
                 padding: const EdgeInsets.only(right: 20, left: 20),
                 child: Row(
@@ -284,6 +285,7 @@ class _UserState extends State<User> {
     );
   }
 }
+
 
 @override
 void quit(BuildContext context) {
@@ -321,7 +323,7 @@ void quit(BuildContext context) {
                         width: 104,
                         height: 35,
                         decoration: ShapeDecoration(
-                          color: const Color(0xFFB7B7B7),
+                          color: const Color(0xFF404040),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
