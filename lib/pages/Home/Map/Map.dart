@@ -43,6 +43,7 @@ class _MapsState extends State<Maps> {
     for (int i = 0; i < widget.places.length && i < widget.shops.length; i++) {
       dynamic markerLocation = widget.places[i];
       dynamic shopData = widget.shops[i];
+      print(shopData);
       final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(shopData['thumbnail'], targetWidth: 150);
       markers.add(
         MapMarker(
@@ -50,16 +51,20 @@ class _MapsState extends State<Maps> {
           position: markerLocation,
           icon: markerImage,
           onTap: (){
-              // showModalBottomSheet(
-              //   context: context,
-              //   useSafeArea: true,
-              //   isScrollControlled: true,
-              //   backgroundColor: Colors.transparent,
-              //   builder: (context) {
-              //     return MapPlaceWindow(phone: shopData['phone'], description: shopData['description'], img: shopData['additional'],name: shopData['name']);
-              //   }
-              // );
-            print(shopData['description']);
+            showModalBottomSheet(
+              context: context,
+              useSafeArea: true,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (context) {
+                return MapPlaceWindow(
+                  phone: shopData?['phone'],
+                  description: shopData?['description'],
+                  img: shopData?['thumbnail'],
+                  name: shopData?['name'],
+                );
+              },
+            );
           }
         ),
       );
