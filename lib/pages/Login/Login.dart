@@ -220,40 +220,44 @@ class _LoginState extends State<Login> {
                           width: 313,
                           height: 40,
                           child: ElevatedButton(
-                            onPressed: () async {
-                              if(_fkey.currentState!.validate()){
-                                String result = await RESTAPI.login(_phone, _password);
-                                Store.storePhone=_phone;
-                                Store.storePassword=_password;
-                                if(result == 'success'){
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const MainMenu()));
-                                } else {
-                                  Flushbar(
-                                    backgroundColor: const Color(0xFFFF6E6E),
-                                    flushbarStyle: FlushbarStyle.GROUNDED,
-                                    flushbarPosition: FlushbarPosition.TOP,
-                                    titleText: const Center(
-                                      child: Icon(
-                                        Icons.error_outline,
-                                        color: Colors.white,
-                                        size: 28,
-                                      ),
-                                    ),
-                                    messageText: const Padding(
-                                      padding: EdgeInsets.only(bottom: 20.0),
-                                      child: Text(
-                                        "Утасны дугаар аль эсвэл нууц үг буруу байна",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                    duration: const Duration(seconds: 2),
-                                  ).show(context);
-                                }
-                              }
+                            onPressed: () {
+                              // if(_fkey.currentState!.validate()){
+                              //   String result = await RESTAPI.login(_phone, _password);
+                              //   Store.storePhone=_phone;
+                              //   Store.storePassword=_password;
+                              //   if(result == 'success'){
+                              //     Navigator.push(
+                              //         context,
+                              //         MaterialPageRoute(
+                              //             builder: (context) => const MainMenu()));
+                              //   } else {
+                              //     Flushbar(
+                              //       backgroundColor: const Color(0xFFFF6E6E),
+                              //       flushbarStyle: FlushbarStyle.GROUNDED,
+                              //       flushbarPosition: FlushbarPosition.TOP,
+                              //       titleText: const Center(
+                              //         child: Icon(
+                              //           Icons.error_outline,
+                              //           color: Colors.white,
+                              //           size: 28,
+                              //         ),
+                              //       ),
+                              //       messageText: const Padding(
+                              //         padding: EdgeInsets.only(bottom: 20.0),
+                              //         child: Text(
+                              //           "Утасны дугаар аль эсвэл нууц үг буруу байна",
+                              //           textAlign: TextAlign.center,
+                              //           style: TextStyle(color: Colors.white),
+                              //         ),
+                              //       ),
+                              //       duration: const Duration(seconds: 2),
+                              //     ).show(context);
+                              //   }
+                              // }
+                              Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => const MainMenu()));
                             },
                             child: const Text(
                               'Нэвтрэх',

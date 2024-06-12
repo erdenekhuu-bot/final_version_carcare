@@ -134,21 +134,21 @@ class _UserState extends State<User> {
                   ),
                 ],
               ),
-              Container(
-                margin: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                ),
-                height: 50,
-                child: GestureDetector(
-                  onTap: () {
-                    pushScreen(
-                      context,
-                      screen: MySelf(username: _username, phone: _phone),
-                      withNavBar: false,
-                    );
-                  },
+              GestureDetector(
+                onTap: (){
+                  pushScreen(
+                    context,
+                    screen: MySelf(username: _username, phone: _phone),
+                    withNavBar: false,
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                  ),
+                  height: 50,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 20, left: 20),
                     child: Row(
@@ -172,19 +172,19 @@ class _UserState extends State<User> {
                   ),
                 ),
               ),
-              Container(
-                height: 50,
-                margin: const EdgeInsets.only(right: 20, left: 20),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10), color: Colors.white),
-                child: GestureDetector(
-                  onTap: () {
-                    pushScreen(
-                      context,
-                      screen: const Uilchilgee(),
-                      withNavBar: false,
-                    );
-                  },
+              GestureDetector(
+                onTap: (){
+                  pushScreen(
+                    context,
+                    screen: const Uilchilgee(),
+                    withNavBar: false,
+                  );
+                },
+                child: Container(
+                  height: 50,
+                  margin: const EdgeInsets.only(right: 20, left: 20),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10), color: Colors.white),
                   child: Padding(
                     padding: const EdgeInsets.only(right: 20, left: 20),
                     child: Row(
@@ -208,22 +208,61 @@ class _UserState extends State<User> {
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(right: 20, left: 20, top: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                ),
-                height: 50,
-                child: GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const CustomDialog();
-                      },
-                    );
-                  },
+              // Container(
+              //   margin: const EdgeInsets.only(right: 20, left: 20, top: 20),
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(10),
+              //     color: Colors.white,
+              //   ),
+              //   height: 50,
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       showDialog(
+              //         context: context,
+              //         builder: (BuildContext context) {
+              //           return const CustomDialog();
+              //         },
+              //       );
+              //     },
+              //     child: Padding(
+              //       padding: const EdgeInsets.only(right: 20, left: 20),
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           Row(
+              //             children: [
+              //               SvgPicture.asset('images/UserCall.svg'),
+              //               const SizedBox(
+              //                 width: 20,
+              //               ),
+              //               const Text('Холбоо барих'),
+              //             ],
+              //           ),
+              //           const Opacity(
+              //             opacity: 0.5,
+              //             child: Icon(Icons.arrow_forward_ios_rounded),
+              //           )
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              GestureDetector(
+                onTap: (){
+                  showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const CustomDialog();
+                              },
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(right: 20, left: 20, top: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                  ),
+                  height: 50,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 20, left: 20),
                     child: Row(
@@ -247,41 +286,42 @@ class _UserState extends State<User> {
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(right: 20, left: 20, top: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                ),
-                height: 50,
-                child: GestureDetector(
-                  onTap: () {
-                    quit(context);
-                  },
 
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 20, left: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            SvgPicture.asset('images/UserExit.svg'),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            const Text('Гарах'),
-                          ],
-                        ),
-                        const Opacity(
-                          opacity: 0.5,
-                          child: Icon(Icons.arrow_forward_ios_rounded),
-                        )
-                      ],
+              GestureDetector(
+                onTap: (){
+                    quit(context);
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(right: 20, left: 20, top: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                  ),
+                  height: 50,
+
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 20, left: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              SvgPicture.asset('images/UserExit.svg'),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              const Text('Гарах'),
+                            ],
+                          ),
+                          const Opacity(
+                            opacity: 0.5,
+                            child: Icon(Icons.arrow_forward_ios_rounded),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ],

@@ -9,7 +9,7 @@ class RESTAPI {
       final Map<String, dynamic> response = {};
       final Map<String, String> content = {'areaCode': '976', 'phone': phone};
       final request = await http.post(
-          Uri.parse('https://dev-api.carcare.mn/v1/auth/send/phone'),
+          Uri.parse('https://api.carcare.mn/v1/auth/send/phone'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(content));
       return request.statusCode == 200
@@ -24,7 +24,7 @@ class RESTAPI {
     try {
       final Map<String, dynamic> content = {'code': otp, 'confirmationId': id};
       final request = await http.post(
-          Uri.parse('https://dev-api.carcare.mn/v1/auth/validate/phone'),
+          Uri.parse('https://api.carcare.mn/v1/auth/validate/phone'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(content));
       return request.statusCode == 200
@@ -46,7 +46,7 @@ class RESTAPI {
         'phone': phone
       };
       final request = await http.post(
-          Uri.parse('https://dev-api.carcare.mn/v1/auth/register'),
+          Uri.parse('https://api.carcare.mn/v1/auth/register'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(register));
       return request.statusCode == 200
@@ -65,7 +65,7 @@ class RESTAPI {
         'password': password
       };
       final request = await http.post(
-          Uri.parse('https://dev-api.carcare.mn/v1/auth/login'),
+          Uri.parse('https://api.carcare.mn/v1/auth/login'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(content));
       if (request.statusCode == 200) {
@@ -82,7 +82,7 @@ class RESTAPI {
   static Future<List<dynamic>> getPlaces() async {
     try {
       final request = await http.get(
-          Uri.parse('https://dev-api.carcare.mn/v1/shop'),
+          Uri.parse('https://api.carcare.mn/v1/shop'),
           headers: {'Authorization': 'Bearer ${Store.remote_accessToken}'});
       return request.statusCode == 200 ? json.decode(request.body)['data'] : [];
     } catch (error) {
@@ -93,7 +93,7 @@ class RESTAPI {
   static Future<List<dynamic>> getServices() async {
     try {
       final request = await http.get(
-          Uri.parse('https://dev-api.carcare.mn/v1/utils/service'),
+          Uri.parse('https://api.carcare.mn/v1/utils/service'),
           headers: {'Authorization': 'Bearer ${Store.accessToken}'});
       return request.statusCode == 200 ? json.decode(request.body)['data'] : [];
     } catch (error) {
@@ -111,7 +111,7 @@ class RESTAPI {
         'serviceDate': date
       };
       final request = await http.post(
-          Uri.parse('https://dev-api.carcare.mn/v1/user/expense'),
+          Uri.parse('https://api.carcare.mn/v1/user/expense'),
           headers: {
             'Authorization': 'Bearer ${Store.accessToken}',
             'Content-Type': 'application/json'
@@ -126,7 +126,7 @@ class RESTAPI {
   static Future<List<dynamic>> getExpense() async {
     try {
       final request = await http.get(
-          Uri.parse('https://dev-api.carcare.mn/v1/user/expense'),
+          Uri.parse('https://api.carcare.mn/v1/user/expense'),
           headers: {'Authorization': 'Bearer ${Store.accessToken}'});
       return request.statusCode == 200 ? json.decode(request.body)['data'] : '';
     } catch (error) {
@@ -142,7 +142,7 @@ class RESTAPI {
         "phone": phone,
         "password": password
       };
-      final request = await http.patch(Uri.parse('https://dev-api.carcare.mn/v1/auth/update'),
+      final request = await http.patch(Uri.parse('https://api.carcare.mn/v1/auth/update'),
       headers: {
         'Authorization': 'Bearer ${Store.accessToken}',
         'Content-Type': 'application/json'
@@ -160,7 +160,7 @@ class RESTAPI {
         "password": password,
         "confirmationId": id
       };
-      final request = await http.post(Uri.parse('https://dev-api.carcare.mn/v1/auth/forgot'),
+      final request = await http.post(Uri.parse('https://api.carcare.mn/v1/auth/forgot'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(content)
       );
@@ -177,7 +177,7 @@ class RESTAPI {
         "phone": phone,
         "password": password
       };
-      final request = await http.get(Uri.parse('https://dev-api.carcare.mn/v1/auth/identity'),
+      final request = await http.get(Uri.parse('https://api.carcare.mn/v1/auth/identity'),
         headers: {
           'Authorization': 'Bearer ${Store.accessToken}',
         }

@@ -43,6 +43,10 @@ class _CarState extends State<Car> {
   double totalAmount = 0.0;
   Random random = Random();
   bool shouldContinue = true;
+  int touchedIndex = 0;
+  PieTouchResponse? pieTouchResponse;
+  String? touchedSectionTitle;
+  String zardal ='Зардлын график';
   @override
   Widget build(BuildContext context) {
     totalAmount = 0.0;
@@ -197,11 +201,32 @@ class _CarState extends State<Car> {
                         PieChart(
                               PieChartData(
                                 pieTouchData: PieTouchData(
-                                  touchCallback: (FlTouchEvent event, pieTouchResponse){
-                                     if(!event.isInterestedForInteractions || pieTouchResponse == null || pieTouchResponse.touchedSection == null){
-                                       print('Piechart tapped');
-                                     }
-                                  }
+                                  // touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                                  //   setState(() {
+                                  //     if (!event.isInterestedForInteractions || pieTouchResponse == null || pieTouchResponse.touchedSection == null) {
+                                  //       touchedIndex = -1;
+                                  //     } else {
+                                  //       touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                                  //       // print('Touched section title: ${data[touchedIndex]['name']}');
+                                  //       if(data[touchedIndex] != null){
+                                  //           print('Touched section title --------> ${data[touchedIndex]['name]}');
+                                  //       }
+                                  //     }
+                                  //   });
+                                  // },
+                                  touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                                    setState(() {
+                                      if (!event.isInterestedForInteractions || pieTouchResponse == null || pieTouchResponse.touchedSection == null) {
+                                        touchedIndex = -1;
+                                        touchedSectionTitle = null;
+                                        zardal = 'Зардлын график';
+                                      } else {
+                                        touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                                        touchedSectionTitle = data[touchedIndex]['service']['name'];
+                                        zardal = touchedSectionTitle ?? 'Unknown Section';
+                                      }
+                                    });
+                                  },
                                 ),
                               startDegreeOffset: 830,
                               sectionsSpace: 0,
@@ -237,9 +262,9 @@ class _CarState extends State<Car> {
                       ),
 
 
-                          const Center(
+                          Center(
                             child: Text(
-                              'Зардлын график',
+                              '${zardal}',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           )
