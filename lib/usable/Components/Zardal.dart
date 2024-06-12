@@ -89,7 +89,6 @@ class _ZardalState extends State<Zardal> {
               key: _formKey,
               child: Column(
                 children: [
-                  const SizedBox(height: 10),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
                     child: Row(
@@ -101,7 +100,7 @@ class _ZardalState extends State<Zardal> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 50,
@@ -136,7 +135,7 @@ class _ZardalState extends State<Zardal> {
                     ),
                   ),
 
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
                     child: Row(
@@ -148,7 +147,7 @@ class _ZardalState extends State<Zardal> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 50,
@@ -171,7 +170,7 @@ class _ZardalState extends State<Zardal> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
                     child: Row(
@@ -183,7 +182,7 @@ class _ZardalState extends State<Zardal> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 50,
@@ -207,7 +206,6 @@ class _ZardalState extends State<Zardal> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     child: TableCalendar(
@@ -234,7 +232,7 @@ class _ZardalState extends State<Zardal> {
                     ),
 
                   ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               SizedBox(
                 width: 323,
                 height: 50,
