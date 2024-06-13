@@ -11,7 +11,7 @@ class OfferPlace extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(
-      margin: EdgeInsets.only(bottom: 15),
+      margin: const EdgeInsets.only(bottom: 15),
       width: double.infinity,
       height: 90,
       decoration: BoxDecoration(
@@ -20,7 +20,7 @@ class OfferPlace extends StatelessWidget {
         children: [
           (img != '')
               ? Padding(
-                  padding: EdgeInsets.only(right: 8.0, left: 8),
+                  padding: const EdgeInsets.only(right: 8.0, left: 8),
                   child: Container(
                     width: 70,
                     height: 70,
@@ -44,7 +44,7 @@ class OfferPlace extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('$title', style: TextStyle(fontFamily: 'Inter')),
+              Text('$title', style: const TextStyle(fontFamily: 'Inter')),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,8 +59,8 @@ class OfferPlace extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 30, top: 5),
-                        padding: EdgeInsets.only(left: 5, right: 9),
+                        margin: const EdgeInsets.only(left: 30, top: 5),
+                        padding: const EdgeInsets.only(left: 5, right: 9),
                         alignment: Alignment.center,
                         width: 116,
                         height: 25,

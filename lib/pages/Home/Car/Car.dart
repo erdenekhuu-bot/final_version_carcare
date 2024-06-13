@@ -68,7 +68,6 @@ class _CarState extends State<Car> {
       totalAmount += item['amount'];
       Store.amount=totalAmount;
     }
-    print(data);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 242, 242),
       body: SafeArea(
@@ -303,10 +302,12 @@ class _CarState extends State<Car> {
                                      title: item['servicePlace'],
                                      price: item['amount'].toDouble(),
                                      type: item['service']['name'],
+                                     imageWidget: item['service']['iconAsset']['path'],
                                    ) : Prices(
                                      title: item['servicePlace'],
                                      price: item['amount'].toDouble(),
                                      type: item['service']['name'],
+                                     imageWidget: item['service']['iconAsset']['path'],
                                    )
                           ]
                           : [

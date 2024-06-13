@@ -23,10 +23,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Tab> tabs = <Tab>[
-    const Tab(text: 'Дуудлагын засвар'),
-    const Tab(text: 'Машин ачилт'),
-  ];
+
   int activeIndex = 0;
   final controller = CarouselController();
   final urlImages = ['images/RectangleEdited.png', 'images/RectangleEdited.png'];
@@ -55,7 +52,6 @@ class _HomeState extends State<Home> {
   List<LatLng> customAddress = [];
   @override
   Widget build(BuildContext context) {
-    // Store.location=customAddress;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 242, 242),
       body: SafeArea(
