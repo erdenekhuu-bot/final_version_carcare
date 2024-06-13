@@ -72,7 +72,7 @@ class OfferPlace extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SvgPicture.asset('images/phone.svg'),
-                            Text('${phone.substring(0,8)}'),
+                            Text('${phone}'),
                           ],
                         ),
                       )

@@ -83,7 +83,7 @@ class RESTAPI {
     try {
       final request = await http.get(
           Uri.parse('https://dev-api.carcare.mn/v1/shop'),
-          headers: {'Authorization': 'Bearer ${Store.remote_accessToken}'});
+          headers: {'Authorization': 'Bearer ${Store.accessToken}'});
       return request.statusCode == 200 ? json.decode(request.body)['data'] : [];
     } catch (error) {
       return [];
@@ -94,7 +94,7 @@ class RESTAPI {
     try {
       final request = await http.get(
           Uri.parse('https://dev-api.carcare.mn/v1/utils/service'),
-          headers: {'Authorization': 'Bearer ${Store.remote_accessToken}'});
+          headers: {'Authorization': 'Bearer ${Store.accessToken}'});
       return request.statusCode == 200 ? json.decode(request.body)['data'] : [];
     } catch (error) {
       return [];

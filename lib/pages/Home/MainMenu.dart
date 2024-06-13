@@ -47,7 +47,6 @@ class _MainMenuState extends State<MainMenu> {
             item['location']['latitude'], item['location']['longitude']));
       }
     }
-    print(Store.accessToken);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
