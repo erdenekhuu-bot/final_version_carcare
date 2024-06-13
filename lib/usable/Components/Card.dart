@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 class Cart extends StatelessWidget {
-  final Widget img;
+  // final Widget img;
   final String txt;
-
+  final String img;
   const Cart({super.key, required this.img, required this.txt});
 
   @override
@@ -19,7 +19,7 @@ class Cart extends StatelessWidget {
             color: const Color(0xff404040),
             borderRadius: BorderRadius.circular(60),
           ),
-          child: img,
+          child: Image.network(img),
         ),
         Text(txt, style: const TextStyle(fontSize: 10)),
       ],

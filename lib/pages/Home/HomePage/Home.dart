@@ -14,7 +14,9 @@ import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+
+  final List<dynamic>? services;
+  Home({super.key, this.services});
 
   @override
   State<Home> createState() => _HomeState();
@@ -141,39 +143,8 @@ class _HomeState extends State<Home> {
                           alignment: WrapAlignment.center,
                           spacing: 18,
                           children: [
-                            Cart(
-                                img: SvgPicture.asset('images/Car_icon1.svg'),
-                                txt: 'Агрегат'),
-                            Cart(
-                                img: SvgPicture.asset('images/Car_icon2.svg'),
-                                txt: 'Кузов'),
-                            Cart(
-                                img: SvgPicture.asset('images/Car_icon3.svg'),
-                                txt: 'Дугуй'),
-                            Cart(
-                                img: SvgPicture.asset('images/Car_icon4.svg'),
-                                txt: 'Угаалга'),
-                            Cart(
-                                img: SvgPicture.asset('images/Car_icon5.svg'),
-                                txt: 'Мотоцикл'),
-                            Cart(
-                                img: SvgPicture.asset('images/Car_icon17.svg'),
-                                txt: 'Машин худалдаа'),
-                            Cart(
-                                img: SvgPicture.asset('images/Car_icon15.svg'),
-                                txt: 'Сэлбэг худалдаа'),
-                            Cart(
-                              img: SvgPicture.asset('images/Car_icon18.svg'),
-                              txt: 'Машин будаг'),
-                            Cart(
-                                img: SvgPicture.asset('images/Car_icon18.svg'),
-                                txt: 'Авто хуулга'),
-                            Cart(
-                                img: SvgPicture.asset('images/Car_icon7.svg'),
-                                txt: 'Тос тосолгоо'),
-                            Cart(
-                                img: SvgPicture.asset('images/Car_icon12.svg'),
-                                txt: 'Суудлын бүрээс'),
+                            for(var item in widget.services!)
+                                Cart(img: item['iconAsset']['path'], txt: item['name'])
                           ],
                         ),
                       ),

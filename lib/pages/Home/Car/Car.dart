@@ -9,6 +9,8 @@ import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:final_pro/usable/Components/Prices.dart';
 import 'package:final_pro/usable/Store/Store.dart';
 import 'dart:math';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 class Car extends StatefulWidget {
   const Car({super.key});
   @override
@@ -21,18 +23,30 @@ class _CarState extends State<Car> {
   int month = DateTime.now().month;
   int year = DateTime.now().year;
   List<dynamic> data = [];
-  List<dynamic> names=[];
   @override
   void initState(){
     super.initState();
     getExpense();
   }
-  void getExpense() async {
-    List<dynamic> result= await RESTAPI.getExpense();
-    setState(() {
-        data=result;
-        names=result;
-    });
+  // void getExpense() async {
+  //   List<dynamic> result= await RESTAPI.getExpense();
+  //   setState(() {
+  //       data=result;
+  //   });
+  // }
+  Future<void> getExpense() async {
+    try {
+      final request = await http.get(
+          Uri.parse('https://dev-api.carcare.mn/v1/user/expense'),
+          headers: {'Authorization': 'Bearer ${Store.accessToken}'});
+     if(request.statusCode == 200){
+        setState(() {
+          data=json.decode(request.body)['data'];
+        });
+     }
+    } catch (error) {
+      return;
+    }
   }
   int filterMonth(String argument){
     return int.parse(argument.substring(5,7));
@@ -54,6 +68,7 @@ class _CarState extends State<Car> {
       totalAmount += item['amount'];
       Store.amount=totalAmount;
     }
+    print(data);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 242, 242),
       body: SafeArea(

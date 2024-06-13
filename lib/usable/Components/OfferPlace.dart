@@ -9,6 +9,7 @@ class OfferPlace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       margin: EdgeInsets.only(bottom: 15),
       width: double.infinity,
@@ -71,7 +72,7 @@ class OfferPlace extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SvgPicture.asset('images/phone.svg'),
-                            Text('$phone'),
+                            Text('${phone.substring(0,8)}'),
                           ],
                         ),
                       )

@@ -44,12 +44,13 @@ class _MapsState extends State<Maps> {
       dynamic markerLocation = widget.places[i];
       dynamic shopData = widget.shops[i];
       final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(shopData['thumbnail'], targetWidth: 150);
+      // final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(_markerImageUrl, targetWidth: 150);
       markers.add(
         MapMarker(
           id: i.toString(),
           position: markerLocation,
           icon: markerImage,
-          onTap: (){
+          onTap: () {
             showModalBottomSheet(
               context: context,
               useSafeArea: true,

@@ -19,6 +19,7 @@ class MainMenu extends StatefulWidget {
 }
 
 List<dynamic> shops = [];
+List<dynamic> services=[];
 
 class _MainMenuState extends State<MainMenu> {
   @override
@@ -29,8 +30,10 @@ class _MainMenuState extends State<MainMenu> {
 
   void getShops() async {
     List<dynamic> result = await RESTAPI.getPlaces();
+    List<dynamic> serviceResult = await RESTAPI.getServices();
     setState(() {
       shops = result;
+      services=serviceResult;
     });
   }
 
@@ -44,6 +47,7 @@ class _MainMenuState extends State<MainMenu> {
             item['location']['latitude'], item['location']['longitude']));
       }
     }
+    print(Store.accessToken);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -51,7 +55,7 @@ class _MainMenuState extends State<MainMenu> {
         navBarHeight: 70,
         tabs: [
           PersistentTabConfig(
-              screen: const Home(),
+              screen: Home(services: services),
               item: ItemConfig(
                   inactiveIcon: SvgPicture.asset('images/home.svg'),
                   icon: SvgPicture.asset('images/home.svg',

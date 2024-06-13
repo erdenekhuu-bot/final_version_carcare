@@ -208,45 +208,6 @@ class _UserState extends State<User> {
                   ),
                 ),
               ),
-              // Container(
-              //   margin: const EdgeInsets.only(right: 20, left: 20, top: 20),
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(10),
-              //     color: Colors.white,
-              //   ),
-              //   height: 50,
-              //   child: GestureDetector(
-              //     onTap: () {
-              //       showDialog(
-              //         context: context,
-              //         builder: (BuildContext context) {
-              //           return const CustomDialog();
-              //         },
-              //       );
-              //     },
-              //     child: Padding(
-              //       padding: const EdgeInsets.only(right: 20, left: 20),
-              //       child: Row(
-              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         children: [
-              //           Row(
-              //             children: [
-              //               SvgPicture.asset('images/UserCall.svg'),
-              //               const SizedBox(
-              //                 width: 20,
-              //               ),
-              //               const Text('Холбоо барих'),
-              //             ],
-              //           ),
-              //           const Opacity(
-              //             opacity: 0.5,
-              //             child: Icon(Icons.arrow_forward_ios_rounded),
-              //           )
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
               GestureDetector(
                 onTap: (){
                   showDialog(
