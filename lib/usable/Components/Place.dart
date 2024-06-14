@@ -12,6 +12,14 @@ class Place extends StatefulWidget {
   State<Place> createState() => _PlaceState();
 }
 
+String filter(String phone){
+  if(phone.length == 7){
+      return phone.substring(0,7);
+  }
+  else {
+    return phone.substring(0,8);
+  }
+}
 class _PlaceState extends State<Place> {
     List<Tab> tabs = <Tab>[
       Tab(
@@ -159,7 +167,7 @@ class _PlaceState extends State<Place> {
                               children: _filteredShops.map((shop) {
                                 return OfferPlace(
                                   title: shop['name'],
-                                  phone: shop['phone'],
+                                  phone: filter(shop['phone']),
                                   img: shop['thumbnail'],
                                 );
                               }).toList(),
@@ -221,7 +229,7 @@ class _PlaceState extends State<Place> {
                               children: _filteredShops.map((shop) {
                                 return OfferPlace(
                                   title: shop['name'],
-                                  phone: shop['phone'],
+                                  phone: filter(shop['phone']),
                                   img: shop['thumbnail'],
                                 );
                               }).toList(),
@@ -285,7 +293,7 @@ class _PlaceState extends State<Place> {
                                 if (shop['type'] == 'REPAIR') {
                                   return OfferPlace(
                                     title: shop['name'],
-                                    phone: shop['phone'],
+                                    phone: filter(shop['phone']),
                                     img: shop['thumbnail'],
                                   );
                                 }
@@ -350,7 +358,7 @@ class _PlaceState extends State<Place> {
                                 if (shop['type'] == 'KUZOV') {
                                   return OfferPlace(
                                     title: shop['name'],
-                                    phone: shop['phone'],
+                                    phone: filter(shop['phone']),
                                     img: shop['thumbnail'],
                                   );
                                 }
@@ -415,7 +423,7 @@ class _PlaceState extends State<Place> {
                                 if (shop['type'] == 'TIRE') {
                                   return OfferPlace(
                                     title: shop['name'],
-                                    phone: shop['phone'],
+                                    phone: filter(shop['phone']),
                                     img: shop['thumbnail'],
                                   );
                                 }

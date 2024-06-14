@@ -44,7 +44,12 @@ class _HomeState extends State<Home> {
   }
 
   String filter(String phone){
-    return phone.substring(0,8);
+    if(phone.length == 7){
+      return phone.substring(0,7);
+    }
+    else {
+      return phone.substring(0,8);
+    }
   }
   void getShops() async {
     List<dynamic> result = await RESTAPI.getPlaces();

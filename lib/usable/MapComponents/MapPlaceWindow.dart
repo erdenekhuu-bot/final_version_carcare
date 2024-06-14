@@ -220,15 +220,6 @@ class MapPlaceWindow extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Бямба 10:00 - 15:00',
-                                              style: TextStyle(
-                                                  color: Color(0xFF404040)),
-                                            ),
-                                          ],
-                                        ),
                                       ],
                                     ),
                                     SizedBox(

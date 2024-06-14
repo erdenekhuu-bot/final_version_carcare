@@ -43,8 +43,8 @@ class _MapsState extends State<Maps> {
     for (int i = 0; i < widget.places.length && i < widget.shops.length; i++) {
       dynamic markerLocation = widget.places[i];
       dynamic shopData = widget.shops[i];
-      final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(shopData['thumbnail'], targetWidth: 150);
-      // final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(_markerImageUrl, targetWidth: 150);
+      // final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(shopData['thumbnail'] ?? _markerImageUrl, targetWidth: 150);
+      final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl( _markerImageUrl, targetWidth: 100);
       markers.add(
         MapMarker(
           id: i.toString(),
@@ -62,6 +62,7 @@ class _MapsState extends State<Maps> {
                   description: shopData?['description'],
                   img: shopData?['thumbnail'],
                   name: shopData?['name'],
+                  address: shopData?['location']?['address'],
                 );
               },
             );
