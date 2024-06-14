@@ -43,6 +43,9 @@ class _HomeState extends State<Home> {
     getShops();
   }
 
+  String filter(String phone){
+    return phone.substring(0,8);
+  }
   void getShops() async {
     List<dynamic> result = await RESTAPI.getPlaces();
     setState(() {
@@ -189,12 +192,9 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
-                      for (var item in shops)
-                        OfferPlace(
-                          title: item['name'],
-                          phone: item['phone'],
-                          img: item['thumbnail'],
-                        ),
+                       for(int i=0; i<shops.length; i++)
+                          if(i<10)
+                            OfferPlace(title: shops[i]['name'], phone: filter(shops[i]['phone']), img: shops[i]['thumbnail'],)
                     ],
                   ),
                 ),
