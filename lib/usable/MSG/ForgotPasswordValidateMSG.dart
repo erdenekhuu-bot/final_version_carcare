@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:final_pro/pages/Register/SignUp.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:final_pro/pages/ForgotPassword/ForgotPassword.dart';
+
 class ForgotPasswordValidateMSG extends StatefulWidget {
-  int confirmationId;
   String phoneNumber;
-  ForgotPasswordValidateMSG({super.key, required this.confirmationId, required this.phoneNumber});
+  ForgotPasswordValidateMSG({super.key, required this.phoneNumber});
 
   @override
   State<ForgotPasswordValidateMSG> createState() => _ForgotPasswordValidateMSGState();
@@ -57,17 +55,9 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            'images/iconBack.svg',
-            width: 35,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
       ),
       body: Form(
         key: _k,
@@ -338,9 +328,9 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
                   child: ElevatedButton(
                     onPressed: () async {
                       String result = props(_digit1) + props(_digit2) + props(_digit3) + props(_digit4) + props(_digit5) + props(_digit6);
-                      String response = await RESTAPI.verifyOTP(result, widget.confirmationId);
-                      if(response == 'success'){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPassword(confirmationId: widget.confirmationId)));
+                      int response = await RESTAPI.verifyOTP(result, widget.phoneNumber);
+                      if(response > 0){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPassword()));
                       } else {
                         Flushbar(
                           backgroundColor: const Color(0xFFFF6E6E),
@@ -389,14 +379,13 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
                   onTap: () async {
                     final int _id = await RESTAPI.sendOTP(widget.phoneNumber);
                     if(_id > 0) {
-                      widget.confirmationId=_id;
                       Flushbar(
                         backgroundColor: const Color(0xFF41D4A8),
                         flushbarStyle: FlushbarStyle.GROUNDED,
                         flushbarPosition: FlushbarPosition.TOP,
                         titleText: const Center(
                           child: Icon(
-                            Icons.fmd_good,
+                            Icons.check_circle_outline_rounded,
                             color: Colors.white,
                             size: 28,
                           ),

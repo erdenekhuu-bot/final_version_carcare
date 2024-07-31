@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:final_pro/pages/Register/SignUp.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
-import 'package:final_pro/usable/MSG/SendMSG.dart';
 import 'package:final_pro/usable/Components/MySelf.dart';
-class ChangePhoneValidateMSG extends StatefulWidget {
+import 'package:final_pro/usable/Store/Store.dart';
 
+class ChangePhoneValidateMSG extends StatefulWidget {
   int confirmationId;
   String phoneNumber;
-  ChangePhoneValidateMSG({super.key, required this.confirmationId, required this.phoneNumber});
+  ChangePhoneValidateMSG(
+      {super.key, required this.confirmationId, required this.phoneNumber});
 
   @override
   State<ChangePhoneValidateMSG> createState() => _ChangePhoneValidateMSGState();
 }
 
 class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
-
   final _k = GlobalKey<FormState>();
   String result = '';
   final TextEditingController _digit1 = TextEditingController();
@@ -59,17 +57,9 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            'images/iconBack.svg',
-            width: 35,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
       ),
       body: Form(
         key: _k,
@@ -129,7 +119,7 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                        const BorderSide(width: 1, color: Colors.black),
+                            const BorderSide(width: 1, color: Colors.black),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -166,7 +156,7 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                        const BorderSide(width: 1, color: Colors.black),
+                            const BorderSide(width: 1, color: Colors.black),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -203,7 +193,7 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                        const BorderSide(width: 1, color: Colors.black),
+                            const BorderSide(width: 1, color: Colors.black),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -240,7 +230,7 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                        const BorderSide(width: 1, color: Colors.black),
+                            const BorderSide(width: 1, color: Colors.black),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -277,7 +267,7 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                        const BorderSide(width: 1, color: Colors.black),
+                            const BorderSide(width: 1, color: Colors.black),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -314,7 +304,7 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                        const BorderSide(width: 1, color: Colors.black),
+                            const BorderSide(width: 1, color: Colors.black),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -339,10 +329,24 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () async {
-                      String result = props(_digit1) + props(_digit2) + props(_digit3) + props(_digit4) + props(_digit5) + props(_digit6);
-                      String response = await RESTAPI.verifyOTP(result, widget.confirmationId);
-                      if(response == 'success'){;
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>MySelf(forward: 1)));
+                      String result = props(_digit1) +
+                          props(_digit2) +
+                          props(_digit3) +
+                          props(_digit4) +
+                          props(_digit5) +
+                          props(_digit6);
+                      int response = await RESTAPI.verifyOTP(
+                          result, widget.phoneNumber);
+                      if (response > 0) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MySelf(
+                                      forward: 1,
+                                      password: Store.storePassword,
+                                      phone: Store.storePhone,
+                                      username: Store.storeUsername,
+                                    )));
                       } else {
                         Flushbar(
                           backgroundColor: const Color(0xFFFF6E6E),
@@ -389,15 +393,15 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                 GestureDetector(
                   onTap: () async {
                     final int _id = await RESTAPI.sendOTP(widget.phoneNumber);
-                    if(_id > 0) {
-                      widget.confirmationId=_id;
+                    if (_id > 0) {
+                      widget.confirmationId = _id;
                       Flushbar(
                         backgroundColor: const Color(0xFF41D4A8),
                         flushbarStyle: FlushbarStyle.GROUNDED,
                         flushbarPosition: FlushbarPosition.TOP,
                         titleText: const Center(
                           child: Icon(
-                            Icons.fmd_good,
+                            Icons.check_circle_outline_rounded,
                             color: Colors.white,
                             size: 28,
                           ),
@@ -431,4 +435,3 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
     );
   }
 }
-

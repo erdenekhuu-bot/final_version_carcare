@@ -7,15 +7,25 @@ import 'package:final_pro/usable/MapComponents/map_marker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:final_pro/usable/MapComponents/MapMenu.dart';
 import 'package:final_pro/usable/MapComponents/MapPlaceWindow.dart';
+import 'package:final_pro/usable/Store/Store.dart';
+
 class Maps extends StatefulWidget {
-  final List<LatLng> places;
-  final List<dynamic> shops;
-  Maps({super.key, required this.places, required this.shops});
+   List<LatLng>? places;
+   List<dynamic>? shops;
+   List<dynamic>? subdir;
+   final String? title;
+   final List<dynamic>? servicePlaces;
+   int? forward=0;
+   String? name;
+   final VoidCallback? f1;
+   Maps({super.key, this.f1, this.name, this.forward, this.places, this.shops, this.title, this.servicePlaces, this.subdir});
   @override
   _MapsState createState() => _MapsState();
 }
 
 class _MapsState extends State<Maps> {
+
+  late GoogleMapController GoogleMapcontroller;
   final Completer<GoogleMapController> _mapController = Completer();
   final Set<Marker> _markers = Set();
   final int _minClusterZoom = 0;
@@ -24,12 +34,14 @@ class _MapsState extends State<Maps> {
   double _currentZoom = 10;
   bool _isMapLoading = true;
   bool _areMarkersLoading = true;
-  final String _markerImageUrl =
-      'https://img.icons8.com/office/80/000000/marker.png';
+  final String _markerImageUrl = 'https://img.icons8.com/office/80/000000/marker.png';
   final Color _clusterColor = Colors.black;
   final Color _clusterTextColor = Colors.white;
+
+
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
+    GoogleMapcontroller=controller;
 
     setState(() {
       _isMapLoading = false;
@@ -38,12 +50,20 @@ class _MapsState extends State<Maps> {
     _initMarkers();
   }
 
+  void _resetToDefault(){
+      widget.places = Store.filterAddress;
+      widget.shops = Store.filterShops;
+    _initMarkers();
+  }
+
+
+
   void _initMarkers() async {
     final List<MapMarker> markers = [];
-    for (int i = 0; i < widget.places.length && i < widget.shops.length; i++) {
-      dynamic markerLocation = widget.places[i];
-      dynamic shopData = widget.shops[i];
-      // final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(shopData['thumbnail'] ?? _markerImageUrl, targetWidth: 150);
+    for (int i = 0; i < widget.places!.length && i < widget.shops!.length; i++) {
+      dynamic markerLocation = widget.places![i];
+      dynamic shopData = widget.shops![i];
+      //final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl('https://d3v7ghkqvtko5q.cloudfront.net/${shopData?['thumbnail']}', targetWidth: 150);
       final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl( _markerImageUrl, targetWidth: 100);
       markers.add(
         MapMarker(
@@ -57,13 +77,7 @@ class _MapsState extends State<Maps> {
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
               builder: (context) {
-                return MapPlaceWindow(
-                  phone: shopData?['phone'],
-                  description: shopData?['description'],
-                  img: shopData?['thumbnail'],
-                  name: shopData?['name'],
-                  address: shopData?['location']?['address'],
-                );
+                return MapPlaceWindow(phone: shopData?['phone'], description: shopData?['description'], img: shopData?['thumbnail'], name: shopData?['name'], address: shopData?['shop_location']?['address'], id: shopData?['id']);
               },
             );
           }
@@ -71,11 +85,7 @@ class _MapsState extends State<Maps> {
       );
     }
 
-    _clusterManager = await MapHelper.initClusterManager(
-      markers,
-      _minClusterZoom,
-      _maxClusterZoom,
-    );
+    _clusterManager = await MapHelper.initClusterManager(markers, _minClusterZoom, _maxClusterZoom);
 
     await _updateMarkers();
   }
@@ -90,13 +100,7 @@ class _MapsState extends State<Maps> {
       _areMarkersLoading = true;
     });
 
-    final updatedMarkers = await MapHelper.getClusterMarkers(
-      _clusterManager,
-      _currentZoom,
-      _clusterColor,
-      _clusterTextColor,
-      80,
-    );
+    final updatedMarkers = await MapHelper.getClusterMarkers(_clusterManager, _currentZoom, _clusterColor, _clusterTextColor, 80);
 
     _markers
       ..clear()
@@ -109,24 +113,27 @@ class _MapsState extends State<Maps> {
 
   bool _firstClick = false;
   bool _secondClick = false;
+  String defaultTitle = 'Бүгд';
+
+
+  @override
+  void dispose(){
+    super.dispose();
+    GoogleMapcontroller.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    return Stack(
         children: <Widget>[
           Opacity(
             opacity: _isMapLoading ? 0 : 1,
             child: GoogleMap(
-              mapToolbarEnabled: true,
-              zoomGesturesEnabled: true,
-              myLocationButtonEnabled: true,
-              myLocationEnabled: true,
               zoomControlsEnabled: false,
-              initialCameraPosition: CameraPosition(
-                target: const LatLng(47.9221, 106.9155),
-                // target: const LatLng(41.143029, -8.611274),
-                zoom: _currentZoom,
-              ),
+              initialCameraPosition: CameraPosition(target: const LatLng(47.9221, 106.9155), zoom: _currentZoom),
               markers: Set<Marker>.of(_markers),
               onMapCreated: (controller) => _onMapCreated(controller),
               onCameraMove: (position) => _updateMarkers(position.zoom),
@@ -154,128 +161,130 @@ class _MapsState extends State<Maps> {
                 ),
               ),
             ),
-          Positioned(
-            top: 40,
-            left: 20,
-            child: Container(
-              width: MediaQuery.of(context).orientation == Orientation.portrait
-                  ? 152
-                  : 252,
-              height: 53,
-              decoration: BoxDecoration(
-                color: _firstClick
-                    ? const Color(0xff404040).withOpacity(0.8)
-                    : const Color.fromARGB(255, 112, 112, 112).withOpacity(0.8),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _firstClick = !_firstClick;
-                  });
-                },
+           widget.forward ==1 ?  Positioned(
+              top: 40,
+              left: 20,
+              child: Container(
+                width: screenWidth * 0.4,
+                height: 53,
+                decoration: BoxDecoration(
+                  color: _firstClick ? const Color(0xff404040).withOpacity(0.8) : const Color.fromARGB(255, 112, 112, 112).withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const Text('Бүгд',
-                            style: TextStyle(color: Colors.white)),
-                        _firstClick
-                            ? const Icon(
-                                Icons.arrow_drop_down_outlined,
-                                color: Colors.white,
-                              )
-                            : const Icon(
-                                Icons.arrow_drop_up_outlined,
-                                color: Colors.white,
-                              ),
+                        Text('${widget.name}', style: const TextStyle(color: Colors.white)),
                       ],
                     ),
                   ],
                 ),
               ),
-            ),
-          ),
+          ) : Positioned(
+               top: 40,
+               left: 20,
+               child: GestureDetector(
+                 onTap: () {
+                   setState(() {
+                     _firstClick = !_firstClick;
+                     _secondClick=false;
+                   });
+                   if(_secondClick == false)
+                     _resetToDefault();
+                 },
+                 child: Container(
+                   width: screenWidth * 0.4,
+                   height: 53,
+                   decoration: BoxDecoration(
+                     color: _firstClick ? const Color(0xff404040).withOpacity(0.8) : const Color.fromARGB(255, 112, 112, 112).withOpacity(0.8),
+                     borderRadius: BorderRadius.circular(10),
+                   ),
+                   child: Column(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: [
+                       Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                         children: [
+                           Text('${_firstClick ? defaultTitle : defaultTitle='Бүгд'}', style: const TextStyle(color: Colors.white)),
+                           _firstClick ? const Icon(Icons.arrow_drop_down_outlined, color: Colors.white) : const Icon(Icons.arrow_drop_up_outlined, color: Colors.white)
+                         ],
+                       ),
+                     ],
+                   ),
+                 ),
+               )
+           ),
           _firstClick
               ? Positioned(
                   top: 110,
                   left: 20,
-                  child: Column(
+                 child: Column(
+                   children: [
+                     for(var item in widget.servicePlaces!)
+                         GestureDetector(
+                           onTap: () async {
+                             List<LatLng> customA=[];
+                            List<dynamic> customShops=await RESTAPI.filterShops(item['name']);
+                             for (var item in customShops) {
+                               customA.add(LatLng(
+                                   item['shop']['shop_location']['latitude'], item['shop']['shop_location']['longitude']));
+                             }
+                             setState(() {
+                               defaultTitle=item['name'];
+                             });
+                             widget.places=customA;
+                             widget.shops=customShops;
+                             _initMarkers();
+                             _secondClick=true;
+                           },
+                           child: MapFirstMenu(name: item['name']),
+                         )
+                   ],
+                 ),
+          )
+              : const Text(''),
+          _secondClick ? Positioned(
+           // top: 110,
+             top: 40,
+             right: 20,
+            child: Column(
+              children: [
+                if (_secondClick)
+                  screenHeight > 600
+                      ? Column(
                     children: [
-                      GestureDetector(
-                        onTap: null,
-                        child: const MapFirstMenu(name: 'Агрегат засвар'),
-                      ),
-                      GestureDetector(
-                        onTap: null,
-                        child: const MapFirstMenu(name: 'Кузов засвар'),
-                      ),
-                      GestureDetector(
-                        onTap: null,
-                        child: const MapFirstMenu(name: 'Угаалга'),
-                      ),
-                      GestureDetector(
-                        onTap: null,
-                        child: const MapFirstMenu(name: 'Машин худалдаа'),
-                      ),
-                      GestureDetector(
-                        onTap: null,
-                        child: const MapFirstMenu(name: 'Сэлбэг худалдаа'),
-                      ),
-                      GestureDetector(
-                        onTap: null,
-                        child: const MapFirstMenu(name: 'Дугуй'),
-                      ),
-                      GestureDetector(
-                        onTap: null,
-                        child: const MapFirstMenu(name: 'Машин будаг'),
-                      ),
-                      GestureDetector(
-                        onTap: null,
-                        child: const MapFirstMenu(name: 'Мотоцикл'),
+                      for (int i = 0; i < widget.subdir!.length; i++)
+                        if (widget.subdir![i]['category']['name'] == defaultTitle)
+                          MapSecondMenu(name: widget.subdir![i]['service']['name'])
+                    ],
+                  )
+                      : Column(
+                    children: [
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 450),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Column(
+                            children: [
+                              for (int i = 0; i < widget.subdir!.length; i++)
+                                if (widget.subdir![i]['category']['name'] == defaultTitle)
+                                  MapSecondMenu(name: widget.subdir![i]['service']['name'])
+                            ],
+                          ),
+                        ),
                       )
                     ],
-                  ))
-              : const Text(''),
-
-          _secondClick
-              ? Positioned(
-                  top: 110,
-                  right: 20,
-                  child: Column(children: [
-                      GestureDetector(
-                        onTap: null,
-                        child: const MapSecondMenu(name: 'Тос солих'),
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: const MapSecondMenu(name: 'Оношилгоо'),),
-                      GestureDetector(
-                        onTap: null,
-                        child: const MapSecondMenu(name: 'Тос тосолгоо'),),
-                      GestureDetector(onTap: null,
-                        child: const MapSecondMenu(name: 'Амартизатор'),),
-                      GestureDetector(onTap: null,
-                        child: const MapSecondMenu(name: 'Аккумлятор'),),
-                      GestureDetector(onTap: null,
-                        child: const MapSecondMenu(name: 'Тэнхлэг тохиргоо'),),
-                      GestureDetector(onTap: null,
-                        child: const MapSecondMenu(name: 'Мотор засвар'),),
-                      GestureDetector(onTap: null,
-                        child: const MapSecondMenu(name: 'Явах эд анги'),),
-                      GestureDetector(onTap: null,
-                        child: const MapSecondMenu(name: 'Компьютер оношилгоо'),),
-                      GestureDetector(onTap: null,
-                        child: const MapSecondMenu(name: 'Эйр кондейшн'),),
-                      GestureDetector(onTap: null,
-                        child: const MapSecondMenu(name: 'Наклад тормос'),)
-                  ]),
-                )
-              : const Text(''),
-        ],
-      ),
+                  )
+                else
+                  const Text(''),
+              ],
+            )
+            ,
+          ) : Text('')
+            ],
     );
   }
 }

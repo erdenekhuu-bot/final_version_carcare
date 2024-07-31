@@ -1,14 +1,9 @@
-import 'package:final_pro/usable/MSG/ValidateMSG.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:country_flags/country_flags.dart';
-import 'ValidateMSG.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
-import 'dart:convert';
-import 'package:final_pro/usable/Store/Store.dart';
 import 'package:final_pro/usable/MSG/ChangePhoneValidateMSG.dart';
-class ChangePhoneSendMSG extends StatefulWidget {
 
+class ChangePhoneSendMSG extends StatefulWidget {
   final String? title;
   final String? description;
   const ChangePhoneSendMSG({super.key, this.description, this.title});
@@ -33,20 +28,12 @@ class _ChangePhoneSendMSGState extends State<ChangePhoneSendMSG> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            'images/iconBack.svg',
-            width: 35,
-            height: 35,
+          backgroundColor: Colors.white,
           ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
       body: Form(
         key: _formkey,
         child: ListView(
@@ -58,16 +45,11 @@ class _ChangePhoneSendMSGState extends State<ChangePhoneSendMSG> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${widget.title}',
-                      style: TextStyle(
-                          color: Color(0xff404040),
-                          fontFamily: 'Inter-Bold',
-                          fontSize: 20),
-                    )
+                      '${widget.title}', style: const TextStyle(color: Color(0xff404040), fontFamily: 'Inter-Bold', fontSize: 20))
                   ],
                 ),
                 Container(
-                  width: 315,
+                  width: screenWidth * 0.78,
                   margin: const EdgeInsets.all(12),
                   child: Text(
                     '${widget.description}',
@@ -78,7 +60,7 @@ class _ChangePhoneSendMSGState extends State<ChangePhoneSendMSG> {
                   ),
                 ),
                 SizedBox(
-                  width: 313,
+                  width: screenWidth * 0.78,
                   height: 40,
                   child: Opacity(
                     opacity: 0.7,
@@ -109,7 +91,7 @@ class _ChangePhoneSendMSGState extends State<ChangePhoneSendMSG> {
                               children: [
                                 Padding(
                                   padding:
-                                  const EdgeInsets.fromLTRB(15, 8, 8, 8),
+                                      const EdgeInsets.fromLTRB(15, 8, 8, 8),
                                   child: CountryFlag.fromCountryCode(
                                     'MN',
                                     width: 30,
@@ -136,16 +118,23 @@ class _ChangePhoneSendMSGState extends State<ChangePhoneSendMSG> {
                 ),
                 const SizedBox(height: 13),
                 SizedBox(
-                  width: 313,
+                  width: screenWidth * 0.78,
                   height: 40,
                   child: ElevatedButton(
-                    onPressed: _limit ? () async {
-                      final int _id = await RESTAPI.sendOTP(_phoneNumber);
-                      if(_id > 0) {
-                        Navigator.push(context, MaterialPageRoute(builder: (
-                            context) => ChangePhoneValidateMSG(confirmationId: _id, phoneNumber: _phoneNumber)));
-                      }
-                    } : null,
+                    onPressed: _limit
+                        ? () async {
+                            final int _id = await RESTAPI.sendOTP(_phoneNumber);
+                            if (_id > 0) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ChangePhoneValidateMSG(
+                                              confirmationId: _id,
+                                              phoneNumber: _phoneNumber)));
+                            }
+                          }
+                        : null,
                     child: const Text(
                       'Үргэлжлүүлэх',
                       style: TextStyle(

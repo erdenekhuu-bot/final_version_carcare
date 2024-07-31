@@ -72,17 +72,8 @@ class _PolicyState extends State<Policy> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        // leading: IconButton(
-        //   icon: SvgPicture.asset(
-        //     'images/iconBack.svg',
-        //     width: 35,
-        //     height: 35,
-        //   ),
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //   },
-        // ),
         title: const Padding(
           padding: EdgeInsets.only(left: 25),
           child: Text('Үйлчилгээний нөхцөл',

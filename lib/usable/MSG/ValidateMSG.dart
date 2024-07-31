@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:final_pro/pages/Register/SignUp.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
+
 class ValidateMsg extends StatefulWidget {
-  int confirmationId;
   String phoneNumber;
-  ValidateMsg({super.key, required this.confirmationId, required this.phoneNumber});
+  ValidateMsg({super.key,required this.phoneNumber});
 
   @override
   State<ValidateMsg> createState() => _ValidateMsgState();
@@ -55,18 +54,11 @@ class _ValidateMsgState extends State<ValidateMsg> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            'images/iconBack.svg',
-            width: 35,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
       ),
       body: Form(
         key: _k,
@@ -337,12 +329,11 @@ class _ValidateMsgState extends State<ValidateMsg> {
                   child: ElevatedButton(
                     onPressed: () async {
                       String result = props(_digit1) + props(_digit2) + props(_digit3) + props(_digit4) + props(_digit5) + props(_digit6);
-                      String response = await RESTAPI.verifyOTP(result, widget.confirmationId);
-                      if(response == 'success'){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignUp(phone: widget.phoneNumber, id: widget.confirmationId)));
+                      int response = await RESTAPI.verifyOTP(result, widget.phoneNumber);
+                      print(response);
+                      print(result);
+                      if(response > 0){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp(phone: widget.phoneNumber)));
                       } else {
                         Flushbar(
                           backgroundColor: const Color(0xFFFF6E6E),
@@ -367,6 +358,11 @@ class _ValidateMsgState extends State<ValidateMsg> {
                         ).show(context);
                       }
                     },
+                    // onPressed: () async {
+                    //   String result = props(_digit1) + props(_digit2) + props(_digit3) + props(_digit4) + props(_digit5) + props(_digit6);
+                    //   int response = await RESTAPI.verifyOTP(result, widget.phoneNumber);
+                    //   print(response);
+                    // },
                     child: const Text(
                       'Үргэлжлүүлэх',
                       style: TextStyle(
@@ -390,14 +386,13 @@ class _ValidateMsgState extends State<ValidateMsg> {
                   onTap: () async {
                     final int _id = await RESTAPI.sendOTP(widget.phoneNumber);
                     if(_id > 0) {
-                      widget.confirmationId=_id;
                       Flushbar(
                         backgroundColor: const Color(0xFF41D4A8),
                         flushbarStyle: FlushbarStyle.GROUNDED,
                         flushbarPosition: FlushbarPosition.TOP,
                         titleText: const Center(
                           child: Icon(
-                            Icons.fmd_good,
+                            Icons.check_circle_outline_rounded,
                             color: Colors.white,
                             size: 28,
                           ),

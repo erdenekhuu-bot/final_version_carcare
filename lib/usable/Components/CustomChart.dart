@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:final_pro/usable/Store/Store.dart';
+
 class CustomChart extends StatefulWidget {
   final List<dynamic> data;
   int month;

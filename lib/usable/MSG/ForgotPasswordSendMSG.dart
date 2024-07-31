@@ -1,12 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:country_flags/country_flags.dart';
-import 'ValidateMSG.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
-import 'dart:convert';
-import 'package:final_pro/usable/Store/Store.dart';
 import 'package:final_pro/usable/MSG/ForgotPasswordValidateMSG.dart';
+
 class ForgotPasswordSendMSG extends StatefulWidget {
 
   final String? title;
@@ -33,19 +30,11 @@ class _ForgotPasswordSendMSGState extends State<ForgotPasswordSendMSG> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            'images/iconBack.svg',
-            width: 35,
-            height: 35,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        backgroundColor: Colors.white,
       ),
       body: Form(
         key: _formkey,
@@ -59,7 +48,7 @@ class _ForgotPasswordSendMSGState extends State<ForgotPasswordSendMSG> {
                   children: [
                     Text(
                       '${widget.title}',
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Color(0xff404040),
                           fontFamily: 'Inter-Bold',
                           fontSize: 20),
@@ -67,18 +56,18 @@ class _ForgotPasswordSendMSGState extends State<ForgotPasswordSendMSG> {
                   ],
                 ),
                 Container(
-                  width: 315,
+                  width: screenWidth * 0.78,
                   margin: const EdgeInsets.all(12),
                   child: Text(
                     '${widget.description}',
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Color(0xff404040),
                         fontSize: 13,
                         fontFamily: 'Inter'),
                   ),
                 ),
                 SizedBox(
-                  width: 313,
+                  width: screenWidth * 0.78,
                   height: 40,
                   child: Opacity(
                     opacity: 0.7,
@@ -136,22 +125,16 @@ class _ForgotPasswordSendMSGState extends State<ForgotPasswordSendMSG> {
                 ),
                 const SizedBox(height: 13),
                 SizedBox(
-                  width: 313,
+                  width: screenWidth * 0.78,
                   height: 40,
                   child: ElevatedButton(
                     onPressed: _limit ? () async {
                       final int _id = await RESTAPI.sendOTP(_phoneNumber);
                       if(_id > 0) {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPasswordValidateMSG(confirmationId: _id, phoneNumber: _phoneNumber)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPasswordValidateMSG(phoneNumber: _phoneNumber)));
                       }
                     } : null,
-                    child: const Text(
-                      'Үргэлжлүүлэх',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Inter',
-                          fontSize: 17),
-                    ),
+                    child: const Text('Үргэлжлүүлэх', style: TextStyle(color: Colors.white, fontFamily: 'Inter', fontSize: 17)),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xff404040),
                         shape: RoundedRectangleBorder(

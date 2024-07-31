@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:final_pro/pages/Register/SignUp.dart';
 import 'package:final_pro/usable/MSG/SendMSG.dart';
 import 'package:final_pro/pages/Home/MainMenu.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:final_pro/usable/MSG/ForgotPasswordSendMSG.dart';
 import 'package:final_pro/usable/Store/Store.dart';
 import 'package:another_flushbar/flushbar.dart';
+
 class Login extends StatefulWidget {
   const Login({super.key});
   @override
   State<Login> createState() => _LoginState();
 }
+
 class _LoginState extends State<Login> {
   bool _check = false;
   bool _limit = false;
@@ -19,15 +20,19 @@ class _LoginState extends State<Login> {
   String _password = '';
   final TextEditingController _cnt1 = TextEditingController();
   final TextEditingController _cnt2 = TextEditingController();
+
+
   @override
   void dispose() {
     super.dispose();
     _cnt1.dispose();
     _cnt2.dispose();
   }
+
   final _fkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
       body: ListView(
@@ -36,7 +41,7 @@ class _LoginState extends State<Login> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 150),
+              SizedBox(height: screenWidth * 0.35),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -51,7 +56,6 @@ class _LoginState extends State<Login> {
                       color: Color(0xff404040),
                       fontFamily: 'Inter-ExtraBold',
                       fontSize: 25)),
-              const SizedBox(height: 10),
               Form(
                 key: _fkey,
                 child: Column(
@@ -60,9 +64,9 @@ class _LoginState extends State<Login> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          width: 313,
+                          width: screenWidth * 0.78,
                           height: 70,
-                          margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                          margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                           child: Stack(
                             children: <Widget>[
                               TextFormField(
@@ -72,7 +76,8 @@ class _LoginState extends State<Login> {
                                   }
                                   return null;
                                 },
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 maxLength: 8,
                                 keyboardType: TextInputType.number,
                                 controller: _cnt1,
@@ -96,15 +101,19 @@ class _LoginState extends State<Login> {
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
                                       width: 1,
-                                      color: const Color(0xff404040).withOpacity(0.5),
+                                      color: const Color(0xff404040)
+                                          .withOpacity(0.5),
                                     ),
                                   ),
                                   labelText: 'Утасны дугаар',
-                                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                                  labelStyle: const TextStyle(fontFamily: 'Inter-Light'),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  labelStyle: const TextStyle(
+                                      fontFamily: 'Inter-Light'),
                                   prefixIcon: Padding(
                                     padding: const EdgeInsets.all(10),
-                                    child: SvgPicture.asset('images/person.svg'),
+                                    child:
+                                        SvgPicture.asset('images/person.svg'),
                                   ),
                                   counterText: '',
                                   border: OutlineInputBorder(
@@ -117,16 +126,13 @@ class _LoginState extends State<Login> {
                         ),
                       ],
                     ),
-
-
-                    const SizedBox(height: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          width: 313,
-                          height: 70, // Fixed height to prevent layout changes
-                          margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                          width: screenWidth * 0.78,
+                          height: 70,
+                          margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                           child: Stack(
                             children: <Widget>[
                               TextFormField(
@@ -138,7 +144,8 @@ class _LoginState extends State<Login> {
                                   }
                                   return null;
                                 },
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 controller: _cnt2,
                                 onChanged: (value) {
                                   setState(() {
@@ -157,22 +164,28 @@ class _LoginState extends State<Login> {
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
                                       width: 1,
-                                      color: const Color(0xff404040).withOpacity(0.5),
+                                      color: const Color(0xff404040)
+                                          .withOpacity(0.5),
                                     ),
                                   ),
                                   labelText: 'Нууц үг',
-                                  labelStyle: const TextStyle(fontFamily: 'Inter-Light'),
-                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  labelStyle: const TextStyle(
+                                      fontFamily: 'Inter-Light'),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
                                   counterText: '',
                                   prefixIcon: Padding(
                                     padding: const EdgeInsets.all(10),
-                                    child: SvgPicture.asset('images/lockPassword.svg'),
+                                    child: SvgPicture.asset(
+                                        'images/lockPassword.svg'),
                                   ),
                                   suffixIcon: Opacity(
                                     opacity: 0.5,
                                     child: IconButton(
                                       icon: SvgPicture.asset(
-                                        _check ? 'images/eye.svg' : 'images/eye_off.svg',
+                                        _check
+                                            ? 'images/eye.svg'
+                                            : 'images/eye_off.svg',
                                       ),
                                       onPressed: () {
                                         setState(() {
@@ -191,18 +204,22 @@ class _LoginState extends State<Login> {
                         ),
                       ],
                     ),
-
-
-                    const SizedBox(height: 2),
                     Container(
-                      padding: null,
-                      width: 313,
+                      margin: null,
+                      width: screenWidth * 0.78,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPasswordSendMSG(title: 'Нууц үг сэргээх', description: 'Таны бүртгэлтэй дугаар дээр баталгаажуулах код илгээх болно.')));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ForgotPasswordSendMSG(
+                                              title: 'Нууц үг сэргээх',
+                                              description:
+                                                  'Таны бүртгэлтэй дугаар дээр баталгаажуулах код илгээх болно.')));
                             },
                             child: const Text(
                               'Нууц үг сэргээх',
@@ -215,21 +232,23 @@ class _LoginState extends State<Login> {
                     ),
                     Column(
                       children: [
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         SizedBox(
-                          width: 313,
+                          width: screenWidth * 0.78,
                           height: 40,
                           child: ElevatedButton(
                             onPressed: () async {
-                              if(_fkey.currentState!.validate()){
-                                String result = await RESTAPI.login(_phone, _password);
-                                Store.storePhone=_phone;
-                                Store.storePassword=_password;
-                                if(result == 'success'){
+                              if (_fkey.currentState!.validate()) {
+                                bool result =
+                                    await RESTAPI.login(_phone, _password);
+                                Store.storePhone = _phone;
+                                Store.storePassword = _password;
+                                if (result == true) {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => const MainMenu()));
+                                          builder: (context) =>
+                                              const MainMenu()));
                                 } else {
                                   Flushbar(
                                     backgroundColor: const Color(0xFFFF6E6E),
@@ -254,6 +273,7 @@ class _LoginState extends State<Login> {
                                   ).show(context);
                                 }
                               }
+
                             },
                             child: const Text(
                               'Нэвтрэх',
@@ -268,16 +288,19 @@ class _LoginState extends State<Login> {
                                     borderRadius: BorderRadius.circular(10))),
                           ),
                         ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 10),
                         SizedBox(
-                          width: 313,
+                          width: screenWidth * 0.78,
                           height: 40,
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const SendMSG(title: 'Бүртгүүлэх', description: 'Таны бүртгүүлэх дугаар дээр баталгаажуулах код илгээх болно')));
+                                      builder: (context) => const SendMSG(
+                                          title: 'Бүртгүүлэх',
+                                          description:
+                                              'Таны бүртгүүлэх дугаар дээр баталгаажуулах код илгээх болно')));
                             },
                             child: const Text('Бүртгүүлэх',
                                 style: TextStyle(

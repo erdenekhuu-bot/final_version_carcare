@@ -1,10 +1,8 @@
-import 'package:final_pro/pages/Register/SignUp.dart';
 import 'package:flutter/material.dart';
 import 'pages/Login/Login.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:final_pro/pages/Home/Map/Map.dart';
-import 'package:final_pro/pages/ForgotPassword/ForgotPassword.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
@@ -17,10 +15,10 @@ class Pages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Colors.white,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
@@ -39,8 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 1), () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
     });
     return Scaffold(
       backgroundColor: const Color(0xff404040),
@@ -50,22 +47,15 @@ class _SplashScreenState extends State<SplashScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 115,
-                height: 113,
-                child: SvgPicture.asset('images/LogoSplash.svg'),
-              )
+              SizedBox(width: 115, height: 113, child: SvgPicture.asset('images/LogoSplash.svg'))
             ],
           ),
-          const Text('Car Car',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Inter-ExtraBold',
-                  fontSize: 40))
+          const Text('Car Car', style: TextStyle(color: Colors.white, fontFamily: 'Inter-ExtraBold', fontSize: 40))
         ],
       ),
     );
   }
 }
+
 
 

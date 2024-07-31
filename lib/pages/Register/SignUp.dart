@@ -1,9 +1,7 @@
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../Login/Login.dart';
 import 'package:another_flushbar/flushbar.dart';
-import 'package:final_pro/pages/Login/Login.dart';
 import 'package:final_pro/usable/Components/Policy.dart';
 
 class SignUp extends StatefulWidget {
@@ -47,87 +45,37 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            'images/iconBack.svg',
-            width: 35,
-            height: 35,
-          ),
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const Login()));
-          },
-        ),
+        backgroundColor: Colors.white,
       ),
       body: ListView(
         children: [
           Column(
             children: [
-              const Text(
-                'Бүртгүүлэх',
-                style: TextStyle(
-                    color: Color(0xff404040),
-                    fontFamily: 'Inter-Bold',
-                    fontSize: 20),
-              ),
+              const Text('Бүртгүүлэх', style: TextStyle(color: Color(0xff404040), fontFamily: 'Inter-Bold', fontSize: 20)),
               Container(
                 margin: const EdgeInsets.all(10),
-                child: const Text(
-                  'Та өөрийн нэр болон нууц үгийг оруулна уу.',
-                  style: TextStyle(
-                      color: Color(0xff404040),
-                      fontSize: 13,
-                      fontFamily: 'Inter'),
-                ),
+                child: const Text('Та өөрийн нэр болон нууц үгийг оруулна уу.', style: TextStyle(color: Color(0xff404040), fontSize: 13, fontFamily: 'Inter')),
               ),
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
                     const SizedBox(height: 10),
-                    // SizedBox(
-                    //   width: 313,
-                    //   height: 50,
-                    //   child: TextFormField(
-                    //     controller: _digit1,
-                    //     focusNode: f1,
-                    //     onChanged: (text) {
-                    //       _username = _digit1.text;
-                    //     },
-                    //     decoration: InputDecoration(
-                    //         focusedBorder: OutlineInputBorder(
-                    //             borderSide: const BorderSide(
-                    //                 width: 1, color: Colors.black),
-                    //             borderRadius: BorderRadius.circular(10)),
-                    //         enabledBorder: OutlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(10),
-                    //             borderSide: BorderSide(
-                    //                 width: 1,
-                    //                 color: const Color(0xff404040)
-                    //                     .withOpacity(0.5))),
-                    //         labelText: 'Нэр',
-                    //         labelStyle:
-                    //             const TextStyle(fontFamily: 'Inter-Light'),
-                    //         floatingLabelBehavior: FloatingLabelBehavior.never,
-                    //         counterText: '',
-                    //         prefixIcon: Padding(
-                    //           padding: const EdgeInsets.all(8.0),
-                    //           child: SvgPicture.asset('images/person.svg'),
-                    //         ),
-                    //         border: OutlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(10),
-                    //             borderSide: const BorderSide(
-                    //                 color: Color(0xffE2E2E2)))),
-                    //     maxLength: 20,
-                    //   ),
-                    // ),
                     SizedBox(
                       width: 313,
-                      height: 80, // Adjust the height to accommodate both the input field and the potential error message
+                      height: 80,
                       child: TextFormField(
                         controller: _digit1,
                         focusNode: f1,
+                        validator: (text) {
+                          if (text!.isEmpty) {
+                            return 'Нэрээ оруулна уу';
+                          } else {
+                            return null;
+                          }
+                        },
                         onChanged: (text) {
                           _username = _digit1.text;
                         },
@@ -160,10 +108,10 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     SizedBox(
                       width: 313,
-                      height: 80, // Adjust the height to accommodate both the input field and the error message
+                      height: 80,
                       child: TextFormField(
                         focusNode: f2,
                         controller: _digit2,
@@ -220,10 +168,10 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     SizedBox(
                       width: 313,
-                      height: 80, // Set a fixed height that accommodates both the input field and the error message
+                      height: 80,
                       child: TextFormField(
                         validator: (text) {
                           if (passwordRegExp.hasMatch(text!)) {
@@ -280,28 +228,16 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
 
-                    const SizedBox(height: 45),
+                    const SizedBox(height: 30),
                     SizedBox(
                       width: 313,
                       height: 40,
                       child: ElevatedButton(
-                        // onPressed: () async {
-                        //   if (passwordRegExp.hasMatch(_confirmPassword)) {
-                        //     String result = await RESTAPI.createUser(widget.id!,
-                        //         _username, _confirmPassword, widget.phone!);
-                        //     if (result == 'success') {
-                        //       Navigator.push(
-                        //           context,
-                        //           MaterialPageRoute(
-                        //               builder: (context) => const Policy()));
-                        //     }
-                        //   }
                         onPressed: () async {
                             if(_formKey.currentState!.validate()){
                               if(_digit2.text == _digit3.text){
-                                    String result = await RESTAPI.createUser(widget.id!,
-                                        _username, _confirmPassword, widget.phone!);
-                                    if (result == 'success') {
+                                    String result = await RESTAPI.createUser(_username, _confirmPassword, widget.phone!);
+                                    if (result != '') {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class Uilchilgee extends StatefulWidget {
   const Uilchilgee({super.key});
@@ -67,30 +66,18 @@ class _UilchilgeeState extends State<Uilchilgee> {
     '5.4. “Car Care”-ийн Платформд байгаа бүх тэмдэгтүүд нь “Рубик Эй Ай”ХХК-ийн онцгой өмч бөгөөд барааны тэмдэг, нэр, бүтээгдэхүүн, үйлчилгээнүүдийг хуулах, олшруулах, дуурайх, өөр бусад ямар ч зүйлд ашиглахыг хориглоно.',
   ];
 
-  bool isApproved = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
         backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
-        // leading: IconButton(
-        //   icon: SvgPicture.asset(
-        //     'images/iconBack.svg',
-        //     width: 35,
-        //     height: 35,
-        //   ),
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //   },
-        // ),
-        title: const Padding(
-          padding: EdgeInsets.only(left: 25),
-          child: Text('Үйлчилгээний нөхцөл',
-              style: TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
-        ),
+        centerTitle: true,
+        title: const Text('Үйлчилгээний нөхцөл',
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontFamily: 'Inter-SemiBold')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -99,72 +86,62 @@ class _UilchilgeeState extends State<Uilchilgee> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Үйлчилгээний нөхцөл',
-                  style: TextStyle(fontSize: 13, fontFamily: 'Inter'),
-                ),
+                const Text('Үйлчилгээний нөхцөл',
+                    style:
+                        TextStyle(fontSize: 13, fontFamily: 'Inter-Regular')),
                 const SizedBox(height: 13),
                 for (String policy in policy1)
                   Text(
                     policy,
-                    style: const TextStyle(fontSize: 13, fontFamily: 'Inter'),
+                    style: const TextStyle(
+                        fontSize: 13, fontFamily: 'Inter-Regular'),
                   ),
                 const SizedBox(height: 13),
-                const Text('Ⅰ. Нийтлэг үндэслэл', style: TextStyle(fontFamily: 'Inter'),),
+                const Text(
+                  'Ⅰ. Нийтлэг үндэслэл',
+                  style: TextStyle(fontFamily: 'Inter-Regular'),
+                ),
                 for (String policy in policy2)
                   Text(
                     '$policy\n',
                     style: const TextStyle(
-                      fontSize: 13, fontFamily: 'Inter'
-                    ),
+                        fontSize: 13, fontFamily: 'Inter-Regular'),
                   ),
                 const SizedBox(height: 13),
                 const Text('Компани - Рубик Эй Ай ХХК;'),
                 for (String policy in policy3)
                   Text(
                     policy,
-                    style: const TextStyle(
-                      fontSize: 13, fontFamily: 'Inter'
-                    ),
+                    style: const TextStyle(fontSize: 13, fontFamily: 'Inter'),
                   ),
                 for (String policy in policy4)
                   Text(
                     '\n$policy\n',
-                    style: const TextStyle(
-                      fontSize: 13, fontFamily: 'Inter'
-                    ),
+                    style: const TextStyle(fontSize: 13, fontFamily: 'Inter'),
                   ),
                 const Text('II. Ашиглах журам' '\n'),
                 for (String policy in policy5)
                   Text(
                     '$policy\n',
-                    style: const TextStyle(
-                      fontSize: 13, fontFamily: 'Inter'
-                    ),
+                    style: const TextStyle(fontSize: 13, fontFamily: 'Inter'),
                   ),
                 const Text('\nIII. Компанийн хариуцлагын хязгаарлалт\n'),
                 for (String policy in policy6)
                   Text(
                     '$policy\n',
-                    style: const TextStyle(
-                      fontSize: 13, fontFamily: 'Inter'
-                    ),
+                    style: const TextStyle(fontSize: 13, fontFamily: 'Inter'),
                   ),
                 const Text('\nIV. Үйлчилгээний нөхцөлийн хамрах хугацаа\n'),
                 for (String policy in policy7)
                   Text(
                     '$policy\n',
-                    style: const TextStyle(
-                      fontSize: 13, fontFamily: 'Inter'
-                    ),
+                    style: const TextStyle(fontSize: 13, fontFamily: 'Inter'),
                   ),
                 const Text('\nV. Үйлчилгээний нөхцөлийн нэмэлт өөрчлөлт\n'),
                 for (String policy in policy8)
                   Text(
                     '$policy\n',
-                    style: const TextStyle(
-                      fontSize: 13, fontFamily: 'Inter'
-                    ),
+                    style: const TextStyle(fontSize: 13, fontFamily: 'Inter'),
                   ),
                 const SizedBox(
                   height: 50,

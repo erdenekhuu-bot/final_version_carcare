@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:final_pro/usable/Store/Store.dart';
@@ -13,7 +12,13 @@ class MySelf extends StatefulWidget {
   final String? phone;
   final String? username;
   final String? password;
-  MySelf({super.key, this.token, this.forward, this.password, this.username, this.phone});
+  MySelf(
+      {super.key,
+      this.token,
+      this.forward,
+      this.password,
+      this.username,
+      this.phone});
 
   @override
   State<MySelf> createState() => _MySelfState();
@@ -22,13 +27,13 @@ class MySelf extends StatefulWidget {
 class _MySelfState extends State<MySelf> {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController _tnt1 = TextEditingController();
-  TextEditingController _tnt2 = TextEditingController();
-  TextEditingController _tnt3 = TextEditingController();
+  final TextEditingController _tnt1 = TextEditingController();
+  final TextEditingController _tnt2 = TextEditingController();
+  final TextEditingController _tnt3 = TextEditingController();
 
-  FocusNode _f1 = FocusNode();
-  FocusNode _f2 = FocusNode();
-  FocusNode _f3 = FocusNode();
+  final FocusNode _f1 = FocusNode();
+  final FocusNode _f2 = FocusNode();
+  final FocusNode _f3 = FocusNode();
 
   String username = '';
   String phone = '';
@@ -48,62 +53,52 @@ class _MySelfState extends State<MySelf> {
   String generateDot() {
     return '*' * Store.storePassword.length;
   }
+
+  bool _passHide = false;
+
   @override
   Widget build(BuildContext context) {
+    final RegExp passwordRegExp = RegExp(r'^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$');
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white,
-        // leading: IconButton(
-        //   icon: SvgPicture.asset(
-        //     'images/iconBack.svg',
-        //     width: 35,
-        //     height: 35,
-        //   ),
-        //   onPressed: () {
-        //     Navigator.of(context).pop();
-        //   },
-        // ),
       ),
       backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(
+          const Center(
             child: Text('Хувийн мэдээлэл',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF404040))),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          SizedBox(height: screenHeight / 90),
           Form(
             key: _formKey,
             child: Column(
               children: [
                 Container(
                   margin: null,
-                  width: 313,
+                  width: screenWidth * 0.78,
                   height: 40,
                   child: const Row(
                     children: [
-                      Text(
-                        'Нэр ',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 15,
-                        ),
-                      ),
+                      Text('Нэр ',
+                          style: TextStyle(
+                              fontFamily: 'Inter-Light', fontSize: 15)),
                     ],
                   ),
                 ),
                 Container(
                   padding: null,
-                  width: 313,
+                  width: screenWidth * 0.78,
                   height: 50,
                   child: SizedBox(
                     child: TextFormField(
@@ -147,17 +142,16 @@ class _MySelfState extends State<MySelf> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
                 Container(
                   margin: null,
-                  width: 313,
+                  width: screenWidth * 0.78,
                   height: 40,
                   child: const Row(
                     children: [
                       Text(
                         'Утасны дугаар',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Inter-Light',
                           fontSize: 15,
                         ),
                       ),
@@ -167,7 +161,7 @@ class _MySelfState extends State<MySelf> {
                 widget.forward != 1
                     ? Container(
                         padding: null,
-                        width: 313,
+                        width: screenWidth * 0.78,
                         height: 50,
                         child: Container(
                           decoration: BoxDecoration(
@@ -182,7 +176,7 @@ class _MySelfState extends State<MySelf> {
                           child: GestureDetector(
                             onTap: null,
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 13),
+                              padding: const EdgeInsets.only(left: 15),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -194,11 +188,12 @@ class _MySelfState extends State<MySelf> {
                                         color: Colors.black.withOpacity(0.5),
                                       ),
                                       const SizedBox(
-                                        width: 20,
+                                        width: 10,
                                       ),
                                       Text(
                                         '${widget.phone}',
                                         style: TextStyle(
+                                          fontFamily: 'Inter-Light',
                                           color: Colors.black.withOpacity(0.5),
                                         ),
                                       ),
@@ -206,7 +201,15 @@ class _MySelfState extends State<MySelf> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ChangePhoneSendMSG(title: 'Дугаар өөрчлөх', description: 'Таны өөрчлөх дугаар дээр баталгаажуулах код илгээх болно.',)));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChangePhoneSendMSG(
+                                                    title: 'Дугаар өөрчлөх',
+                                                    description:
+                                                        'Таны өөрчлөх дугаар дээр баталгаажуулах код илгээх болно.',
+                                                  )));
                                     },
                                     icon: Container(
                                       width: 25,
@@ -234,10 +237,11 @@ class _MySelfState extends State<MySelf> {
                       )
                     : Container(
                         padding: null,
-                        width: 313,
+                        width: screenWidth * 0.78,
                         height: 50,
                         child: SizedBox(
                           child: TextFormField(
+                            keyboardType: TextInputType.number,
                             maxLength: 8,
                             onChanged: (text) {
                               setState(() {
@@ -253,10 +257,8 @@ class _MySelfState extends State<MySelf> {
                                   FloatingLabelBehavior.never,
                               labelText: '${widget.phone}',
                               counterText: '',
-                              labelStyle: const TextStyle(
-                                  color: Color(0xFF404040),
-                                  fontSize: 18,
-                                  height: 0),
+                              labelStyle: TextStyle(fontFamily: 'Inter-Light',
+                                color: Colors.black.withOpacity(0.5),),
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: SvgPicture.asset(
@@ -280,10 +282,9 @@ class _MySelfState extends State<MySelf> {
                           ),
                         ),
                       ),
-                const SizedBox(height: 10),
                 Container(
                   padding: null,
-                  width: 313,
+                  width: screenWidth * 0.78,
                   height: 40,
                   child: const Row(
                     children: [
@@ -299,9 +300,16 @@ class _MySelfState extends State<MySelf> {
                 ),
                 Container(
                   margin: null,
-                  width: 313,
-                  height: 50,
+                  width: screenWidth * 0.78,
+                  height: 70,
                   child: TextFormField(
+                    validator: (text) {
+                      if (passwordRegExp.hasMatch(text!)) {
+                        return null;
+                      } else {
+                        return 'Хүчтэй нууц үг ашиглана уу';
+                      }
+                    },
                     onChanged: (value) {
                       setState(() {
                         setPassword = _tnt2.text;
@@ -310,7 +318,8 @@ class _MySelfState extends State<MySelf> {
                     controller: _tnt2,
                     focusNode: _f2,
                     maxLength: 20,
-                    obscureText: true,
+                    obscureText: _obscureTextNewPass ? false : true,
+                    textAlignVertical: TextAlignVertical.bottom,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -344,55 +353,86 @@ class _MySelfState extends State<MySelf> {
                           borderSide: BorderSide(
                               width: 1,
                               color: const Color(0xff404040).withOpacity(0.5))),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Color(0xffE2E2E2)),
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 25),
                 Container(
                     padding: null,
-                    width: 313,
+                    width: screenWidth * 0.78,
                     height: 40,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xffA0A0A0),
+                          backgroundColor: const Color(0xff404040),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10))),
-                      onPressed: widget.forward == 1
-                          ? () async {
-                        String _result = await RESTAPI.updateUser(Store.confirmationId, setUsername, privatePhone, setPassword);
-                        if (_result == 'success') {
-                          print(_result);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Login()));
-                          Flushbar(
-                            backgroundColor:  Color(0xFF50C878),
-                            flushbarStyle: FlushbarStyle.GROUNDED,
-                            flushbarPosition: FlushbarPosition.TOP,
-                            titleText:  Center(
-
-                              child: Icon(Icons.check_circle_outline_rounded,color: Colors.white,size: 28,),
-
-                            ),
-
-                            messageText:  Padding(
-                              padding:  EdgeInsets.only(bottom: 20.0),
-                              child: Text("Утасны дугаар амжилттай хадгалагдлаа",textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
-                            ),
-                            duration:  Duration(seconds: 2),
-                          )..show(context);
-
-                        } else {
-                          print('something has error');
-                        }
-
-                      }
-                          : null,
+                      onPressed: () async {
+                       if(_formKey.currentState!.validate()){
+                         privatePhone == '' ? privatePhone = Store.storePhone : '';
+                         String _result = await RESTAPI.updateUser(
+                             Store.confirmationId,
+                             setUsername,
+                             privatePhone,
+                             setPassword);
+                         if (_result == 'success') {
+                           Navigator.push(
+                               context,
+                               MaterialPageRoute(
+                                   builder: (context) => const Login()));
+                           Flushbar(
+                             backgroundColor: Color(0xFF50C878),
+                             flushbarStyle: FlushbarStyle.GROUNDED,
+                             flushbarPosition: FlushbarPosition.TOP,
+                             titleText: Center(
+                               child: Icon(
+                                 Icons.check_circle_outline_rounded,
+                                 color: Colors.white,
+                                 size: 28,
+                               ),
+                             ),
+                             messageText: Padding(
+                               padding: EdgeInsets.only(bottom: 20.0),
+                               child: Text(
+                                 "Хувийн мэдээлэл амжилттай хадгалагдлаа",
+                                 textAlign: TextAlign.center,
+                                 style: TextStyle(color: Colors.white),
+                               ),
+                             ),
+                             duration: Duration(seconds: 2),
+                           )..show(context);
+                         } else {
+                           Flushbar(
+                             backgroundColor: const Color(0xFFFF6E6E),
+                             flushbarStyle: FlushbarStyle.GROUNDED,
+                             flushbarPosition: FlushbarPosition.TOP,
+                             titleText: const Center(
+                               child: Icon(
+                                 Icons.error_outline,
+                                 color: Colors.white,
+                                 size: 28,
+                               ),
+                             ),
+                             messageText: const Padding(
+                               padding: EdgeInsets.only(bottom: 20.0),
+                               child: Text(
+                                 "Нэр, нууц үгээ оруулах шаардлагатай",
+                                 textAlign: TextAlign.center,
+                                 style: TextStyle(color: Colors.white),
+                               ),
+                             ),
+                             duration: const Duration(seconds: 2),
+                           ).show(context);
+                         }
+                       }
+                      },
                       child: const Text(
                         'Хадгалах',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Inter-Light',
                             fontSize: 17,
                             color: Colors.white),
                       ),

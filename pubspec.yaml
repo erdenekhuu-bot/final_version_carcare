@@ -41,6 +41,7 @@ dependencies:
   clustering_google_maps: ^0.1.2-nullsafety.3
   flutter_cache_manager: ^3.3.2
   fluster: ^1.2.0
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:
@@ -49,7 +50,6 @@ dev_dependencies:
   http: ^1.2.1
   country_flags: ^2.2.0
   carousel_slider: ^4.2.1
-  flutter_phone_direct_caller: ^2.1.1
   table_calendar: ^3.1.1
   smooth_page_indicator: ^1.1.0
   persistent_bottom_nav_bar_v2: ^5.2.3
@@ -138,6 +138,7 @@ flutter:
     - images/zasvar.png
     - images/zasvar.svg
     - images/Наклад_тормос.svg
+    - images/Header.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
