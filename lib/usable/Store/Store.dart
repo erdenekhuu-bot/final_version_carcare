@@ -119,7 +119,11 @@ class Store {
       'Мотоцикл': 0xFF00FFFF, // Cyan
       'Машин худалдаа': 0xFF0000FF, // Blue
       'Сэлбэг худалдаа': 0xFF8B00FF, // Indigo
-      'Авто будаг': 0xFFFF00FF, // Violet
+      'Авто будаг': 0xFFFF00FF, //
+      'Мотоцикл' : 0xFF3043d1,
+      'Авто шил' : 0xFF2ab7eb,
+      'Хуулга' : 0xFF4ebd35,
+      'Суудлын бүрээс' : 0xFF7439d4,
     };
 
     if (serviceColors.containsKey(services)) {
@@ -132,10 +136,13 @@ class Store {
     return day.isBefore(DateTime.now().add(const Duration(days: 1)));
   }
 
-  static String refresh='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyMTIwODEzNywiaWF0IjoxNzIxMTIxNzM3LCJqdGkiOiJjNzRjNDFlZWU1N2M0NDcyOGVlNjIzZDY0ODNjMzg1YiIsInVzZXJfaWQiOjN9.wzgGLH7IxrmLeBKfb5Wp9cL_YzZr6yFNT7G0Z9p5600';
   static List<LatLng> filterAddress=[];
   static List<dynamic> filterShops=[];
   static List<dynamic> filterSubdirServices=[];
   static List<dynamic> filterServices=[];
   static List<dynamic> swappingCategory=[];
+
+  static String filtering(String img){
+      return 'https://d3v7ghkqvtko5q.cloudfront.net/'+img;
+  }
 }

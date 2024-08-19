@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:final_pro/pages/ForgotPassword/ForgotPassword.dart';
+import 'package:final_pro/usable/Store/Store.dart';
 
 class ForgotPasswordValidateMSG extends StatefulWidget {
   String phoneNumber;
@@ -53,7 +54,7 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
 
   @override
   Widget build(BuildContext context) {
-
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
@@ -95,8 +96,8 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f1,
@@ -132,8 +133,8 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f2,
@@ -169,8 +170,8 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f3,
@@ -206,8 +207,8 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f4,
@@ -243,8 +244,8 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f5,
@@ -280,8 +281,8 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f6,
@@ -323,14 +324,14 @@ class _ForgotPasswordValidateMSGState extends State<ForgotPasswordValidateMSG> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 313,
+                  width: screenWidth * 0.78,
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () async {
                       String result = props(_digit1) + props(_digit2) + props(_digit3) + props(_digit4) + props(_digit5) + props(_digit6);
                       int response = await RESTAPI.verifyOTP(result, widget.phoneNumber);
                       if(response > 0){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPassword()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPassword(phone: widget.phoneNumber)));
                       } else {
                         Flushbar(
                           backgroundColor: const Color(0xFFFF6E6E),

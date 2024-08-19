@@ -2,7 +2,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="final_pro"
+        android:label="Car Care"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

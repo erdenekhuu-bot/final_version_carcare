@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'Card.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Swapping extends StatefulWidget {
   final List<dynamic> category;
-  Swapping({super.key, required this.category});
+  final void Function(List<LatLng>, List<dynamic>) onNavigateToMap;
+  Swapping({super.key, required this.category, required this.onNavigateToMap});
   @override
   State<Swapping> createState() => _SwappingState();
 }
@@ -29,8 +31,8 @@ class _SwappingState extends State<Swapping> {
 
   @override
   void initState() {
-    super.initState();
     _filteredShops=List.from(widget.category);
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -132,6 +134,7 @@ class _SwappingState extends State<Swapping> {
                                     Cart2(
                                       img: item['asset_path'],
                                       txt: item['name'],
+                                      onNavigateToMap: widget.onNavigateToMap,
                                     ),
                             ],
                           ),

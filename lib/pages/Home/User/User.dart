@@ -9,6 +9,7 @@ import 'package:final_pro/usable/Store/Store.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:final_pro/pages/Login/Login.dart';
+import 'package:final_pro/usable/Components/Helper.dart';
 
 class User extends StatefulWidget {
   const User({super.key});
@@ -22,8 +23,8 @@ class _UserState extends State<User> {
   String _phone = '';
   @override
   void initState() {
-    super.initState();
     getUser(Store.storePhone);
+    super.initState();
   }
 
   Future<void> getUser(String phone) async {
@@ -85,31 +86,20 @@ class _UserState extends State<User> {
                                   width: 90,
                                   height: 80,
                                   decoration: const BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(40)),
+                                      borderRadius: BorderRadius.all(Radius.circular(40)),
                                       color: Colors.white),
                                   child: SvgPicture.asset(
                                     'images/icon.svg',
                                   )),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                left: 20,
-                              ),
+                              padding: const EdgeInsets.only(left: 20),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    '$_username',
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    '$_phone',
-                                  ),
+                                  Text('$_username', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                                  Text('$_phone'),
                                 ],
                               ),
                             ),
@@ -122,28 +112,14 @@ class _UserState extends State<User> {
                 Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(
-                          top: screenWidth / 35,
-                          left: 20,
-                          bottom: screenWidth / 35),
-                      child: const Text(
-                        'Үндсэн мэдээлэл',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 17,
-                          color: Color(0xFF404040),
-                        ),
-                      ),
+                      padding: EdgeInsets.only(top: screenWidth / 35, left: 20, bottom: screenWidth / 35),
+                      child: const Text('Үндсэн мэдээлэл', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Color(0xFF404040))),
                     ),
                   ],
                 ),
                 GestureDetector(
                   onTap: () {
-                    pushScreen(
-                      context,
-                      screen: MySelf(username: _username, phone: _phone),
-                      withNavBar: false,
-                    );
+                    pushScreen(context, screen: MySelf(username: _username, phone: _phone), withNavBar: false);
                   },
                   child: Container(
                     margin: const EdgeInsets.all(20),
@@ -160,16 +136,11 @@ class _UserState extends State<User> {
                           Row(
                             children: [
                               SvgPicture.asset('images/iconSett.svg'),
-                              const SizedBox(
-                                width: 20,
-                              ),
+                              const SizedBox(width: 20),
                               const Text('Хувийн мэдээлэл'),
                             ],
                           ),
-                          const Opacity(
-                            opacity: 0.5,
-                            child: Icon(Icons.arrow_forward_ios_rounded),
-                          )
+                          const Opacity(opacity: 0.5, child: Icon(Icons.arrow_forward_ios_rounded))
                         ],
                       ),
                     ),
@@ -177,11 +148,7 @@ class _UserState extends State<User> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    pushScreen(
-                      context,
-                      screen: const Uilchilgee(),
-                      withNavBar: false,
-                    );
+                    pushScreen(context, screen: const Uilchilgee(), withNavBar: false);
                   },
                   child: Container(
                     height: 50,
@@ -346,12 +313,9 @@ void quit(BuildContext context) {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Login()),
-                        );
+                      onTap: () async {
+                        await Helper.saveUserLoggedInSharedPreference(false);
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const Login()));
                       },
                       child: Container(
                         width: 104,

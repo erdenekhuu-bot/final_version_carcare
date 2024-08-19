@@ -6,6 +6,7 @@ import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:final_pro/usable/MSG/ForgotPasswordSendMSG.dart';
 import 'package:final_pro/usable/Store/Store.dart';
 import 'package:another_flushbar/flushbar.dart';
+import 'package:final_pro/usable/Components/Helper.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -51,7 +52,7 @@ class _LoginState extends State<Login> {
                   )
                 ],
               ),
-              const Text('Car Car',
+              const Text('Car Care',
                   style: TextStyle(
                       color: Color(0xff404040),
                       fontFamily: 'Inter-ExtraBold',
@@ -244,11 +245,8 @@ class _LoginState extends State<Login> {
                                 Store.storePhone = _phone;
                                 Store.storePassword = _password;
                                 if (result == true) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const MainMenu()));
+                                  await Helper.saveUserLoggedInSharedPreference(true);
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const MainMenu()));
                                 } else {
                                   Flushbar(
                                     backgroundColor: const Color(0xFFFF6E6E),

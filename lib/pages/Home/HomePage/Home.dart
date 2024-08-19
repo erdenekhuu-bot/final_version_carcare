@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:final_pro/usable/Components/Swapping.dart';
@@ -10,8 +9,10 @@ import 'package:final_pro/usable/Store/Store.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+
 class Home extends StatefulWidget {
-  Home({super.key});
+  final void Function(List<LatLng>, List<dynamic>) onNavigateToMap;
+  Home({super.key, required this.onNavigateToMap});
 
   @override
   State<Home> createState() => _HomeState();
@@ -19,11 +20,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int activeIndex = 0;
-  final controller = CarouselController();
+  final controller = CarouselSliderController();
   List<dynamic> shops = [];
   List<dynamic> eachShops = [];
 
-  List<dynamic> urlImages = ['https://d3v7ghkqvtko5q.cloudfront.net/assets/8aedbb5d-1b26-4aef-b1a4-238ad06d209d.png', 'https://d3v7ghkqvtko5q.cloudfront.net/assets/8d188d3d-a738-4973-baa7-5af73d90dca9.png','https://d3v7ghkqvtko5q.cloudfront.net/assets/a01d352f-94ab-4a4c-8be6-b79942318c0c.png'];
+  List<dynamic> urlImages = [];
   Widget buildIndicator() => AnimatedSmoothIndicator(
         onDotClicked: animateToSlide,
         effect: const ExpandingDotsEffect(
@@ -32,29 +33,39 @@ class _HomeState extends State<Home> {
         count: urlImages.length,
       );
   void animateToSlide(int index) => controller.animateToPage(index);
+  
+  void callBanner() async {
+    List<dynamic> images = await RESTAPI.takeBanner();
+    List<dynamic> customFilter = [];
+    for (var item in images) {
+      customFilter.add(Store.filtering(item['thumbnail']));
+    }
+    setState(() {
+      urlImages = customFilter;
+    });
+  }
 
   @override
   void initState() {
-    super.initState();
     getShops();
+    callBanner();
+    super.initState();
   }
 
   void getShops() async {
     List<dynamic> result = await RESTAPI.getPlaces();
-    List<dynamic> cate=await RESTAPI.serviceSubCategory();
-    Store.swappingCategory=cate;
+    List<dynamic> cate = await RESTAPI.serviceSubCategory();
+    Store.swappingCategory = cate;
     shops = result;
   }
 
-  List<LatLng> customAddress = [];
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 242, 242),
-      body: SafeArea(
-        child: ListView(
+      body: ListView(
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -80,12 +91,13 @@ class _HomeState extends State<Home> {
                       );
                     },
                     options: CarouselOptions(
-                      height: 170,
-                      autoPlay: true,
-                      enableInfiniteScroll: false,
-                      autoPlayAnimationDuration: const Duration(seconds: 2),
-                      enlargeCenterPage: true, onPageChanged: (index, reason) =>
-                                   setState(() => activeIndex = index))),
+                        height: 170,
+                        autoPlay: true,
+                        enableInfiniteScroll: false,
+                        autoPlayAnimationDuration: const Duration(seconds: 2),
+                        enlargeCenterPage: true,
+                        onPageChanged: (index, reason) =>
+                            setState(() => activeIndex = index))),
                 const SizedBox(height: 3),
                 buildIndicator(),
                 const SizedBox(height: 10),
@@ -96,7 +108,8 @@ class _HomeState extends State<Home> {
                     children: [
                       Container(
                           padding: null,
-                          child: const Text('Үйлчилгээ', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, fontFamily: 'Inter'))),
+                          child: const Text('Үйлчилгээ',
+                              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, fontFamily: 'Inter'))),
                       GestureDetector(
                         onTap: () {
                           showModalBottomSheet(
@@ -105,7 +118,7 @@ class _HomeState extends State<Home> {
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
                             builder: (context) {
-                              return Swapping(category: Store.filterServices);
+                              return Swapping(category: Store.filterServices, onNavigateToMap: widget.onNavigateToMap);
                             },
                           );
                         },
@@ -113,9 +126,7 @@ class _HomeState extends State<Home> {
                             margin: null,
                             child: const Row(
                               children: [
-                                Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 1),
+                                Padding(padding: EdgeInsets.symmetric(horizontal: 1),
                                     child: Text('Бүгд',
                                         style: TextStyle(fontSize: 14))),
                                 Icon(Icons.arrow_forward_ios_outlined, size: 15)
@@ -126,25 +137,24 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                if(Store.filterServices.isEmpty)
+                if (Store.filterServices.isEmpty)
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: screenWidth / 20),
                     child: Container(
-                      padding: const EdgeInsets.all(8),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(
-                            color: Colors.blue,
-                            backgroundColor: Colors.white,
-                          ),
-                        ],
-                      )
-                    ),
+                        padding: const EdgeInsets.all(8),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularProgressIndicator(
+                              color: Colors.blue,
+                              backgroundColor: Colors.white,
+                            ),
+                          ],
+                        )),
                   )
                 else
                   Padding(
@@ -164,9 +174,7 @@ class _HomeState extends State<Home> {
                             spacing: 18,
                             children: [
                               for (var item in Store.filterServices)
-                                Cart(
-                                    img: item['asset_path'],
-                                    txt: item['name'])
+                                Cart(img: item['asset_path'], txt: item['name'], onNavigateToMap: widget.onNavigateToMap)
                             ],
                           ),
                         ),
@@ -190,8 +198,9 @@ class _HomeState extends State<Home> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => Place()),
+                            MaterialPageRoute(builder: (context) => Place(
+                              onNavigateToMap: widget.onNavigateToMap,
+                            )),
                           );
                         },
                         child: Container(
@@ -211,7 +220,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                if(shops.isEmpty)
+                if (shops.isEmpty)
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: screenWidth / 20),
                     child: const Column(
@@ -229,12 +238,14 @@ class _HomeState extends State<Home> {
                     child: Column(
                       children: [
                         for (int i = 0; i < shops.length; i++)
-                          if(i<10)
+                          if (i < 10)
                             OfferPlace(
                                 title: shops[i]['name'],
                                 phone: filter(shops[i]['phone']),
                                 img: shops[i]['thumbnail'],
-                                id: shops[i]['id'])
+                                id: shops[i]['id'],
+                                onNavigateToMap: widget.onNavigateToMap,
+                            )
                       ],
                     ),
                   )
@@ -242,7 +253,6 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
-      ),
     );
   }
 }

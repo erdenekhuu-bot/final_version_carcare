@@ -96,8 +96,8 @@ class _ValidateMsgState extends State<ValidateMsg> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f1,
@@ -133,8 +133,8 @@ class _ValidateMsgState extends State<ValidateMsg> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f2,
@@ -170,8 +170,8 @@ class _ValidateMsgState extends State<ValidateMsg> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f3,
@@ -207,8 +207,8 @@ class _ValidateMsgState extends State<ValidateMsg> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f4,
@@ -244,8 +244,8 @@ class _ValidateMsgState extends State<ValidateMsg> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f5,
@@ -281,8 +281,8 @@ class _ValidateMsgState extends State<ValidateMsg> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f6,
@@ -324,7 +324,7 @@ class _ValidateMsgState extends State<ValidateMsg> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 313,
+                  width: screenWidth * 0.78,
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () async {

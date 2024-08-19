@@ -86,20 +86,14 @@ class _ChangePhoneSendMSGState extends State<ChangePhoneSendMSG> {
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           counterText: '',
                           prefixIcon: SizedBox(
-                            width: 90,
+                            width: 75,
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(15, 8, 8, 8),
-                                  child: CountryFlag.fromCountryCode(
-                                    'MN',
-                                    width: 30,
-                                    height: 30,
-                                    borderRadius: 5,
-                                  ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: CountryFlag.fromCountryCode('MN', width: 30, height: 30, borderRadius: 5),
                                 ),
-                                const Text('+976')
                               ],
                             ),
                           ),

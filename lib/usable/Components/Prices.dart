@@ -88,7 +88,7 @@ class _PricesState extends State<Prices> {
                     ),
                     Container(
                       margin: null,
-                      width: screenWidth * 0.42,
+                      width: screenWidth * 0.35,
                       child:  Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,

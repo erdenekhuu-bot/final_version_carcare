@@ -6,7 +6,8 @@ import 'package:another_flushbar/flushbar.dart';
 
 class ForgotPassword extends StatefulWidget {
   final int? confirmationId;
-  ForgotPassword({super.key, this.confirmationId});
+  final String? phone;
+  ForgotPassword({super.key, this.confirmationId, this.phone});
 
   @override
   State<ForgotPassword> createState() => _ForgotPasswordState();
@@ -17,8 +18,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   final TextEditingController _cnt1 = TextEditingController();
   final TextEditingController _cnt2 = TextEditingController();
 
-  FocusNode _f1 = FocusNode();
-  FocusNode _f2 = FocusNode();
+  final FocusNode _f1 = FocusNode();
+  final FocusNode _f2 = FocusNode();
 
   @override
   void dispose() {
@@ -77,7 +78,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     children: [
                       const SizedBox(height: 5),
                       SizedBox(
-                        width: screenWidth * 0.85,
+                        width: screenWidth * 0.78,
                         height: 80,
                         child: TextFormField(
                           validator: (text) {
@@ -136,9 +137,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
                       SizedBox(
-                        width: screenWidth * 0.85,
+                        width: screenWidth * 0.78,
                         height: 80,
                         child: TextFormField(
                           validator: (text) {
@@ -195,20 +196,24 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           ),
                         ),
                       ),
-                      SizedBox(height: screenWidth / 20)
+                      SizedBox(height: screenWidth / 30)
                     ],
                   ),
                 ),
                 SizedBox(
-                  width: screenWidth * 0.85,
+                  width: screenWidth * 0.78,
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         if (_cnt1.text == _cnt2.text) {
-                          String result = await RESTAPI.forgotPassword(widget.confirmationId!, _confirmPassword);
-                          if (result == 'success') {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
+                          String result = await RESTAPI.forgotPassword(
+                              widget.phone!, _confirmPassword);
+                          if (result != '') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Login()));
                             Flushbar(
                               backgroundColor: const Color(0xFF41D4A8),
                               flushbarStyle: FlushbarStyle.GROUNDED,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
-import 'package:final_pro/pages/Home/Map/Map.dart';
 import 'package:final_pro/usable/Store/Store.dart';
 
 class OfferPlace extends StatefulWidget {
@@ -10,7 +9,8 @@ class OfferPlace extends StatefulWidget {
     final String img;
     final String title;
     final String phone;
-    OfferPlace({required this.img, required this.title, required this.phone, this.id});
+    final void Function(List<LatLng>, List<dynamic>) onNavigateToMap;
+    OfferPlace({required this.img, required this.title, required this.phone, this.id, required this.onNavigateToMap});
 
   @override
   State<OfferPlace> createState() => _OfferPlaceState();
@@ -19,7 +19,6 @@ class OfferPlace extends StatefulWidget {
 class _OfferPlaceState extends State<OfferPlace> {
 
     List<dynamic> customShops = [];
-    List<LatLng> customAddress = [];
     List<dynamic> customSchedules = [];
 
     String startTime ='';
@@ -39,12 +38,13 @@ class _OfferPlaceState extends State<OfferPlace> {
 
     @override
     void initState(){
-      super.initState();
       eachPlaces();
+      super.initState();
     }
     @override
   Widget build(BuildContext context) {
       double screenWidth = MediaQuery.of(context).size.width;
+      List<LatLng> customAddress = [];
         for (var item in customShops) {
           if (item['shop_location'] != null) {
             customAddress.add(LatLng(
@@ -64,10 +64,7 @@ class _OfferPlaceState extends State<OfferPlace> {
       return GestureDetector(
           onTap: (){
             eachPlaces().then((_) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Maps(shops: customShops, places: customAddress, forward: 1, name: widget.title)),
-              );
+              widget.onNavigateToMap(customAddress, customShops);
             });
           },
           child: Container(
@@ -145,4 +142,6 @@ class _OfferPlaceState extends State<OfferPlace> {
     );
   }
 }
+
+
 

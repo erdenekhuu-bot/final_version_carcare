@@ -2,9 +2,11 @@ import 'package:final_pro/usable/Components/OfferPlace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Place extends StatefulWidget {
-  Place({super.key});
+  final void Function(List<LatLng>, List<dynamic>)? onNavigateToMap;
+  Place({super.key, this.onNavigateToMap});
 
   @override
   State<Place> createState() => _PlaceState();
@@ -53,14 +55,15 @@ class _PlaceState extends State<Place> {
 
   @override
   void initState() {
-    super.initState();
-    //_filteredShops = List.from(shop);
     fetchData();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         fetchData();
       }
     });
+    super.initState();
+    //_filteredShops = List.from(shop);
+
   }
   
   
@@ -200,6 +203,7 @@ class _PlaceState extends State<Place> {
                                 phone: filter(item['phone']),
                                 img: item['thumbnail'],
                                 id: item['id'],
+                                onNavigateToMap: widget.onNavigateToMap!,
                               );
                             },
                           ),
@@ -282,6 +286,7 @@ class _PlaceState extends State<Place> {
                                 phone: filter(item['phone']),
                                 img: item['thumbnail'],
                                 id: item['id'],
+                                  onNavigateToMap: widget.onNavigateToMap!
                               );
                             },
                           ),
@@ -365,6 +370,7 @@ class _PlaceState extends State<Place> {
                                 phone: filter(item['phone']),
                                 img: item['thumbnail'],
                                 id: item['id'],
+                                  onNavigateToMap: widget.onNavigateToMap!
                               );
                             },
                           ),
@@ -444,6 +450,7 @@ class _PlaceState extends State<Place> {
                                 phone: filter(item['phone']),
                                 img: item['thumbnail'],
                                 id: item['id'],
+                                  onNavigateToMap: widget.onNavigateToMap!
                               );
                             },
                           ),
@@ -523,15 +530,14 @@ class _PlaceState extends State<Place> {
                                 phone: filter(item['phone']),
                                 img: item['thumbnail'],
                                 id: item['id'],
+                                  onNavigateToMap: widget.onNavigateToMap!
                               );
                             },
                           ),
                         ),
                       ),
                       if (isLoading)
-                        const SizedBox(height: 5),
-                        const CircularProgressIndicator(),
-                        const SizedBox(height: 15),
+                        const CircularProgressIndicator()
                     ],
                   ),
                 ],

@@ -48,8 +48,8 @@ class _ZardalState extends State<Zardal> {
 
   @override
   void initState(){
-    super.initState();
     getService();
+    super.initState();
   }
 
   @override
@@ -189,6 +189,7 @@ class _ZardalState extends State<Zardal> {
                   width: screenWidth * 0.85,
                   height: screenWidth / 10,
                   child: TextFormField(
+                    maxLength: 9,
                     textAlignVertical: TextAlignVertical.top,
                     controller: _cnt2,
                     onChanged: (amount) {
@@ -198,6 +199,7 @@ class _ZardalState extends State<Zardal> {
                     },
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
+                      counterText: '',
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       labelStyle: const TextStyle(fontFamily: 'Inter-Light'),
                       border: const OutlineInputBorder(),
@@ -212,7 +214,7 @@ class _ZardalState extends State<Zardal> {
                   setState(() {
                     isScrolledToBottom=!isScrolledToBottom;
                   });
-                }, icon: Icon(Icons.calendar_month)),
+                }, icon: const Icon(Icons.calendar_month)),
                 Opacity(
                   opacity: isScrolledToBottom ? 0.3 : 1,
                   child: Container(

@@ -13,12 +13,7 @@ class CustomDialog extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Container(
-            width: double.infinity,
-            height: 63,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20), color: Colors.white),
-            child: GestureDetector(
+           GestureDetector(
               onTap: () async {
                 Uri uri = Uri.parse('tel:72220111');
                 try {
@@ -29,40 +24,45 @@ class CustomDialog extends StatelessWidget {
                   return;
                 }
               },
-              child: Row(
-                children: [
-                  const SizedBox(width: 25),
-                  SvgPicture.asset(
-                    'images/Call.svg',
-                  ),
-                  const SizedBox(width: 20),
-                  const Text(
-                    'Call 72220111',
-                    style: TextStyle(fontSize: 24, color: Colors.blue),
-                  ),
-                ],
+              child: Container(
+                width: double.infinity,
+                height: 63,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20), color: Colors.white),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 25),
+                    SvgPicture.asset(
+                      'images/Call.svg',
+                    ),
+                    const SizedBox(width: 20),
+                    const Text(
+                      'Call 72220111',
+                      style: TextStyle(fontSize: 24, color: Colors.blue),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
           const SizedBox(
             height: 10,
           ),
-          Container(
-              width: double.infinity,
-              height: 63,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20), color: Colors.white),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
+          GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                width: double.infinity,
+                height: 63,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
                 child: const Center(
                   child: Text(
                     'Cancel',
                     style: TextStyle(fontSize: 24, color: Colors.blue),
                   ),
                 ),
-              )),
+              )
+          ),
         ],
       ),
     );

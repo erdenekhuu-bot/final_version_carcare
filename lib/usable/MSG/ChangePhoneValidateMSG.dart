@@ -56,6 +56,7 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
   bool showText = false;
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
@@ -97,8 +98,8 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f1,
@@ -134,8 +135,8 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f2,
@@ -171,8 +172,8 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f3,
@@ -208,8 +209,8 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f4,
@@ -245,8 +246,8 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f5,
@@ -282,8 +283,8 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
                   ),
                 ),
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: screenWidth / 10,
+                  height: screenWidth / 10,
                   margin: const EdgeInsets.symmetric(horizontal: 6.5),
                   child: TextFormField(
                     focusNode: f6,
@@ -325,7 +326,7 @@ class _ChangePhoneValidateMSGState extends State<ChangePhoneValidateMSG> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 313,
+                  width: screenWidth * 0.78,
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () async {

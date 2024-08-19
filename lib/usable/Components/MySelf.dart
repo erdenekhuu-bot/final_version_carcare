@@ -5,6 +5,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:final_pro/usable/Store/Store.dart';
 import 'package:final_pro/pages/Login/Login.dart';
 import 'package:final_pro/usable/MSG/ChangePhoneSendMSG.dart';
+import 'package:final_pro/pages/Home/User/User.dart';
 
 class MySelf extends StatefulWidget {
   final String? token;
@@ -374,11 +375,10 @@ class _MySelfState extends State<MySelf> {
                        if(_formKey.currentState!.validate()){
                          privatePhone == '' ? privatePhone = Store.storePhone : '';
                          String _result = await RESTAPI.updateUser(
-                             Store.confirmationId,
                              setUsername,
                              privatePhone,
                              setPassword);
-                         if (_result == 'success') {
+                         if (_result != '') {
                            Navigator.push(
                                context,
                                MaterialPageRoute(

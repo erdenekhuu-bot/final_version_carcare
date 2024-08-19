@@ -9,7 +9,7 @@ class MapFirstMenu extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     return Container(
         width: screenWidth * 0.4,
-        height: 40,
+        height: screenWidth / 10,
         decoration: BoxDecoration(
             border: const Border(bottom: BorderSide(width: 1, color: Colors.white)),
             color: const Color(0xff404040).withOpacity(0.8),
@@ -33,11 +33,11 @@ class MapSecondMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
+    print(screenWidth.toInt());
    return Container(
-     padding: const EdgeInsets.symmetric(horizontal: 10),
+     padding: const EdgeInsets.symmetric(horizontal: 5),
      width: screenWidth * 0.4,
-     height: 40,
+     height: screenWidth / 10,
      decoration: BoxDecoration(
        border: const Border(bottom: BorderSide(width: 1, color: Colors.white)),
        color: const Color(0xff404040).withOpacity(0.8),

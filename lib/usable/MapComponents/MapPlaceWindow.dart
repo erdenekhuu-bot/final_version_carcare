@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:final_pro/usable/Store/Store.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 
 class MapPlaceWindow extends StatefulWidget {
   final String? name;
   final String? phone;
   final String? img;
   final String? description;
-  final String? address;
   final int? id;
-  const MapPlaceWindow({super.key, this.name, this.phone, this.img, this.description, this.address, this.id});
+  const MapPlaceWindow({super.key, this.name, this.phone, this.img, this.description, this.id});
 
   @override
   State<MapPlaceWindow> createState() => _MapPlaceWindowState();
@@ -23,6 +22,7 @@ class _MapPlaceWindowState extends State<MapPlaceWindow> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Stack(
       children: [
         GestureDetector(
@@ -47,7 +47,7 @@ class _MapPlaceWindowState extends State<MapPlaceWindow> {
             },
             child: DraggableScrollableSheet(
               initialChildSize: 0.5,
-              minChildSize: 0.1,
+              minChildSize: 0.5,
               maxChildSize: 1,
               builder: (BuildContext context, ScrollController scrollController){
                 return AnimatedSwitcher(
@@ -60,7 +60,6 @@ class _MapPlaceWindowState extends State<MapPlaceWindow> {
                             scrollController: scrollController,
                             name: widget.name,
                             img: widget.img,
-                            address: widget.address,
                             description: widget.description,
                             phone: widget.phone,
                             id: widget.id
@@ -69,7 +68,6 @@ class _MapPlaceWindowState extends State<MapPlaceWindow> {
                           scrollController: scrollController,
                           name: widget.name,
                           img: widget.img,
-                          address: widget.address,
                           description: widget.description,
                           phone: widget.phone,
                           id: widget.id
@@ -91,9 +89,8 @@ class FirstWindow extends StatefulWidget {
   final String? phone;
   final String? img;
   final String? description;
-  final String? address;
   final int? id;
-  FirstWindow({super.key, required this.scrollController, this.name, this.phone, this.img, this.description, this.address, this.id});
+  FirstWindow({super.key, required this.scrollController, this.name, this.phone, this.img, this.description, this.id});
 
   @override
   State<FirstWindow> createState() => _FirstWindowState();
@@ -116,8 +113,8 @@ class _FirstWindowState extends State<FirstWindow> {
 
     @override
     void initState(){
-      super.initState();
       getShop();
+      super.initState();
     }
 
   @override
@@ -184,16 +181,29 @@ class _FirstWindowState extends State<FirstWindow> {
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: Text('${widget.name}', style: const TextStyle(fontFamily: 'Inter-SemiBold', fontSize: 18)),
                       ),
-                      Container(
-                        margin: null,
-                        width: screenWidth * 0.4,
-                        height: 38,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: const Color(0xFF404040)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [SvgPicture.asset('images/phone.svg', color: Colors.white, width: 15, height: 15),
-                            Text('${Store.convertPhone(Store.Divide(widget.phone!))}', style: const TextStyle(color: Colors.white, fontFamily: 'Inter-Regular'))
-                          ],
+                      GestureDetector(
+                        onTap: () async {
+                          Uri uri = Uri.parse('tel:${widget.phone!}');
+                          try {
+                            if(await canLaunchUrl(uri)){
+                              await launchUrl(uri);
+                            }
+                          } catch(error) {
+                            return;
+                          }
+                        },
+                        child: Container(
+                          margin: null,
+                          width: screenWidth * 0.4,
+                          height: 38,
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: const Color(0xFF404040)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SvgPicture.asset('images/phone.svg', color: Colors.white, width: 15, height: 15),
+                              Text('${Store.convertPhone(Store.Divide(widget.phone!))}', style: const TextStyle(color: Colors.white, fontFamily: 'Inter-Regular'))
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(height: 5),
@@ -218,9 +228,8 @@ class SecondWindow extends StatefulWidget {
     final String? phone;
     final String? img;
     final String? description;
-    final String? address;
     final int? id;
-    SecondWindow({super.key, required this.scrollController, this.name, this.phone, this.img, this.description, this.address, this.id});
+    SecondWindow({super.key, required this.scrollController, this.name, this.phone, this.img, this.description,this.id});
 
 
   @override
@@ -235,6 +244,7 @@ class _SecondWindowState extends State<SecondWindow> {
     String holiday_startTime='';
     String holiday_endTime = '';
     List<dynamic> shopServices=[];
+    String address='';
 
     void getShop() async {
       List<dynamic> result = await RESTAPI.eachPlaces(widget.id!);
@@ -253,6 +263,9 @@ class _SecondWindowState extends State<SecondWindow> {
     Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     for (var item in customShops) {
+      setState(() {
+        address=item['shop_location']['address'];
+      });
       if(item['shop_schedules'] is List<dynamic> && item['shop_schedules'] != null){
         for(int i=0; i<item['shop_schedules'].length; i++){
           if(i<1){
@@ -339,28 +352,40 @@ class _SecondWindowState extends State<SecondWindow> {
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           child: Text('${widget.name}', style: const TextStyle(fontFamily: 'Inter-SemiBold', fontSize: 20)),
                         ),
-                        Container(
-                          width: 148,
-                          height: 38,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.circular(10),
-                            color: const Color(0xFF404040),
+                        GestureDetector(
+                            onTap: () async {
+                              Uri uri = Uri.parse('tel:${widget.phone!}');
+                              try {
+                                if(await canLaunchUrl(uri)){
+                                  await launchUrl(uri);
+                                }
+                              } catch(error) {
+                                return;
+                              }
+                            },
+                          child: Container(
+                            width: 148,
+                            height: 38,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                              BorderRadius.circular(10),
+                              color: const Color(0xFF404040),
+                            ),
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SvgPicture.asset(
+                                  'images/phone.svg',
+                                  color: Colors.white,
+                                  width: 15,
+                                  height: 15,
+                                ),
+                                Text('${Store.convertPhone(Store.Divide(widget.phone!))}', style: const TextStyle(color: Colors.white, fontFamily: 'Inter-Regular'))
+                              ],
+                            ),
                           ),
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SvgPicture.asset(
-                                'images/phone.svg',
-                                color: Colors.white,
-                                width: 15,
-                                height: 15,
-                              ),
-                              Text('${Store.convertPhone(Store.Divide(widget.phone!))}', style: const TextStyle(color: Colors.white, fontFamily: 'Inter-Regular'))
-                            ],
-                          ),
-                        ),
+                        )
                       ],
                     ),
                   )
@@ -394,7 +419,7 @@ class _SecondWindowState extends State<SecondWindow> {
                             Container(
                               padding: null,
                               width: 300,
-                              child: Text('${widget.address}', style: const TextStyle(color: Color(0xFF404040), fontFamily: 'Inter-Regular')),
+                              child: Text('$address', style: const TextStyle(color: Color(0xFF404040), fontFamily: 'Inter-Regular')),
                             ),
                           ],
                         ),

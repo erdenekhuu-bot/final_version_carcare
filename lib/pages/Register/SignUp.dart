@@ -44,6 +44,7 @@ class _SignUpState extends State<SignUp> {
   final RegExp passwordRegExp = RegExp(r'^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$');
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
@@ -64,7 +65,7 @@ class _SignUpState extends State<SignUp> {
                   children: [
                     const SizedBox(height: 10),
                     SizedBox(
-                      width: 313,
+                      width: screenWidth * 0.78,
                       height: 80,
                       child: TextFormField(
                         controller: _digit1,
@@ -108,9 +109,9 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     SizedBox(
-                      width: 313,
+                      width: screenWidth * 0.78,
                       height: 80,
                       child: TextFormField(
                         focusNode: f2,
@@ -168,9 +169,9 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     SizedBox(
-                      width: 313,
+                      width: screenWidth * 0.78,
                       height: 80,
                       child: TextFormField(
                         validator: (text) {
@@ -228,9 +229,9 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
 
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 20),
                     SizedBox(
-                      width: 313,
+                      width: screenWidth * 0.78,
                       height: 40,
                       child: ElevatedButton(
                         onPressed: () async {

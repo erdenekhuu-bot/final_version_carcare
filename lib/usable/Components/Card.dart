@@ -8,7 +8,8 @@ import 'package:final_pro/usable/Store/Store.dart';
 class Cart extends StatefulWidget {
   final String txt;
   final String? img;
-  const Cart({super.key, this.img, required this.txt});
+  final void Function(List<LatLng>, List<dynamic>) onNavigateToMap;
+  const Cart({super.key, this.img, required this.txt, required this.onNavigateToMap});
 
   @override
   State<Cart> createState() => _CartState();
@@ -18,6 +19,7 @@ class _CartState extends State<Cart> {
 
   List<dynamic> customShops = [];
   List<LatLng> customAddress = [];
+  List<dynamic> customize = [];
 
   Future<void> takeShops() async {
     customShops = [];
@@ -25,37 +27,37 @@ class _CartState extends State<Cart> {
       List<dynamic> result = [];
       switch (widget.txt) {
         case 'Агрегат':
-          result = await RESTAPI.getCustomPlaces('Агрегат');
+          result = await RESTAPI.getCustomServices('Агрегат');
           break;
         case 'Кузов':
-          result = await RESTAPI.getCustomPlaces('Кузов');
+          result = await RESTAPI.getCustomServices('Кузов');
           break;
         case 'Дугуй':
-          result = await RESTAPI.getCustomPlaces('Дугуй');
+          result = await RESTAPI.getCustomServices('Дугуй');
           break;
         case 'Угаалга':
-          result = await RESTAPI.getCustomPlaces('Угаалга');
+          result = await RESTAPI.getCustomServices('Угаалга');
           break;
         case 'Мотоцикл':
-          result = await RESTAPI.getCustomPlaces('Мотоцикл');
+          result = await RESTAPI.getCustomServices('Мотоцикл');
           break;
         case 'Машин худалдаа':
-          result = await RESTAPI.getCustomPlaces('Машин худалдаа');
+          result = await RESTAPI.getCustomServices('Машин худалдаа');
           break;
         case 'Сэлбэг худалдаа':
-          result = await RESTAPI.getCustomPlaces('Сэлбэг худалдаа');
+          result = await RESTAPI.getCustomServices('Сэлбэг худалдаа');
           break;
         case 'Авто будаг':
-          result = await RESTAPI.getCustomPlaces('Авто будаг');
+          result = await RESTAPI.getCustomServices('Авто будаг');
           break;
         case 'Авто шил':
-          result = await RESTAPI.getCustomPlaces('Авто шил');
+          result = await RESTAPI.getCustomServices('Авто шил');
           break;
         case 'Хуулга':
-          result = await RESTAPI.getCustomPlaces('Хуулга');
+          result = await RESTAPI.getCustomServices('Хуулга');
           break;
         case 'Суудлын бүрээс':
-          result = await RESTAPI.getCustomPlaces('Суудлын бүрээс');
+          result = await RESTAPI.getCustomServices('Суудлын бүрээс');
           break;
         default:
           break;
@@ -72,19 +74,17 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     for(var item in customShops)
       try {
-        Store.storeShopName=item['shop']['name'];
-        customAddress.add(LatLng(item['shop']['shop_location']['latitude'], item['shop']['shop_location']['longitude']));
-      } catch(error){
-        print(error);
-      }
-
+        Store.storeShopName=item['name'];
+        customAddress.add(LatLng(item['shop_location']['latitude'], item['shop_location']['longitude']));
+      } catch(error){}
     return GestureDetector(
       onTap: () {
         takeShops().then((_) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Maps(shops: customShops, places: customAddress, forward: 1, name: widget.txt)),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => Maps(shops: customShops, places: customAddress, forward: 1, name: widget.txt)),
+          // );
+          widget.onNavigateToMap(customAddress, customShops);
         });
       },
       child: Column(
@@ -111,8 +111,8 @@ class _CartState extends State<Cart> {
 class Cart2 extends StatefulWidget {
   final String img;
   final String txt;
-
-  const Cart2({super.key, required this.img, required this.txt});
+  final void Function(List<LatLng>, List<dynamic>) onNavigateToMap;
+  const Cart2({super.key, required this.img, required this.txt, required this.onNavigateToMap});
 
   @override
   State<Cart2> createState() => _Cart2State();
@@ -129,37 +129,37 @@ class _Cart2State extends State<Cart2> {
       List<dynamic> result = [];
       switch (widget.txt) {
         case 'Агрегат':
-          result = await RESTAPI.getCustomPlaces('Агрегат');
+          result = await RESTAPI.getCustomServices('Агрегат');
           break;
         case 'Кузов':
-          result = await RESTAPI.getCustomPlaces('Кузов');
+          result = await RESTAPI.getCustomServices('Кузов');
           break;
         case 'Дугуй':
-          result = await RESTAPI.getCustomPlaces('Дугуй');
+          result = await RESTAPI.getCustomServices('Дугуй');
           break;
         case 'Угаалга':
-          result = await RESTAPI.getCustomPlaces('Угаалга');
+          result = await RESTAPI.getCustomServices('Угаалга');
           break;
         case 'Мотоцикл':
-          result = await RESTAPI.getCustomPlaces('Мотоцикл');
+          result = await RESTAPI.getCustomServices('Мотоцикл');
           break;
         case 'Машин худалдаа':
-          result = await RESTAPI.getCustomPlaces('Машин худалдаа');
+          result = await RESTAPI.getCustomServices('Машин худалдаа');
           break;
         case 'Сэлбэг худалдаа':
-          result = await RESTAPI.getCustomPlaces('Сэлбэг худалдаа');
+          result = await RESTAPI.getCustomServices('Сэлбэг худалдаа');
           break;
         case 'Авто будаг':
-          result = await RESTAPI.getCustomPlaces('Авто будаг');
+          result = await RESTAPI.getCustomServices('Авто будаг');
           break;
         case 'Авто шил':
-          result = await RESTAPI.getCustomPlaces('Авто шил');
+          result = await RESTAPI.getCustomServices('Авто шил');
           break;
         case 'Хуулга':
-          result = await RESTAPI.getCustomPlaces('Хуулга');
+          result = await RESTAPI.getCustomServices('Хуулга');
           break;
         case 'Суудлын бүрээс':
-          result = await RESTAPI.getCustomPlaces('Суудлын бүрээс');
+          result = await RESTAPI.getCustomServices('Суудлын бүрээс');
           break;
         default:
           break;
@@ -177,22 +177,23 @@ class _Cart2State extends State<Cart2> {
     double screenWidth = MediaQuery.of(context).size.width;
     for(var item in customShops)
       try {
-        Store.storeShopName=item['shop']['name'];
-        customAddress.add(LatLng(item['shop']['shop_location']['latitude'], item['shop']['shop_location']['longitude']));
+        Store.storeShopName=item['name'];
+        customAddress.add(LatLng(item['shop_location']['latitude'], item['shop_location']['longitude']));
       } catch(error){
         print(error);
       }
     return GestureDetector(
       onTap: () async {
         takeShops().then((_) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Maps(shops: customShops, places: customAddress, forward: 1, name: widget.txt)),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => Maps(shops: customShops, places: customAddress, forward: 1, name: widget.txt)),
+          // );
+          widget.onNavigateToMap(customAddress, customShops);
         });
       },
       child: Padding(
-        padding: EdgeInsets.only(bottom: screenWidth / 80, left: screenWidth / 30, right: screenWidth / 30, top: screenWidth / 50),
+        padding: EdgeInsets.all(screenWidth / 120),
         child: Column(
           children: [
             Container(
@@ -218,7 +219,7 @@ class _Cart2State extends State<Cart2> {
             )
           ],
         ),
-      ),
+      )
     );
   }
 }

@@ -71,6 +71,7 @@ class _PolicyState extends State<Policy> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -150,6 +151,7 @@ class _PolicyState extends State<Policy> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
+                      padding: null,
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
@@ -189,7 +191,7 @@ class _PolicyState extends State<Policy> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 313,
+                      width: screenWidth * 0.78,
                       height: 40,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10)),
