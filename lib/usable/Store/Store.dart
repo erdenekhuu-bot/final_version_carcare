@@ -1,4 +1,6 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:final_pro/usable/Components/Helper.dart';
+
 class Store {
   static int confirmationId = 0;
   static String remote_accessToken = '';
@@ -29,60 +31,6 @@ class Store {
       return phone.substring(0, 7);
     } else {
       return phone.substring(0, 8);
-    }
-  }
-
-  static String convertPM(String time) {
-    try {
-      String rightTime = '';
-      if(time.length >= 2){
-        switch (time.substring(0, 2)) {
-          case '00':
-            rightTime = '00:00';
-            break;
-          case '01':
-            rightTime = '13:00';
-            break;
-          case '02':
-            rightTime = '14:00';
-            break;
-          case '03':
-            rightTime = '15:00';
-            break;
-          case '04':
-            rightTime = '16:00';
-            break;
-          case '05':
-            rightTime = '17:00';
-            break;
-          case '06':
-            rightTime = '18:00';
-            break;
-          case '07':
-            rightTime = '19:00';
-            break;
-          case '08':
-            rightTime = '20:00';
-            break;
-          case '09':
-            rightTime = '21:00';
-            break;
-          case '10':
-            rightTime = '22:00';
-            break;
-          case '11':
-            rightTime = '23:00';
-            break;
-          case '12':
-            rightTime = '24:00';
-            break;
-          default:
-            rightTime = '00:00';
-        }
-      }
-      return rightTime;
-    } catch (error) {
-      return error.toString();
     }
   }
 
@@ -141,8 +89,27 @@ class Store {
   static List<dynamic> filterSubdirServices=[];
   static List<dynamic> filterServices=[];
   static List<dynamic> swappingCategory=[];
+  static int forward=0;
+  static String refreshToken='';
 
   static String filtering(String img){
       return 'https://d3v7ghkqvtko5q.cloudfront.net/'+img;
   }
+  
+  static Future<String> username() async {
+       String? user = await Helper.readUsername();
+       return user ?? '';
+  }
+
+  static Future<String> phone() async {
+       String? data = await Helper.readPhone();
+       return data ?? '';
+  }
+
+  static Future<String> password() async {
+       String? data = await Helper.readPassword();
+       return data ?? '';
+  }
 }
+
+

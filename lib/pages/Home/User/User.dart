@@ -1,15 +1,12 @@
-import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:final_pro/usable/Components/MySelf.dart';
 import 'package:final_pro/usable/Components/Uilchilgee.dart';
 import 'package:final_pro/usable/Components/CustomDialog.dart';
-import 'package:final_pro/usable/Store/Store.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:final_pro/pages/Login/Login.dart';
 import 'package:final_pro/usable/Components/Helper.dart';
+import 'package:final_pro/REST/AuthService.dart';
 
 class User extends StatefulWidget {
   const User({super.key});
@@ -21,27 +18,24 @@ class User extends StatefulWidget {
 class _UserState extends State<User> {
   String _username = '';
   String _phone = '';
+
+
   @override
   void initState() {
-    getUser(Store.storePhone);
+    getUser();
     super.initState();
   }
 
-  Future<void> getUser(String phone) async {
+  Future<void> getUser() async {
     try {
-      final response = await RESTAPI.client.get(
-        Uri.parse('https://admin-dev.carcare.mn/api/user/'),
-        headers: {
-          'Authorization': 'Bearer ${Store.accessToken}',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        var data = json.decode(utf8.decode(response.bodyBytes));
-        List<dynamic> results = data['results'];
+      String? access=await Helper.readDefaultToken();
+      String? refresh=await Helper.readToken();
+      String? phone=await Helper.readPhone();
+      AuthService authService = AuthService(access!, refresh!);
+      List<dynamic> results = await authService.getUser();
         for (var item in results) {
-          if (item['phonenumber'].substring(4) == Store.storePhone) {
-            Store.storeUsername = item['username'];
+          if (item['phonenumber'].substring(4) == phone) {
+            await Helper.username(item['username']);
             setState(() {
               _username = item['username'];
               _phone = item['phonenumber'].substring(4);
@@ -49,7 +43,6 @@ class _UserState extends State<User> {
             break;
           }
         }
-      }
 
     } catch (error) {
       return;
@@ -119,7 +112,9 @@ class _UserState extends State<User> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    pushScreen(context, screen: MySelf(username: _username, phone: _phone), withNavBar: false);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MySelf(username: _username, phone: _phone))).then((_){
+                      getUser();
+                    });
                   },
                   child: Container(
                     margin: const EdgeInsets.all(20),
@@ -164,16 +159,11 @@ class _UserState extends State<User> {
                           Row(
                             children: [
                               SvgPicture.asset('images/iconMenu.svg'),
-                              const SizedBox(
-                                width: 20,
-                              ),
+                              const SizedBox(width: 20),
                               const Text('Үйлчилгээний нөхцөл'),
                             ],
                           ),
-                          const Opacity(
-                            opacity: 0.5,
-                            child: Icon(Icons.arrow_forward_ios_rounded),
-                          )
+                          const Opacity(opacity: 0.5, child: Icon(Icons.arrow_forward_ios_rounded))
                         ],
                       ),
                     ),
@@ -203,16 +193,11 @@ class _UserState extends State<User> {
                           Row(
                             children: [
                               SvgPicture.asset('images/UserCall.svg'),
-                              const SizedBox(
-                                width: 20,
-                              ),
+                              const SizedBox(width: 20),
                               const Text('Холбоо барих'),
                             ],
                           ),
-                          const Opacity(
-                            opacity: 0.5,
-                            child: Icon(Icons.arrow_forward_ios_rounded),
-                          )
+                          const Opacity(opacity: 0.5, child: Icon(Icons.arrow_forward_ios_rounded))
                         ],
                       ),
                     ),
@@ -237,16 +222,11 @@ class _UserState extends State<User> {
                           Row(
                             children: [
                               SvgPicture.asset('images/UserExit.svg'),
-                              const SizedBox(
-                                width: 20,
-                              ),
+                              const SizedBox(width: 20),
                               const Text('Гарах'),
                             ],
                           ),
-                          const Opacity(
-                            opacity: 0.5,
-                            child: Icon(Icons.arrow_forward_ios_rounded),
-                          )
+                          const Opacity(opacity: 0.5, child: Icon(Icons.arrow_forward_ios_rounded))
                         ],
                       ),
                     ),
@@ -280,10 +260,7 @@ void quit(BuildContext context) {
                   Icons.error,
                   size: 75,
                 ),
-                const Text(
-                  'Та гарахдаа итгэлтэй байна уу?',
-                  textAlign: TextAlign.center,
-                ),
+                const Text('Та гарахдаа итгэлтэй байна уу?', textAlign: TextAlign.center),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -303,11 +280,7 @@ void quit(BuildContext context) {
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              'Үгүй',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
-                            ),
+                            Text('Үгүй', style: TextStyle(color: Colors.white, fontSize: 18)),
                           ],
                         ),
                       ),
@@ -315,6 +288,7 @@ void quit(BuildContext context) {
                     GestureDetector(
                       onTap: () async {
                         await Helper.saveUserLoggedInSharedPreference(false);
+                        await Helper.clearToken();
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const Login()));
                       },
                       child: Container(
@@ -346,5 +320,6 @@ void quit(BuildContext context) {
             ),
           ),
         );
-      });
+      }
+      );
 }

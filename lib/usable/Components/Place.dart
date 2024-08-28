@@ -1,12 +1,13 @@
 import 'package:final_pro/usable/Components/OfferPlace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:final_pro/REST/AuthService.dart';
+import 'package:final_pro/usable/Components/Helper.dart';
 
 class Place extends StatefulWidget {
-  final void Function(List<LatLng>, List<dynamic>)? onNavigateToMap;
-  Place({super.key, this.onNavigateToMap});
+  final void Function(List<LatLng>, List<dynamic>) onNavigateToMap;
+  Place({super.key, required this.onNavigateToMap});
 
   @override
   State<Place> createState() => _PlaceState();
@@ -65,8 +66,8 @@ class _PlaceState extends State<Place> {
     //_filteredShops = List.from(shop);
 
   }
-  
-  
+
+
   void _filterShops(String query) {
     query = query.toLowerCase();
     setState(() {
@@ -81,10 +82,13 @@ class _PlaceState extends State<Place> {
   }
 
   void fetchData() async {
+    String? access=await Helper.readDefaultToken();
+    String? refresh=await Helper.readToken();
+    AuthService authService = AuthService(access!, refresh!);
     setState(() {
       isLoading = true;
     });
-    final responseData = await RESTAPI.paginateShops(currentPage);
+    final responseData = await authService.paginateShops(currentPage);
     if (responseData.isNotEmpty) {
       _filteredShops=shop;
       setState(() {
@@ -113,7 +117,7 @@ class _PlaceState extends State<Place> {
             appBar: AppBar(
               title: const Text(
                 'Санал болгож буй газрууд',
-                style: TextStyle(fontFamily: 'Inter', fontSize: 15),
+                style: TextStyle(fontFamily: 'Inter', fontSize: 15, fontWeight: FontWeight.bold),
               ),
               backgroundColor: const Color.fromARGB(255, 243, 242, 242),
               leading: IconButton(
@@ -203,16 +207,14 @@ class _PlaceState extends State<Place> {
                                 phone: filter(item['phone']),
                                 img: item['thumbnail'],
                                 id: item['id'],
-                                onNavigateToMap: widget.onNavigateToMap!,
+                                onNavigateToMaps: widget.onNavigateToMap,
                               );
                             },
                           ),
                         ),
                       ),
                       if (isLoading)
-                        const SizedBox(height: 5),
-                        const CircularProgressIndicator(),
-                        const SizedBox(height: 15),
+                        const CircularProgressIndicator()
             ],
                   ),
                   Column(
@@ -286,16 +288,14 @@ class _PlaceState extends State<Place> {
                                 phone: filter(item['phone']),
                                 img: item['thumbnail'],
                                 id: item['id'],
-                                  onNavigateToMap: widget.onNavigateToMap!
+                                  onNavigateToMaps: widget.onNavigateToMap
                               );
                             },
                           ),
                         ),
                       ),
                       if (isLoading)
-                        const SizedBox(height: 5),
-                        const CircularProgressIndicator(),
-                        const SizedBox(height: 15),
+                        const CircularProgressIndicator()
                     ],
                   ),
                   Column(
@@ -370,16 +370,14 @@ class _PlaceState extends State<Place> {
                                 phone: filter(item['phone']),
                                 img: item['thumbnail'],
                                 id: item['id'],
-                                  onNavigateToMap: widget.onNavigateToMap!
+                                  onNavigateToMaps: widget.onNavigateToMap
                               );
                             },
                           ),
                         ),
                       ),
                       if (isLoading)
-                        const SizedBox(height: 5),
-                        const CircularProgressIndicator(),
-                        const SizedBox(height: 15),
+                        const CircularProgressIndicator()
                     ],
                   ),
                   Column(
@@ -450,16 +448,14 @@ class _PlaceState extends State<Place> {
                                 phone: filter(item['phone']),
                                 img: item['thumbnail'],
                                 id: item['id'],
-                                  onNavigateToMap: widget.onNavigateToMap!
+                                  onNavigateToMaps: widget.onNavigateToMap
                               );
                             },
                           ),
                         ),
                       ),
                       if (isLoading)
-                        const SizedBox(height: 5),
-                        const CircularProgressIndicator(),
-                        const SizedBox(height: 15),
+                        const CircularProgressIndicator()
                     ],
                   ),
                   Column(
@@ -530,7 +526,7 @@ class _PlaceState extends State<Place> {
                                 phone: filter(item['phone']),
                                 img: item['thumbnail'],
                                 id: item['id'],
-                                  onNavigateToMap: widget.onNavigateToMap!
+                                  onNavigateToMaps: widget.onNavigateToMap
                               );
                             },
                           ),

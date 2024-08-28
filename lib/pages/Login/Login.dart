@@ -31,6 +31,7 @@ class _LoginState extends State<Login> {
   }
 
   final _fkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -240,10 +241,11 @@ class _LoginState extends State<Login> {
                           child: ElevatedButton(
                             onPressed: () async {
                               if (_fkey.currentState!.validate()) {
-                                bool result =
-                                    await RESTAPI.login(_phone, _password);
+                                bool result = await RESTAPI.login(_phone, _password);
                                 Store.storePhone = _phone;
                                 Store.storePassword = _password;
+                                await Helper.phone(_phone);
+                                await Helper.password(_password);
                                 if (result == true) {
                                   await Helper.saveUserLoggedInSharedPreference(true);
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const MainMenu()));
@@ -253,29 +255,19 @@ class _LoginState extends State<Login> {
                                     flushbarStyle: FlushbarStyle.GROUNDED,
                                     flushbarPosition: FlushbarPosition.TOP,
                                     titleText: const Center(
-                                      child: Icon(
-                                        Icons.error_outline,
-                                        color: Colors.white,
-                                        size: 28,
-                                      ),
+                                      child: Icon(Icons.error_outline, color: Colors.white, size: 28),
                                     ),
                                     messageText: const Padding(
                                       padding: EdgeInsets.only(bottom: 20.0),
-                                      child: Text(
-                                        "Утасны дугаар аль эсвэл нууц үг буруу байна",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
+                                      child: Text("Утасны дугаар аль эсвэл нууц үг буруу байна", textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
                                     ),
                                     duration: const Duration(seconds: 2),
                                   ).show(context);
                                 }
                               }
-
                             },
-                            child: const Text(
-                              'Нэвтрэх',
-                              style: TextStyle(
+
+                            child: const Text('Нэвтрэх', style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'Inter',
                                   fontSize: 17),
@@ -294,11 +286,7 @@ class _LoginState extends State<Login> {
                             onPressed: () {
                               Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const SendMSG(
-                                          title: 'Бүртгүүлэх',
-                                          description:
-                                              'Таны бүртгүүлэх дугаар дээр баталгаажуулах код илгээх болно')));
+                                  MaterialPageRoute(builder: (context) => const SendMSG(title: 'Бүртгүүлэх', description: 'Таны бүртгүүлэх дугаар дээр баталгаажуулах код илгээх болно')));
                             },
                             child: const Text('Бүртгүүлэх',
                                 style: TextStyle(

@@ -1,16 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+import'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-//import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'HomePage/Home.dart';
 import 'Map/Map.dart';
 import 'Car/Car.dart';
 import 'User/User.dart';
-//import 'package:final_pro/usable/Components/StyleBottomNavBar.dart';
-import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:final_pro/usable/Store/Store.dart';
-import 'package:final_pro/usable/Components/Global_controller.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:final_pro/usable/Components/StyleBottomNavBar.dart';
+import 'package:final_pro/REST/AuthService.dart';
+import 'package:final_pro/usable/Components/Helper.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
@@ -18,126 +17,109 @@ class MainMenu extends StatefulWidget {
   @override
   State<MainMenu> createState() => _MainMenuState();
 }
-
+late PersistentTabController _controller;
 List<dynamic> shops = [];
-
-List<LatLng> addressFetch=[];
-List<dynamic> shopsFetch=[];
-
-List<Widget> _screens = [];
+List<dynamic> services=[];
+List<dynamic> subdir=[];
+List<dynamic> category=[];
+List<dynamic> defaultShop=[];
+List<LatLng> defaultAddress=[];
 
 class _MainMenuState extends State<MainMenu> {
-
   @override
   void initState() {
     getShops();
-    _updateScreens();
+    _controller = PersistentTabController(initialIndex: 0);
     super.initState();
   }
 
-
   void getShops() async {
-    List<dynamic> result = await RESTAPI.fetchAllShops();
-    List<dynamic> serviceResult = await RESTAPI.getServices();
-    List<dynamic> other=await RESTAPI.serviceSubDir();
+    String? access=await Helper.readDefaultToken();
+    String? refresh=await Helper.readToken();
+    AuthService authService = AuthService(access!, refresh!);
+    List<dynamic> result = await authService.fetchAllShops();
+    List<dynamic> defaultResult = await authService.fetchAllShops();
+    List<dynamic> serviceResult = await authService.getServices();
+    List<dynamic> other=await authService.serviceSubDir();
     setState(() {
       shops=result;
+      defaultShop=defaultResult;
     });
-    Store.filterShops=result;
     Store.filterSubdirServices=other;
     Store.filterServices=serviceResult;
   }
 
-
-
   void reset() async {
+    String? access=await Helper.readDefaultToken();
+    String? refresh=await Helper.readToken();
+    AuthService authService = AuthService(access!, refresh!);
     List<LatLng> customA=[];
-    List<dynamic> customShops=await RESTAPI.fetchAllShops();
+    List<dynamic> customShops=await authService.fetchAllShops();
     for (var item in customShops) {
       customA.add(LatLng(
           item['shop']['shop_location']['latitude'], item['shop']['shop_location']['longitude']));
     }
-    Store.filterAddress=customA;
-    Store.filterShops=customShops;
   }
-
-
-  int _currentIndex = 0;
-
-  void _onItemTapped(int index) {
+  void switchToMaps(List<LatLng> places, List<dynamic> newShops) {
     setState(() {
-      _currentIndex = index;
+      defaultAddress.clear();
+      defaultAddress.addAll(places);
+      shops.clear();
+      shops.addAll(newShops);
     });
+    _controller.jumpToTab(1);
   }
-
-  void _updateScreens() {
-    _screens = [
-      Home(onNavigateToMap: _navigateToMap),
-      Maps(
-        key: UniqueKey(),
-        places: addressFetch,
-        shops: shopsFetch,
-        servicePlaces: Store.filterServices,
-        subdir: Store.filterSubdirServices,
-      ),
-      const Car(),
-      const User(),
-    ];
-  }
-
-  void _navigateToMap(List<LatLng> filteringAddress, List<dynamic> filterShopping) async {
-    final List<LatLng> newAddressFetch = filteringAddress.isNotEmpty ? filteringAddress : Store.filterAddress;
-    final List<dynamic> newShopsFetch = filterShopping.isNotEmpty ? filterShopping : Store.filterShops;
-
-    setState(() {
-      addressFetch = newAddressFetch;
-      shopsFetch = newShopsFetch;
-      _currentIndex = 1;
-      _updateScreens();
-    });
-  }
-
-
-
 
   @override
   Widget build(BuildContext context) {
+    Store.filterShops=[];
     Store.filterAddress=[];
+    List<LatLng> shopAddress=[];
     for (var item in shops) {
-        Store.filterAddress.add(LatLng(item['shop_location']['latitude'], item['shop_location']['longitude']));
+      shopAddress.add(LatLng(item['shop_location']['latitude'], item['shop_location']['longitude']));
+
+    }
+    for(int i=0; i<defaultShop.length; i++){
+      Store.filterShops.add(defaultShop[i]);
+      Store.filterAddress.add(LatLng(defaultShop[i]['shop_location']['latitude'], defaultShop[i]['shop_location']['longitude']));
     }
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-          currentIndex: _currentIndex,
-          onTap: _onItemTapped,
-        items: [
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset('images/home.svg'),
-            activeIcon: SvgPicture.asset('images/home.svg', color: Colors.black),
-            label: '',
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      body: PersistentTabView(
+        controller: _controller,
+        navBarHeight: kBottomNavigationBarHeight,
+        tabs: [
+          PersistentTabConfig(
+              screen: Home(controller: _controller, onNavigateToMaps: switchToMaps),
+              item: ItemConfig(
+                  inactiveIcon: SvgPicture.asset('images/home.svg'),
+                  icon: SvgPicture.asset('images/home.svg', color: Colors.black))),
+          PersistentTabConfig(
+              screen: Maps(key: UniqueKey(), places: shopAddress, shops: shops, servicePlaces: Store.filterServices, subdir: Store.filterSubdirServices),
+              item: ItemConfig(
+                  inactiveIcon: SvgPicture.asset('images/maps.svg'),
+                  icon: SvgPicture.asset('images/maps.svg', color: Colors.black))),
+          PersistentTabConfig(
+            screen: Car(),
+            item: ItemConfig(
+              icon: Image.asset('images/car_black.png'),
+              inactiveIcon: Image.asset(
+                'images/car.png',
+              ),
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset('images/maps.svg'),
-            activeIcon: SvgPicture.asset('images/maps.svg', color: Colors.black),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset('images/car.png'),
-            activeIcon: Image.asset('images/car_black.png'),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset('images/user.svg'),
-            activeIcon: SvgPicture.asset('images/user.svg', color: Colors.black),
-            label: '',
-          ),
+          PersistentTabConfig(
+              screen: const User(),
+              item: ItemConfig(
+                  inactiveIcon: SvgPicture.asset('images/user.svg'),
+                  icon: SvgPicture.asset('images/user.svg',
+                      color: Colors.black))),
         ],
+        navBarBuilder: (navBarConfig) =>
+            StyleBottomNavBar(navBarConfig: navBarConfig),
       ),
     );
   }
 }
+

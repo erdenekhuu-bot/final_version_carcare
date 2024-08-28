@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:final_pro/usable/Store/Store.dart';
+import 'package:final_pro/usable/Components/Helper.dart';
 
 class RESTAPI {
   static http.Client client = http.Client();
@@ -8,14 +9,10 @@ class RESTAPI {
   static Future<int> sendOTP(String phone) async {
     try {
       final Map<String, String> content = {'phonenumber': phone};
-      final request = await client.post(
-          Uri.parse('https://admin-dev.carcare.mn/api/auth/otp/send/'),
+      final request = await client.post(Uri.parse('https://admin-dev.carcare.mn/api/auth/otp/send/'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(content));
-      return request.statusCode == 200 &&
-              json.decode(utf8.decode(request.bodyBytes))['success'] == true
-          ? 1
-          : 0;
+      return request.statusCode == 200 && json.decode(utf8.decode(request.bodyBytes))['success'] == true ? 1 : 0;
     } catch (error) {
       return 404;
     }
@@ -24,14 +21,10 @@ class RESTAPI {
   static Future<int> verifyOTP(String otp, String phone) async {
     try {
       final Map<String, dynamic> content = {'otp': otp, 'phone_number': phone};
-      final request = await client.post(
-          Uri.parse('https://admin-dev.carcare.mn/api/auth/otp/validate/'),
+      final request = await client.post(Uri.parse('https://admin-dev.carcare.mn/api/auth/otp/validate/'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(content));
-      return request.statusCode == 200 &&
-              json.decode(utf8.decode(request.bodyBytes))['success'] == true
-          ? 1
-          : 0;
+      return request.statusCode == 200 && json.decode(utf8.decode(request.bodyBytes))['success'] == true ? 1 : 0;
     } catch (error) {
       return 404;
     }
@@ -49,9 +42,7 @@ class RESTAPI {
           Uri.parse('https://admin-dev.carcare.mn/api/auth/register/'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(register));
-      return request.statusCode == 201
-          ? json.decode(request.body)['token']
-          : 'Something has error!';
+      return request.statusCode == 201 ? json.decode(request.body)['token'] : '';
     } catch (error) {
       return error.toString();
     }
@@ -59,117 +50,31 @@ class RESTAPI {
 
   static Future<bool> login(String phone, String password) async {
     try {
-      final Map<String, dynamic> content = {
-        'phonenumber': phone,
-        'password': password
-      };
+      final Map<String, dynamic> content = {'phonenumber': phone, 'password': password};
       final request = await client.post(
-          Uri.parse('https://admin-dev.carcare.mn/api/auth/login/'),
-          headers: {'Content-Type': 'application/json'},
-          body: json.encode(content));
+        Uri.parse('https://admin-dev.carcare.mn/api/auth/login/'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(content),
+      );
       if (request.statusCode == 200) {
-        Store.accessToken = json.decode(request.body)['access'];
+        final Map<String, dynamic> responseBody = json.decode(request.body);
+        final String accessToken = responseBody['access'];
+        final String refreshToken = responseBody['refresh'];
+        Store.accessToken = accessToken;
+        await Helper.saveToken(refreshToken);
+        await Helper.defaultToken(accessToken);
+        return true;
+      } else {
+        return false;
       }
-      return request.statusCode == 200
-          ? json.decode(request.body)['user']['is_active']
-          : false;
     } catch (error) {
       return false;
     }
   }
 
-  static Future<List<dynamic>> getPlaces() async {
-    try {
-      final request = await client.get(
-          Uri.parse('https://admin-dev.carcare.mn/api/shops/'),
-          headers: {'Authorization': 'Bearer ${Store.accessToken}'});
-      return request.statusCode == 200
-          ? json.decode(utf8.decode(request.bodyBytes))['results']
-          : [];
-    } catch (error) {
-      return [];
-    }
-  }
-
-  static Future<List<dynamic>> eachPlaces(int id) async {
-    try {
-      List<dynamic> content = [];
-      final request = await client.get(
-          Uri.parse('https://admin-dev.carcare.mn/api/shops/$id/'),
-          headers: {'Authorization': 'Bearer ${Store.accessToken}'});
-      if (request.statusCode == 200) {
-        content.add(json.decode(utf8.decode(request.bodyBytes)));
-      }
-      return content;
-    } catch (error) {
-      return [];
-    }
-  }
-
-  static Future<List<dynamic>> getServices() async {
-    try {
-      final request = await client.get(
-          Uri.parse('https://admin-dev.carcare.mn/api/categories/'),
-          headers: {'Authorization': 'Bearer ${Store.accessToken}'});
-      return request.statusCode == 200
-          ? json.decode(utf8.decode(request.bodyBytes))['results']
-          : [];
-    } catch (error) {
-      return [];
-    }
-  }
-
-  static Future<int> createExpense(
-      String place, int amount, int id, String date) async {
-    try {
-      final Map<String, dynamic> content = {
-        'service_place': place,
-        'amount': amount,
-        'service_id': id,
-        'service_date': date
-      };
-      final request = await client.post(
-          Uri.parse('https://admin-dev.carcare.mn/api/expenses/'),
-          headers: {
-            'Authorization': 'Bearer ${Store.accessToken}',
-            'Content-Type': 'application/json'
-          },
-          body: json.encode(content));
-      return request.statusCode == 200 ? 1 : 0;
-    } catch (error) {
-      return 0;
-    }
-  }
-
-  static Future<String> updateUser(
-      String username, String phone, String password) async {
-    try {
-      final Map<String, dynamic> content = {
-        "username": username,
-        "phone": phone,
-        "password": password
-      };
-      final request = await client.patch(
-          Uri.parse('https://admin-dev.carcare.mn/api/auth/update/${Store.storeUsername}/'),
-          headers: {
-            'Authorization': 'Bearer ${Store.accessToken}',
-            'Content-Type': 'application/json'
-          },
-          body: json.encode(content));
-      return request.statusCode == 200
-          ? json.decode(utf8.decode(request.bodyBytes))['token']
-          : '';
-    } catch (error) {
-      return error.toString();
-    }
-  }
-
   static Future<String> forgotPassword(String phone, String password) async {
     try {
-      final Map<String, dynamic> content = {
-        "phonenumber": phone,
-        "password": password
-      };
+      final Map<String, dynamic> content = {"phonenumber": phone, "password": password};
       final request = await client.put(
           Uri.parse('https://admin-dev.carcare.mn/api/forgotpassword/'),
           headers: {'Content-Type': 'application/json'},
@@ -181,128 +86,6 @@ class RESTAPI {
       return error.toString();
     }
   }
-
-  static Future<int> deleteExpense(int id) async {
-    try {
-      final request = await client.delete(
-          Uri.parse('https://admin-dev.carcare.mn/api/expenses/$id/'),
-          headers: {
-            'Authorization': 'Bearer ${Store.accessToken}',
-          });
-      return request.statusCode == 200 ? 1 : 0;
-    } catch (error) {
-      return 0;
-    }
-  }
-
-  static Future<List<dynamic>> serviceSubCategory() async {
-    try {
-      List<dynamic> category = [];
-      int page = 1;
-      while (page < 2) {
-        final request = await client.get(
-            Uri.parse('https://admin-dev.carcare.mn/api/services/?page=$page'),
-            headers: {
-              'Authorization': 'Bearer ${Store.accessToken}',
-            });
-        if (request.statusCode == 200) {
-          List<dynamic> all =
-              jsonDecode(utf8.decode(request.bodyBytes))['results'];
-          category.addAll(all);
-          page += 1;
-        }
-      }
-      return category;
-    } catch (error) {
-      return [];
-    }
-  }
-
-  static Future<List<dynamic>> serviceSubDir() async {
-    try {
-      List<dynamic> subcategory = [];
-      int page = 1;
-      while (page < 2) {
-        final request = await client.get(
-            Uri.parse(
-                'https://admin-dev.carcare.mn/api/service-categories/?page=$page'),
-            headers: {
-              'Authorization': 'Bearer ${Store.accessToken}',
-            });
-        if (request.statusCode == 200) {
-          List<dynamic> all =
-              jsonDecode(utf8.decode(request.bodyBytes))['results'];
-          subcategory.addAll(all);
-          page += 1;
-        }
-      }
-      return subcategory;
-    } catch (error) {
-      return [];
-    }
-  }
-
-  static Future<List<dynamic>> paginateShops(int page) async {
-    try {
-      final request = await client.get(
-          Uri.parse('https://admin-dev.carcare.mn/api/shops/?page=$page'),
-          headers: {
-            'Authorization': 'Bearer ${Store.accessToken}',
-          });
-      return request.statusCode == 200
-          ? json.decode(utf8.decode(request.bodyBytes))['results']
-          : [];
-    } catch (error) {
-      return [];
-    }
-  }
-
-  static Future<List<dynamic>> fetchAllShops() async {
-    List<dynamic> allShops = [];
-    int page = 1;
-
-    while (page <= 10) {
-      final response = await client.get(
-          Uri.parse('https://admin-dev.carcare.mn/api/shops/?page=$page'),
-          headers: {
-            'Authorization': 'Bearer ${Store.accessToken}',
-          });
-      if (response.statusCode == 200) {
-        List<dynamic> all =
-            jsonDecode(utf8.decode(response.bodyBytes))['results'];
-        allShops.addAll(all);
-        page += 1;
-      }
-    }
-    return allShops;
-  }
-
-  static Future<List<dynamic>> getCustomServices(String service) async {
-    try {
-      List<dynamic> result = [];
-      final request = await client.get(
-          Uri.parse(
-              'https://admin-dev.carcare.mn/api/shopservices/?service=$service'),
-          headers: {'Authorization': 'Bearer ${Store.accessToken}'});
-      if (request.statusCode == 200)
-        for (var item in json.decode(utf8.decode(request.bodyBytes))['results'])
-          result.add(item['shop']);
-      return result;
-    } catch (error) {
-      return [];
-    }
-  }
-
-  static Future<List<dynamic>> takeBanner() async {
-    try {
-      final request = await client.get(
-          Uri.parse('https://admin-dev.carcare.mn/api/banner/'),
-          headers: {'Authorization': 'Bearer ${Store.accessToken}'});
-      return request.statusCode == 200
-          ? json.decode(utf8.decode(request.bodyBytes))['results']
-          : [];
-    } catch (error) {
-      return [];
-    }
-  }
 }
+
+

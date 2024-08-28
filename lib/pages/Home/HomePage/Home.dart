@@ -6,13 +6,15 @@ import 'package:final_pro/usable/Components/Card.dart';
 import 'package:final_pro/usable/Components/OfferPlace.dart';
 import 'package:final_pro/usable/Components/Place.dart';
 import 'package:final_pro/usable/Store/Store.dart';
-import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:final_pro/REST/AuthService.dart';
+import 'package:final_pro/usable/Components/Helper.dart';
 
 class Home extends StatefulWidget {
-  final void Function(List<LatLng>, List<dynamic>) onNavigateToMap;
-  Home({super.key, required this.onNavigateToMap});
+  final PersistentTabController controller;
+  final void Function(List<LatLng>, List<dynamic>) onNavigateToMaps;
+  Home({super.key, required this.controller, required this.onNavigateToMaps});
 
   @override
   State<Home> createState() => _HomeState();
@@ -33,9 +35,12 @@ class _HomeState extends State<Home> {
         count: urlImages.length,
       );
   void animateToSlide(int index) => controller.animateToPage(index);
-  
+
   void callBanner() async {
-    List<dynamic> images = await RESTAPI.takeBanner();
+    String? access=await Helper.readDefaultToken();
+    String? refresh=await Helper.readToken();
+    AuthService authService = AuthService(access!, refresh!);
+    List<dynamic> images = await authService.takeBanner();
     List<dynamic> customFilter = [];
     for (var item in images) {
       customFilter.add(Store.filtering(item['thumbnail']));
@@ -53,8 +58,11 @@ class _HomeState extends State<Home> {
   }
 
   void getShops() async {
-    List<dynamic> result = await RESTAPI.getPlaces();
-    List<dynamic> cate = await RESTAPI.serviceSubCategory();
+    String? access=await Helper.readDefaultToken();
+    String? refresh=await Helper.readToken();
+    AuthService authService = AuthService(access!, refresh!);
+    List<dynamic> result = await authService.getPlaces();
+    List<dynamic> cate = await authService.serviceSubCategory();
     Store.swappingCategory = cate;
     shops = result;
   }
@@ -118,7 +126,7 @@ class _HomeState extends State<Home> {
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
                             builder: (context) {
-                              return Swapping(category: Store.filterServices, onNavigateToMap: widget.onNavigateToMap);
+                              return Swapping(category: Store.filterServices, onNavigateToMap: widget.onNavigateToMaps);
                             },
                           );
                         },
@@ -174,7 +182,7 @@ class _HomeState extends State<Home> {
                             spacing: 18,
                             children: [
                               for (var item in Store.filterServices)
-                                Cart(img: item['asset_path'], txt: item['name'], onNavigateToMap: widget.onNavigateToMap)
+                                Cart(img: item['asset_path'], txt: item['name'], onNavigateToMap: widget.onNavigateToMaps)
                             ],
                           ),
                         ),
@@ -189,17 +197,12 @@ class _HomeState extends State<Home> {
                     children: [
                       Container(
                           padding: null,
-                          child: const Text('Санал болгож буй газрууд',
-                              style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Inter'))),
+                          child: const Text('Санал болгож буй газрууд', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, fontFamily: 'Inter'))),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Place(
-                              onNavigateToMap: widget.onNavigateToMap,
+                            MaterialPageRoute(builder: (context) => Place(onNavigateToMap: widget.onNavigateToMaps,
                             )),
                           );
                         },
@@ -244,7 +247,7 @@ class _HomeState extends State<Home> {
                                 phone: filter(shops[i]['phone']),
                                 img: shops[i]['thumbnail'],
                                 id: shops[i]['id'],
-                                onNavigateToMap: widget.onNavigateToMap,
+                              onNavigateToMaps: widget.onNavigateToMaps,
                             )
                       ],
                     ),
@@ -256,3 +259,4 @@ class _HomeState extends State<Home> {
     );
   }
 }
+

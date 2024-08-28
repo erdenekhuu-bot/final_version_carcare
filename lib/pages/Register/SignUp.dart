@@ -41,7 +41,119 @@ class _SignUpState extends State<SignUp> {
     f3.dispose();
   }
 
-  final RegExp passwordRegExp = RegExp(r'^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$');
+  final hasUpperCase = RegExp(r'[A-Z]');
+  final hasLowerCase = RegExp(r'[a-z]');
+  final hasDigit = RegExp(r'[0-9]');
+  final hasSpecialChar = RegExp(r'[\W_]');
+
+
+  Widget f10(){
+  return  Container(
+    padding: EdgeInsets.all(5),
+    width: MediaQuery.of(context).size.width * 0.78,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(height: 30),
+        Text(
+          'Тавигдах шаардлага',
+          style: TextStyle(
+              color: Color(0xff404040),
+              fontFamily: 'Inter-Regular',
+              fontSize: 20,
+          ),
+        ),
+        SizedBox(height: 5),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Том үсэг:',style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+            ),
+
+            SizedBox(width: 10),
+            Text('A, B, C, D, E, F ...', style: TextStyle(fontSize: 16)),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text(
+            'Жижиг үсэг:',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+
+            SizedBox(width: 10), Text(
+              'a, b, c, d, e, f ...',
+              style: TextStyle(fontSize: 16),
+            ),
+
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text(
+            'Тоо:',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+
+          ),
+            SizedBox(width: 10),
+            Text(
+              '1, 2, 3, 4, 5, 6 ...',
+              style: TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text(
+            'Тусгай тэмдэгт:',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+            SizedBox(width: 10),Text(
+              '~, !, @, #, %, ^ ...',
+              style: TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+        SizedBox(height: 30),
+        Text(
+          'Анхаарах зүйл',
+          style: TextStyle(
+              color: Color(0xff404040),
+              fontFamily: 'Inter-Regular',
+              fontSize: 20,
+              fontWeight: FontWeight.bold
+          ),
+        ),
+        SizedBox(height: 5),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Text(
+                'Нууц үг зохихдоо 8 үсэг тэмдэгтүүдээс илүү олон байх шаардлагатай !!',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+
+}
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -71,7 +183,7 @@ class _SignUpState extends State<SignUp> {
                         controller: _digit1,
                         focusNode: f1,
                         validator: (text) {
-                          if (text!.isEmpty) {
+                          if (text == null || text.isEmpty) {
                             return 'Нэрээ оруулна уу';
                           } else {
                             return null;
@@ -117,10 +229,20 @@ class _SignUpState extends State<SignUp> {
                         focusNode: f2,
                         controller: _digit2,
                         validator: (text) {
-                          if (passwordRegExp.hasMatch(text!)) {
-                            return null;
+                          if (text == null || text.isEmpty) {
+                            return 'Нууц үгээ оруулна уу';
+                          } else if (!hasUpperCase.hasMatch(text)) {
+                            return 'Том үсэг оруулна уу';
+                          } else if (!hasLowerCase.hasMatch(text)) {
+                            return 'Жижиг үсэг оруулна уу';
+                          } else if (!hasDigit.hasMatch(text)) {
+                            return 'Тоо оруулна уу';
+                          } else if (!hasSpecialChar.hasMatch(text)) {
+                            return 'Тусгай тэмдэгт оруулна уу';
+                          } else if (text.length < 8) {
+                            return 'Хамгийн багадаа 8 тэмдэгт оруулна уу';
                           } else {
-                            return 'Хүчтэй нууц үг ашиглана уу';
+                            return null;
                           }
                         },
                         onChanged: (value) {
@@ -175,10 +297,20 @@ class _SignUpState extends State<SignUp> {
                       height: 80,
                       child: TextFormField(
                         validator: (text) {
-                          if (passwordRegExp.hasMatch(text!)) {
-                            return null;
+                          if (text == null || text.isEmpty) {
+                            return 'Нууц үгээ оруулна уу';
+                          } else if (!hasUpperCase.hasMatch(text)) {
+                            return 'Том үсэг оруулна уу';
+                          } else if (!hasLowerCase.hasMatch(text)) {
+                            return 'Жижиг үсэг оруулна уу';
+                          } else if (!hasDigit.hasMatch(text)) {
+                            return 'Тоо оруулна уу';
+                          } else if (!hasSpecialChar.hasMatch(text)) {
+                            return 'Тусгай тэмдэгт оруулна уу';
+                          } else if (text.length < 8) {
+                            return 'Хамгийн багадаа 8 тэмдэгт оруулна уу';
                           } else {
-                            return 'Хүчтэй нууц үг ашиглана уу';
+                            return null;
                           }
                         },
                         onChanged: (text) {
@@ -282,6 +414,7 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                     ),
+                    f10()
                   ],
                 ),
               )

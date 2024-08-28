@@ -17,10 +17,7 @@ class MapFirstMenu extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              name,
-              style: const TextStyle(color: Colors.white),
-            ),
+            Text(name, style: const TextStyle(color: Colors.white)),
           ],
         ));
   }
@@ -33,7 +30,6 @@ class MapSecondMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    print(screenWidth.toInt());
    return Container(
      padding: const EdgeInsets.symmetric(horizontal: 5),
      width: screenWidth * 0.4,

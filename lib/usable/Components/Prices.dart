@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:final_pro/REST/RESTAPI.dart';
+import 'package:final_pro/REST/AuthService.dart';
+import 'package:final_pro/usable/Components/Helper.dart';
 
 class Prices extends StatefulWidget {
     final String? title;
@@ -36,8 +36,11 @@ class _PricesState extends State<Prices> {
     return Dismissible(
         direction: DismissDirection.endToStart,
         onDismissed: (value) async {
+          String? access=await Helper.readDefaultToken();
+          String? refresh=await Helper.readToken();
+          AuthService authService = AuthService(access!, refresh!);
           if(value.name == 'endToStart'){
-              int response = await RESTAPI.deleteExpense(widget.id!);
+              int response = await authService.deleteExpense(widget.id!);
               if(response > 0){
                  widget.onRefresh!();
               }

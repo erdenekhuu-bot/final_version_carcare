@@ -7,11 +7,11 @@ import 'package:final_pro/usable/Components/Zardal.dart';
 import 'package:final_pro/usable/Components/Prices.dart';
 import 'package:final_pro/usable/Store/Store.dart';
 import 'dart:math';
-import 'dart:convert';
-import 'package:final_pro/REST/RESTAPI.dart';
+import 'package:final_pro/usable/Components/Helper.dart';
+import 'package:dio/dio.dart';
 
 class Car extends StatefulWidget {
-  const Car({super.key});
+  Car({super.key});
   @override
   State<Car> createState() => _CarState();
 }
@@ -27,26 +27,54 @@ class _CarState extends State<Car> {
   List<dynamic> service = [];
   var formatter = NumberFormat('#,###', 'en_US');
 
-  @override
-  void initState() {
-    getExpense();
-    super.initState();
-  }
-
   Future<void> getExpense() async {
     try {
-      final request = await RESTAPI.client.get(
-          Uri.parse('https://admin-dev.carcare.mn/api/expenses/'),
-          headers: {'Authorization': 'Bearer ${Store.accessToken}'});
+      final Dio dio = Dio();
+      String? access=await Helper.readDefaultToken();
+      String? refresh=await Helper.readToken();
+      dio.interceptors.add(
+          InterceptorsWrapper(
+              onRequest: (RequestOptions options, RequestInterceptorHandler handler){
+                if(access!.isNotEmpty){
+                  options.headers['Authorization'] = 'Bearer ${access}';
+                  options.headers['Content-Type'] = 'application/json';
+                }
+                return handler.next(options);
+              },
+              onError: (DioException error, ErrorInterceptorHandler handler) async {
+                if(error.response?.statusCode == 401){
+                  try{
+                    final refreshing = await dio.post(
+                        'https://admin-dev.carcare.mn/api/auth/refresh/', data: {'refresh': refresh});
+                    if(refreshing.statusCode == 200){
+                      access = refreshing.data['access'];
+                      error.requestOptions.headers['Authorization'] = 'Bearer ${access}';
+                      return handler.resolve(await dio.fetch(error.requestOptions));
+                    }
+                  } catch(error){
+                    return;
+                  }
+                }
+                return handler.next(error);
+              }
+          )
+      );
+      final request = await dio.get('https://admin-dev.carcare.mn/api/expenses/');
       if (request.statusCode == 200) {
         setState(() {
-          data = json.decode(utf8.decode(request.bodyBytes))['results'];
+          data = request.data['results'];
           service = Store.filterServices;
         });
       }
     } catch (error) {
       return;
     }
+  }
+
+  @override
+  void initState() {
+    getExpense();
+    super.initState();
   }
 
   String switchServiceToName(int id) {
@@ -100,9 +128,7 @@ class _CarState extends State<Car> {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Зарлага',
-                      style: TextStyle(
-                          fontFamily: 'Inter-ExtraBold', fontSize: 20))
+                  Text('Зарлага', style: TextStyle(fontFamily: 'Inter-ExtraBold', fontSize: 20))
                 ],
               ),
               const SizedBox(height: 10),
@@ -123,17 +149,12 @@ class _CarState extends State<Car> {
                           }
                         });
                       },
-                      child: Text('Сар',
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: _click ? Colors.black : Colors.white)),
+                      child: Text('Сар', style: TextStyle(fontSize: 16, color: _click ? Colors.black : Colors.white)),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(
-                                color: Colors.black, width: 1)),
-                        backgroundColor:
-                            Color(_click ? 0xffffffff : 0xff404040),
+                            side: const BorderSide(color: Colors.black, width: 1)),
+                        backgroundColor: Color(_click ? 0xffffffff : 0xff404040),
                       ),
                     ),
                   ),
@@ -230,8 +251,8 @@ class _CarState extends State<Car> {
                 children: [
                   Container(
                     margin: null,
-                    width: 230,
-                    height: 230,
+                    width: screenWidth * 0.7,
+                    height: screenWidth * 0.7,
                     child: Stack(
                       children: [
                         PieChart(
@@ -271,7 +292,7 @@ class _CarState extends State<Car> {
                               },
                             ),
                             startDegreeOffset: 820,
-                            centerSpaceRadius: 70 % screenWidth,
+                            centerSpaceRadius: screenWidth * 0.22,
                             sections: data.isNotEmpty
                                 ? [
                                     for (var item in data)
@@ -291,7 +312,6 @@ class _CarState extends State<Car> {
                                                     totalAmount / 30,
                                             title: '',
                                             badgeWidget: null,
-                                            //color: Color.fromARGB(150, random.nextInt(256), random.nextInt(256), random.nextInt(256)),
                                             color: Color(Store.colorsRange(
                                                 switchServiceToName(
                                                     item['service']))),
@@ -326,7 +346,7 @@ class _CarState extends State<Car> {
                             else
                               Center(
                                 child: Text('${zardal}',
-                                    style: const TextStyle(
+                                    style: TextStyle(fontSize: screenWidth / 25,
                                         fontWeight: FontWeight.bold)),
                               ),
                           ],
@@ -387,9 +407,11 @@ class _CarState extends State<Car> {
       ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const Zardal()));
+        onPressed: () async {
+          final result = await Navigator.push(context, MaterialPageRoute(builder: (context) => Zardal(onRefresh: refresh)));
+          if(result == true){
+            getExpense();
+          }
         },
         backgroundColor: const Color(0xff404040),
         child: const Icon(Icons.add, color: Colors.white),
@@ -397,3 +419,6 @@ class _CarState extends State<Car> {
     );
   }
 }
+
+
+

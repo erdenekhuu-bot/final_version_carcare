@@ -124,7 +124,6 @@ class _ChangePhoneSendMSGState extends State<ChangePhoneSendMSG> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           ChangePhoneValidateMSG(
-                                              confirmationId: _id,
                                               phoneNumber: _phoneNumber)));
                             }
                           }

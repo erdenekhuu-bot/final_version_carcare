@@ -122,7 +122,7 @@ class _SendMSGState extends State<SendMSG> {
                   child: ElevatedButton(
                     onPressed: _limit ? () async {
                       final int _id = await RESTAPI.sendOTP(_phoneNumber);
-                      print(_id);
+                  
                        if(_id > 0) {
                          Navigator.push(context, MaterialPageRoute(builder: (
                              context) => ValidateMsg(phoneNumber: _phoneNumber)));

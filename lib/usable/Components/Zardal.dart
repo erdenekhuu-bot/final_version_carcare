@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:final_pro/pages/Home/Car/Car.dart';
-import 'package:final_pro/usable/Components/Swapping.dart';
+import 'package:final_pro/REST/AuthService.dart';
+import 'package:final_pro/usable/Components/Helper.dart';
 
 class Zardal extends StatefulWidget {
-  const Zardal({super.key});
+  final VoidCallback onRefresh;
+  Zardal({super.key, required this.onRefresh});
 
   @override
   State<Zardal> createState() => _ZardalState();
 }
 
 class _ZardalState extends State<Zardal> {
-
   final TextEditingController _cnt1 = TextEditingController();
   final TextEditingController _cnt2 = TextEditingController();
-  final ScrollController _scr = ScrollController();
-
   final FocusNode _fn1 = FocusNode();
 
   DateTime _selectedDay = DateTime.now();
@@ -24,12 +21,13 @@ class _ZardalState extends State<Zardal> {
   String formatAPI(String rightFormat) {
     return rightFormat.substring(0, 19);
   }
+
   int setServiceId = 0;
   String? selectedValue;
   List<dynamic> data = [];
   String setServicePlace = '';
 
-  int setAmount=0;
+  int setAmount = 0;
   final _formKey = GlobalKey<FormState>();
 
   void findId(List<dynamic> data, String service) {
@@ -42,28 +40,29 @@ class _ZardalState extends State<Zardal> {
     }
   }
 
-  final ScrollController _scrollController = ScrollController();
   bool isScrolledToBottom = true;
 
-
   @override
-  void initState(){
-    getService();
+  void initState() {
     super.initState();
+    getService();
   }
 
   @override
-  void dispose(){
-    super.dispose();
-    focus.dispose();
+  void dispose() {
     _fn1.dispose();
     _cnt1.dispose();
     _cnt2.dispose();
+    super.dispose();
   }
+
   void getService() async {
-    List<dynamic> result = await RESTAPI.getServices();
+    String? access=await Helper.readDefaultToken();
+    String? refresh=await Helper.readToken();
+    AuthService authService = AuthService(access!, refresh!);
+    List<dynamic> result = await authService.getServices();
     setState(() {
-      data=result;
+      data = result;
     });
   }
 
@@ -71,19 +70,18 @@ class _ZardalState extends State<Zardal> {
     return day.isBefore(DateTime.now());
   }
 
-
-  final dropdownController = TextEditingController();
-  final FocusNode focus = FocusNode();
-
-
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text('Зардлын мэдээлэл',style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.white,centerTitle: true ,
+      appBar: AppBar(
+        title: const Text(
+          'Зардлын мэдээлэл',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.white,
+        centerTitle: true,
       ),
       body: ListView(
         children: [
@@ -109,18 +107,12 @@ class _ZardalState extends State<Zardal> {
                   padding: EdgeInsets.symmetric(horizontal: screenWidth / 30),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.black)
-                  ),
+                      border: Border.all(color: Colors.black)),
                   child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                      underline: null,
-                      dropdownColor: const Color(0xffffffff),
-                      focusColor: Colors.black12,
-                      focusNode: focus,
+                    child: DropdownButton<String>(
                       value: selectedValue,
                       isExpanded: true,
                       style: const TextStyle(color: Colors.black),
-                      borderRadius: BorderRadius.circular(10),
                       onChanged: (newValue) {
                         setState(() {
                           selectedValue = newValue;
@@ -136,12 +128,11 @@ class _ZardalState extends State<Zardal> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: screenWidth / 80),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30),
                   child: Row(
-                    children: [
+                    children: <Widget>[
                       Text(
                         'Үйлчилгээ авсан газар',
                         style: TextStyle(fontSize: 16, fontFamily: 'Inter-Light'),
@@ -168,7 +159,9 @@ class _ZardalState extends State<Zardal> {
                       focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(width: 1, color: Colors.black),
                           borderRadius: BorderRadius.circular(10)),
-                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: const BorderSide(width: 1,color: Color(0xff404040))),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(width: 1, color: Color(0xff404040))),
                     ),
                   ),
                 ),
@@ -206,15 +199,20 @@ class _ZardalState extends State<Zardal> {
                       focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(width: 1, color: Colors.black),
                           borderRadius: BorderRadius.circular(10)),
-                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: const BorderSide(width: 1,color: Color(0xff404040))),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(width: 1, color: Color(0xff404040))),
                     ),
                   ),
                 ),
-                IconButton(onPressed: (){
-                  setState(() {
-                    isScrolledToBottom=!isScrolledToBottom;
-                  });
-                }, icon: const Icon(Icons.calendar_month)),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isScrolledToBottom = !isScrolledToBottom;
+                    });
+                  },
+                  icon: const Icon(Icons.calendar_month),
+                ),
                 Opacity(
                   opacity: isScrolledToBottom ? 0.3 : 1,
                   child: Container(
@@ -225,10 +223,9 @@ class _ZardalState extends State<Zardal> {
                         weekNumbersVisible: false,
                         headerStyle: const HeaderStyle(
                             formatButtonVisible: false,
-                            titleCentered: true
-                        ),
+                            titleCentered: true),
                         firstDay: DateTime.utc(2010, 3, 14),
-                        lastDay: DateTime.utc(2130, 3, 14),
+                        lastDay: DateTime.utc(2230, 3, 14),
                         focusedDay: _selectedDay,
                         pageAnimationEnabled: false,
                         pageJumpingEnabled: false,
@@ -256,7 +253,6 @@ class _ZardalState extends State<Zardal> {
                           });
                         },
                       ),
-
                     ),
                   ),
                 ),
@@ -266,21 +262,20 @@ class _ZardalState extends State<Zardal> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () async {
-                      int result = await RESTAPI.createExpense(setServicePlace, setAmount, setServiceId, formatAPI(_selectedDay.toString()).substring(0,10));
-                      if(result > 0){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const Car()));
-                      } else {
-                        print('Something not right');
+                      String? access=await Helper.readDefaultToken();
+                      String? refresh=await Helper.readToken();
+                      AuthService authService = AuthService(access!, refresh!);
+                      int result = await authService.createExpense(setServicePlace, setAmount, setServiceId, formatAPI(_selectedDay.toString()).substring(0, 10));
+                      if (result > 0) {
+                        Navigator.pop(context, true);
+                        widget.onRefresh();
                       }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xff404040),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
-                    child: const Text(
-                      'Хадгалах',
-                      style: TextStyle(fontSize: 17, color: Colors.white),
+                    child: const Text('Хадгалах', style: TextStyle(fontSize: 17, color: Colors.white),
                     ),
                   ),
                 ),
@@ -293,5 +288,3 @@ class _ZardalState extends State<Zardal> {
     );
   }
 }
-
-

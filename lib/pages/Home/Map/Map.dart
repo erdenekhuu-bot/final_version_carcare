@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
 import 'package:final_pro/usable/MapComponents/map_helper.dart';
@@ -8,15 +7,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:final_pro/usable/MapComponents/MapMenu.dart';
 import 'package:final_pro/usable/MapComponents/MapPlaceWindow.dart';
 import 'package:final_pro/usable/Store/Store.dart';
-import 'package:final_pro/pages/Home/Map/MapModel.dart';
-import 'package:provider/provider.dart';
+import 'package:final_pro/REST/AuthService.dart';
+import 'package:final_pro/usable/Components/Helper.dart';
 
 class Maps extends StatefulWidget {
   List<LatLng>? places;
   List<dynamic>? shops;
   List<dynamic>? subdir;
   final String? title;
-  final List<dynamic>? servicePlaces;
+  List<dynamic>? servicePlaces;
   int? forward = 0;
   String? name;
   Maps({super.key, this.name, this.forward, this.places, this.shops, this.title, this.servicePlaces, this.subdir});
@@ -26,6 +25,7 @@ class Maps extends StatefulWidget {
 }
 
 class _MapsState extends State<Maps> {
+
   late GoogleMapController GoogleMapcontroller;
   final Completer<GoogleMapController> _mapController = Completer();
   final Set<Marker> _markers = Set();
@@ -35,8 +35,7 @@ class _MapsState extends State<Maps> {
   double _currentZoom = 10;
   bool _isMapLoading = true;
   bool _areMarkersLoading = true;
-  final String _markerImageUrl =
-      'https://img.icons8.com/office/80/000000/marker.png';
+  final String _markerImageUrl = 'https://img.icons8.com/office/80/000000/marker.png';
   final Color _clusterColor = Colors.black;
   final Color _clusterTextColor = Colors.white;
 
@@ -52,19 +51,19 @@ class _MapsState extends State<Maps> {
   }
 
   void _resetToDefault() {
-    widget.places = Store.filterAddress;
-    widget.shops = Store.filterShops;
+      widget.places = Store.filterAddress;
+      widget.shops =  Store.filterShops;
     _initMarkers();
+    print('places ---> ${widget.places!.length}');
+    print('shops ===> ${widget.shops!.length}');
   }
 
   void _initMarkers() async {
     final List<MapMarker> markers = [];
-
     for (int i = 0; i < widget.places!.length && i < widget.shops!.length; i++) {
       dynamic markerLocation = widget.places![i];
       dynamic shopData = widget.shops![i];
-      //final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl('https://d3v7ghkqvtko5q.cloudfront.net/${shopData?['thumbnail']}', targetWidth: 150);
-      final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(_markerImageUrl, targetWidth: 100);
+      final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(_markerImageUrl, targetWidth: 120);
       markers.add(
         MapMarker(
             id: i.toString(),
@@ -95,50 +94,6 @@ class _MapsState extends State<Maps> {
     await _updateMarkers();
   }
 
-  // void _initMarkers() async {
-  //   final List<MapMarker> markers = [];
-  //
-  //   final List<LatLng> currentPlaces = widget.places ?? Store.filterAddress;
-  //   final List<dynamic> currentShops = widget.shops ?? Store.filterShops;
-  //
-  //   for (int i = 0; i < currentPlaces.length && i < currentShops.length; i++) {
-  //     final LatLng markerLocation = currentPlaces[i];
-  //     final dynamic shopData = currentShops[i];
-  //     final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(_markerImageUrl, targetWidth: 100);
-  //     markers.add(
-  //       MapMarker(
-  //         id: i.toString(),
-  //         position: markerLocation,
-  //         icon: markerImage,
-  //         onTap: () {
-  //           showModalBottomSheet(
-  //             context: context,
-  //             useSafeArea: true,
-  //             isScrollControlled: true,
-  //             backgroundColor: Colors.transparent,
-  //             builder: (context) {
-  //               return MapPlaceWindow(
-  //                   phone: shopData['phone'],
-  //                   description: shopData['description'],
-  //                   img: shopData['thumbnail'],
-  //                   name: shopData['name'],
-  //                   id: shopData['id']
-  //               );
-  //             },
-  //           );
-  //         },
-  //       ),
-  //     );
-  //   }
-  //
-  //   _clusterManager = await MapHelper.initClusterManager(
-  //       markers, _minClusterZoom, _maxClusterZoom
-  //   );
-  //
-  //   await _updateMarkers();
-  // }
-
-
   Future<void> _updateMarkers([double? updatedZoom]) async {
     if (_clusterManager == null || updatedZoom == _currentZoom) return;
 
@@ -151,7 +106,7 @@ class _MapsState extends State<Maps> {
     });
 
     final updatedMarkers = await MapHelper.getClusterMarkers(
-        _clusterManager, _currentZoom, _clusterColor, _clusterTextColor, 80);
+        _clusterManager, _currentZoom, _clusterColor, _clusterTextColor, 100);
 
     _markers
       ..clear()
@@ -164,8 +119,8 @@ class _MapsState extends State<Maps> {
 
   bool _firstClick = false;
   bool _secondClick = false;
-  bool _next = false;
   String defaultTitle = 'Бүгд';
+  bool _next=false;
 
   @override
   void dispose() {
@@ -181,6 +136,7 @@ class _MapsState extends State<Maps> {
         Opacity(
           opacity: _isMapLoading ? 0 : 1,
           child: GoogleMap(
+            zoomControlsEnabled: false,
             initialCameraPosition: CameraPosition(
                 target: const LatLng(47.9221, 106.9155), zoom: _currentZoom),
             markers: Set<Marker>.of(_markers),
@@ -200,12 +156,7 @@ class _MapsState extends State<Maps> {
               child: Card(
                 elevation: 2,
                 color: Colors.grey.withOpacity(0.9),
-                child: const Padding(
-                  padding: EdgeInsets.all(4),
-                  child: Text(
-                    'Түр хүлээнэ үү',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                child: const Padding(padding: EdgeInsets.all(4), child: Text('Түр хүлээнэ үү', style: TextStyle(color: Colors.white)),
                 ),
               ),
             ),
@@ -218,10 +169,7 @@ class _MapsState extends State<Maps> {
                   width: screenWidth * 0.4,
                   height: 53,
                   decoration: BoxDecoration(
-                    color: _firstClick
-                        ? const Color(0xff404040).withOpacity(0.8)
-                        : const Color.fromARGB(255, 112, 112, 112)
-                        .withOpacity(0.8),
+                    color: _firstClick ? const Color(0xff404040).withOpacity(0.8) : const Color.fromARGB(255, 112, 112, 112).withOpacity(0.8),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -248,7 +196,7 @@ class _MapsState extends State<Maps> {
                       setState(() {
                         _firstClick = !_firstClick;
                         _secondClick = false;
-                        _next=true;
+                         _next=true;
                       });
                       if (_next == true) _resetToDefault();
                     },
@@ -282,13 +230,14 @@ class _MapsState extends State<Maps> {
                     for (var item in widget.servicePlaces!)
                       GestureDetector(
                         onTap: () async {
+                          String? access=await Helper.readDefaultToken();
+                          String? refresh=await Helper.readToken();
+                          AuthService authService = AuthService(access!, refresh!);
                           List<LatLng> customA = [];
                           List<dynamic> customShops =
-                              await RESTAPI.getCustomServices(item['name']);
+                              await authService.getCustomServices(item['name']);
                           for (var item in customShops) {
-                            customA.add(LatLng(
-                                item['shop_location']['latitude'],
-                                item['shop_location']['longitude']));
+                            customA.add(LatLng(item['shop_location']['latitude'], item['shop_location']['longitude']));
                           }
                           setState(() {
                             defaultTitle = item['name'];
@@ -366,8 +315,11 @@ class _MapsState extends State<Maps> {
                                           if (widget.subdir![i]['category']['name'] == defaultTitle)
                                               GestureDetector(
                                                 onTap: () async {
+                                                  String? access=await Helper.readDefaultToken();
+                                                  String? refresh=await Helper.readToken();
+                                                  AuthService authService = AuthService(access!, refresh!);
                                                   List<LatLng> customB = [];
-                                                  List<dynamic> customShopsB = await RESTAPI.getCustomServices(widget.subdir![i]['service']['name']);
+                                                  List<dynamic> customShopsB = await authService.getCustomServices(widget.subdir![i]['service']['name']);
                                                     for (var item in customShopsB) {
                                                       customB.add(LatLng(item['shop_location']['latitude'], item['shop_location']['longitude']));
                                                     }
@@ -391,3 +343,4 @@ class _MapsState extends State<Maps> {
     );
   }
 }
+

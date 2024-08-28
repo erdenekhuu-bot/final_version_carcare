@@ -1,15 +1,15 @@
-import 'package:final_pro/pages/Home/Map/Map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:final_pro/REST/RESTAPI.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:final_pro/usable/Store/Store.dart';
+import 'package:final_pro/REST/AuthService.dart';
+import 'package:final_pro/usable/Components/Helper.dart';
 
 class Cart extends StatefulWidget {
   final String txt;
   final String? img;
   final void Function(List<LatLng>, List<dynamic>) onNavigateToMap;
-  const Cart({super.key, this.img, required this.txt, required this.onNavigateToMap});
+  Cart({super.key, this.img, required this.txt, required this.onNavigateToMap});
 
   @override
   State<Cart> createState() => _CartState();
@@ -22,42 +22,45 @@ class _CartState extends State<Cart> {
   List<dynamic> customize = [];
 
   Future<void> takeShops() async {
+    String? access=await Helper.readDefaultToken();
+    String? refresh=await Helper.readToken();
+    AuthService authService = AuthService(access!, refresh!);
     customShops = [];
     try {
       List<dynamic> result = [];
       switch (widget.txt) {
         case 'Агрегат':
-          result = await RESTAPI.getCustomServices('Агрегат');
+          result = await authService.getCustomServices('Агрегат');
           break;
         case 'Кузов':
-          result = await RESTAPI.getCustomServices('Кузов');
+          result = await authService.getCustomServices('Кузов');
           break;
         case 'Дугуй':
-          result = await RESTAPI.getCustomServices('Дугуй');
+          result = await authService.getCustomServices('Дугуй');
           break;
         case 'Угаалга':
-          result = await RESTAPI.getCustomServices('Угаалга');
+          result = await authService.getCustomServices('Угаалга');
           break;
         case 'Мотоцикл':
-          result = await RESTAPI.getCustomServices('Мотоцикл');
+          result = await authService.getCustomServices('Мотоцикл');
           break;
         case 'Машин худалдаа':
-          result = await RESTAPI.getCustomServices('Машин худалдаа');
+          result = await authService.getCustomServices('Машин худалдаа');
           break;
         case 'Сэлбэг худалдаа':
-          result = await RESTAPI.getCustomServices('Сэлбэг худалдаа');
+          result = await authService.getCustomServices('Сэлбэг худалдаа');
           break;
         case 'Авто будаг':
-          result = await RESTAPI.getCustomServices('Авто будаг');
+          result = await authService.getCustomServices('Авто будаг');
           break;
         case 'Авто шил':
-          result = await RESTAPI.getCustomServices('Авто шил');
+          result = await authService.getCustomServices('Авто шил');
           break;
         case 'Хуулга':
-          result = await RESTAPI.getCustomServices('Хуулга');
+          result = await authService.getCustomServices('Хуулга');
           break;
         case 'Суудлын бүрээс':
-          result = await RESTAPI.getCustomServices('Суудлын бүрээс');
+          result = await authService.getCustomServices('Суудлын бүрээс');
           break;
         default:
           break;
@@ -72,6 +75,7 @@ class _CartState extends State<Cart> {
 
   @override
   Widget build(BuildContext context) {
+    customAddress=[];
     for(var item in customShops)
       try {
         Store.storeShopName=item['name'];
@@ -80,10 +84,6 @@ class _CartState extends State<Cart> {
     return GestureDetector(
       onTap: () {
         takeShops().then((_) {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => Maps(shops: customShops, places: customAddress, forward: 1, name: widget.txt)),
-          // );
           widget.onNavigateToMap(customAddress, customShops);
         });
       },
@@ -112,7 +112,7 @@ class Cart2 extends StatefulWidget {
   final String img;
   final String txt;
   final void Function(List<LatLng>, List<dynamic>) onNavigateToMap;
-  const Cart2({super.key, required this.img, required this.txt, required this.onNavigateToMap});
+  Cart2({super.key, required this.img, required this.txt, required this.onNavigateToMap});
 
   @override
   State<Cart2> createState() => _Cart2State();
@@ -121,45 +121,48 @@ class Cart2 extends StatefulWidget {
 class _Cart2State extends State<Cart2> {
 
   List<dynamic> customShops = [];
-  List<LatLng> customAddress = [];
+
 
   Future<void> takeShops() async {
+    String? access=await Helper.readDefaultToken();
+    String? refresh=await Helper.readToken();
+    AuthService authService = AuthService(access!, refresh!);
     customShops = [];
     try {
       List<dynamic> result = [];
       switch (widget.txt) {
         case 'Агрегат':
-          result = await RESTAPI.getCustomServices('Агрегат');
+          result = await authService.getCustomServices('Агрегат');
           break;
         case 'Кузов':
-          result = await RESTAPI.getCustomServices('Кузов');
+          result = await authService.getCustomServices('Кузов');
           break;
         case 'Дугуй':
-          result = await RESTAPI.getCustomServices('Дугуй');
+          result = await authService.getCustomServices('Дугуй');
           break;
         case 'Угаалга':
-          result = await RESTAPI.getCustomServices('Угаалга');
+          result = await authService.getCustomServices('Угаалга');
           break;
         case 'Мотоцикл':
-          result = await RESTAPI.getCustomServices('Мотоцикл');
+          result = await authService.getCustomServices('Мотоцикл');
           break;
         case 'Машин худалдаа':
-          result = await RESTAPI.getCustomServices('Машин худалдаа');
+          result = await authService.getCustomServices('Машин худалдаа');
           break;
         case 'Сэлбэг худалдаа':
-          result = await RESTAPI.getCustomServices('Сэлбэг худалдаа');
+          result = await authService.getCustomServices('Сэлбэг худалдаа');
           break;
         case 'Авто будаг':
-          result = await RESTAPI.getCustomServices('Авто будаг');
+          result = await authService.getCustomServices('Авто будаг');
           break;
         case 'Авто шил':
-          result = await RESTAPI.getCustomServices('Авто шил');
+          result = await authService.getCustomServices('Авто шил');
           break;
         case 'Хуулга':
-          result = await RESTAPI.getCustomServices('Хуулга');
+          result = await authService.getCustomServices('Хуулга');
           break;
         case 'Суудлын бүрээс':
-          result = await RESTAPI.getCustomServices('Суудлын бүрээс');
+          result = await authService.getCustomServices('Суудлын бүрээс');
           break;
         default:
           break;
@@ -174,21 +177,17 @@ class _Cart2State extends State<Cart2> {
 
   @override
   Widget build(BuildContext context) {
+    List<LatLng> customAddress = [];
     double screenWidth = MediaQuery.of(context).size.width;
     for(var item in customShops)
       try {
-        Store.storeShopName=item['name'];
         customAddress.add(LatLng(item['shop_location']['latitude'], item['shop_location']['longitude']));
       } catch(error){
-        print(error);
+
       }
     return GestureDetector(
       onTap: () async {
         takeShops().then((_) {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => Maps(shops: customShops, places: customAddress, forward: 1, name: widget.txt)),
-          // );
           widget.onNavigateToMap(customAddress, customShops);
         });
       },

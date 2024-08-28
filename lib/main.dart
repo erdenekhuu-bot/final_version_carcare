@@ -4,19 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:final_pro/usable/Components/Helper.dart';
 import 'package:final_pro/pages/Home/MainMenu.dart';
-import 'package:final_pro/pages/Home/Map/MapModel.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(
-    ChangeNotifierProvider(
-        create: (context)=> MapModel(),
-        child: Pages(),
-    )
-  );
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  runApp(Pages());
 }
 
 class Pages extends StatelessWidget {
@@ -24,11 +16,8 @@ class Pages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.white,
-      ),
+      theme: ThemeData(primaryColor: Colors.white),
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
     );
@@ -38,24 +27,23 @@ class Pages extends StatelessWidget {
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
+
+
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 2), () async {
       bool isLoggedIn = await Helper.getUserLoggedInSharedPreference();
       Navigator.pushReplacement(
-        context,
-        // MaterialPageRoute(
-        //   builder: (context) => isLoggedIn ? const MainMenu() : const Login(),
-        // ),
-        MaterialPageRoute(
-          builder: (context) => const Login(),
-        ),
-      );
+          context,
+          MaterialPageRoute(
+              builder: (context) => isLoggedIn ? MainMenu() : Login()));
     });
     return Scaffold(
       backgroundColor: const Color(0xff404040),
@@ -74,6 +62,4 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-
-
 
